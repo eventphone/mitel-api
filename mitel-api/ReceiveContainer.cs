@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using mitelapi.Messages;
@@ -20,7 +21,10 @@ namespace mitelapi
 
         public BaseResponse Response
         {
-            get { return _response; }
+            get
+            {
+                return _response;
+            }
             set
             {
                 _response = value;
@@ -31,7 +35,12 @@ namespace mitelapi
         public async Task<BaseResponse> GetResponseAsync(CancellationToken cancellationToken)
         {
             await _resetEvent.WaitAsync(cancellationToken).ConfigureAwait(false);
-            return Response;
+            var result = Response;
+            if (result.ErrorCode != OmmError.None)
+            {
+                throw new OmmException(result.ErrorCode, result.Info, result.ErrorBad, result.ErrorMaxLength);
+            }
+            return result;
         }
         
         protected virtual void Dispose(bool disposing)

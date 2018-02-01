@@ -34,12 +34,21 @@ namespace mitelapi.Messages
         [XmlAttribute("errCode")]
         public OmmError ErrorCode { get; set; }
         
+        /// <summary>
+        /// This field may contain additional information about an error. It is free style text in English and used mainly to track errors.
+        /// </summary>
         [XmlAttribute("info")]
         public string Info { get; set; }
         
+        /// <summary>
+        /// In case of EInval, EMissing or ETooLong: Name of the invalid attribute or element
+        /// </summary>
         [XmlAttribute("bad")]
         public string ErrorBad { get; set; }
         
+        /// <summary>
+        /// In case of ETooLong: Maximal length (in characters, not bytes) expected for the erroneous attribute.
+        /// </summary>
         [XmlIgnore]
         public int? ErrorMaxLength
         {
