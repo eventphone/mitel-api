@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Security;
@@ -20,6 +21,7 @@ namespace mitelapi
         private Thread _reader;
         private int _seq;
         private readonly OmmSerializer _serializer;
+        private ConcurrentDictionary<int, ReceiveContainer> _receiveQueue = new ConcurrentDictionary<int, ReceiveContainer>();
 
         public OmmClient(string hostname, int port = 12622)
         {
@@ -34,9 +36,9 @@ namespace mitelapi
             await _client.ConnectAsync(_hostname, _port).ConfigureAwait(false);
             _ssl = new SslStream(_client.GetStream());
             await _ssl.AuthenticateAsClientAsync(_hostname);
-            _ssl.ReadTimeout = 1000;
             cancellationToken.ThrowIfCancellationRequested();
             _reader = new Thread(Read) {IsBackground = true, Name = "OmmClientReader"};
+            MessageReceived += MessageRecievedHandler;
             _reader.Start();
             var open = new Open {Username = username, Password = password, OmpClient = true};
             var resp = await SendAsync<Open, OpenResp>(open, cancellationToken);
@@ -46,22 +48,25 @@ namespace mitelapi
         {
             var sequence = Interlocked.Increment(ref _seq);
             request.Seq = sequence;
-            var resetEvent = new SemaphoreSlim(0, 1);
-            var wrapper = new OmmResponseWrapper();
-            EventHandler<MessageReceivedEventArgs> handler = (s, e) =>
+            using (var container = new ReceiveContainer(sequence))
             {
-                if (e.IsHandled) return;
-                if (e.Message.Seq != sequence) return;
-                e.IsHandled = true;
-                wrapper.Element = e.Message;
-                resetEvent.Release();
-            };
-            MessageReceived += handler;
-            await _serializer.Serialize(request, _ssl);
-            await resetEvent.WaitAsync(cancellationToken);
-            MessageReceived -= handler;
-            var result = (TResponse) wrapper.Element;
-            return result;
+                _receiveQueue.AddOrUpdate(sequence, container, (i, o) => container);
+                await _serializer.Serialize(request, _ssl);
+                return (TResponse) await container.GetResponseAsync(cancellationToken);
+            }
+        }
+
+        private void MessageRecievedHandler(object sender, MessageReceivedEventArgs e)
+        {
+            if (e.IsHandled) return;
+            if (e.Message.Seq.HasValue)
+            {
+                if (_receiveQueue.TryRemove(e.Message.Seq.Value, out var container))
+                {
+                    e.IsHandled = true;
+                    container.Response = e.Message;
+                }
+            }
         }
 
         private event EventHandler<MessageReceivedEventArgs> MessageReceived;
@@ -102,12 +107,8 @@ namespace mitelapi
                 }
                 catch (IOException ex)
                 {
-                    // https://stackoverflow.com/a/13097757
-                    // if the ReceiveTimeout is reached an IOException will be raised...
-                    // with an InnerException of type SocketException and ErrorCode 10060
                     var socketExept = ex.InnerException as SocketException;
-                    if (socketExept == null || socketExept.ErrorCode != 10060)
-                        // if it's not the "expected" exception, let's not hide the error
+                    if (socketExept == null || socketExept.ErrorCode != 10004)
                         throw;
                 }
             }
@@ -125,8 +126,8 @@ namespace mitelapi
                 _closed = true;
                 if (_ssl != null)
                 {
-                    _reader.Join();
                     _ssl.Dispose();
+                    _reader.Join();
                 }
                 else
                 {
