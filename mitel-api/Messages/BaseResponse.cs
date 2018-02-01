@@ -7,6 +7,7 @@ namespace mitelapi.Messages
     public class OmmResponseWrapper
     {
         [XmlElement(nameof(OpenResp), typeof(OpenResp))]
+        [XmlElement(nameof(PingResp), typeof(PingResp))]
         public BaseResponse Element { get; set; }
     }
 

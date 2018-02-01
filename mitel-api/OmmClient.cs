@@ -22,6 +22,7 @@ namespace mitelapi
         private int _seq;
         private readonly OmmSerializer _serializer;
         private ConcurrentDictionary<int, ReceiveContainer> _receiveQueue = new ConcurrentDictionary<int, ReceiveContainer>();
+        private Timer _pingTimer;
 
         public OmmClient(string hostname, int port = 12622)
         {
@@ -29,7 +30,12 @@ namespace mitelapi
             _port = port;
             _client = new TcpClient(AddressFamily.InterNetworkV6) {Client = {DualMode = true}};
             _serializer = new OmmSerializer();
+            _pingTimer = new Timer(SendPing);
         }
+        
+        public DateTime LastMessage { get; private set; }
+
+        public TimeSpan Rtt { get; private set; }
 
         public async Task LoginAsync(string username, string password, CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -42,6 +48,22 @@ namespace mitelapi
             _reader.Start();
             var open = new Open {Username = username, Password = password, OmpClient = true};
             var resp = await SendAsync<Open, OpenResp>(open, cancellationToken);
+            _pingTimer.Change(TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60));
+        }
+
+        private async void SendPing(object state)
+        {
+            await Ping();
+        }
+
+        public async Task Ping()
+        {
+            var ping = new Ping();
+            var pong = await SendAsync<Ping, PingResp>(ping, CancellationToken.None);
+            if (pong.TimeStamp.HasValue)
+            {
+                Rtt = TimeSpan.FromSeconds(ping.Timestamp - pong.TimeStamp.Value);
+            }
         }
 
         private async Task<TResponse> SendAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken) where TRequest:BaseRequest where TResponse:BaseResponse
@@ -83,7 +105,6 @@ namespace mitelapi
                     if (read != 0)
                     {
                         offset += read;
-
                     }
                     var nullIndex = buffer.AsSpan().Slice(0, offset).IndexOf(0);
                     if (nullIndex >= 0)
@@ -92,6 +113,7 @@ namespace mitelapi
                         {
                             var message = Encoding.UTF8.GetString(buffer, 0, nullIndex);
                             var response = _serializer.Deserialize(message);
+                            LastMessage = DateTime.Now;
                             OnMessageRecieved(response);
                         }
                         Buffer.BlockCopy(buffer, nullIndex + 1, buffer, 0, offset - (nullIndex +1));

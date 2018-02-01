@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using mitelapi;
 using mitelapi.Messages;
@@ -55,6 +56,14 @@ namespace mitel_api.test
             {
                 Assert.AreEqual(OmmError.EAuth, ex.ErrorCode);
             }
+        }
+
+        [TestMethod]
+        public async Task CanPing()
+        {
+            await CanLogin();
+            await _client.Ping();
+            Console.WriteLine(_client.Rtt);
         }
     }
 }

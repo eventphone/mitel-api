@@ -22,6 +22,25 @@ namespace mitel_api.test
         }
 
         [TestMethod]
+        public void OmmResponseWrapperDeclaresAllRespTypes()
+        {
+            var respTypes = typeof(BaseResponse).Assembly.GetTypes()
+                .Where(x => !x.IsInterface)
+                .Where(x => !x.IsAbstract)
+                .Where(x => typeof(BaseResponse).IsAssignableFrom(x))
+                .ToList();
+            var attributes = typeof(OmmResponseWrapper).GetProperty(nameof(OmmResponseWrapper.Element))
+                .GetCustomAttributes(typeof(XmlElementAttribute), false)
+                .OfType<XmlElementAttribute>()
+                .Select(x => x.Type);
+            foreach (var attribute in attributes)
+            {
+                respTypes.Remove(attribute);
+            }
+            Assert.IsTrue(respTypes.Count == 0, "XmlElement for (" + String.Join(", ", respTypes.Select(x=>x.Name)) + $") missing on {nameof(OmmResponseWrapper.Element)}");
+        }
+
+        [TestMethod]
         public void CanSerializeOpen()
         {
             var open = new Open
