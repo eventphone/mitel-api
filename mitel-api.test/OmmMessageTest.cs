@@ -66,5 +66,27 @@ namespace mitel_api.test
             Assert.AreEqual(45, resp.ProtocolVersion);
             Assert.AreEqual(OmmError.EAuth, resp.ErrorCode);
         }
+
+        [TestMethod]
+        public void CanSerializeGetRFPSummary()
+        {
+            var rfpSummary = new GetRFPSummary();
+            var xml = _serializer.Serialize(rfpSummary);
+            Assert.AreEqual("<GetRFPSummary />", xml);
+        }
+
+        [TestMethod]
+        public void CanDeserializeGetRFPSummaryResp()
+        {
+            var message = "<GetRFPSummaryResp nRFPs=\"5\" idFirst=\"1\" nConnected=\"2\" wrongBrandedRFPs=\"0\" wrongStandbyRFPs=\"0\" wrongVersionedRFPs=\"0\" " +
+                "newAvailSWRFPs=\"0\" DecryptedDECTRFPs=\"0\" usbOverloads=\"0\" DECTactivatedRFPs=\"11\" " +
+                "DECTactiveRFPs=\"1\" advancedFeaturesErrorRFPs=\"0\" usedDECTclusters=\"1\" usedPagingAreas=\"1\" WLANactivatedRFPs=\"1\" WLANrunningRFPs=\"1\" usedWLANprofiles=\"1\" />";
+            var resp = _serializer.Deserialize<GetRFPSummaryResp>(message);
+            Assert.IsNotNull(resp);
+            Assert.AreEqual(5, resp.TotalCount);
+            Assert.AreEqual(2, resp.ConnectedCount);
+            Assert.AreEqual(1, resp.DectActiveCount);
+            Assert.AreEqual(11, resp.DectActivedCount);
+        }
     }
 }

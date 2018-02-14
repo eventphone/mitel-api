@@ -8,6 +8,7 @@ namespace mitelapi.Messages
     {
         [XmlElement(nameof(OpenResp), typeof(OpenResp))]
         [XmlElement(nameof(PingResp), typeof(PingResp))]
+        [XmlElement(nameof(GetRFPSummaryResp), typeof(GetRFPSummaryResp))]
         public BaseResponse Element { get; set; }
     }
 
