@@ -86,7 +86,25 @@ namespace mitel_api.test
             Assert.AreEqual(5, resp.TotalCount);
             Assert.AreEqual(2, resp.ConnectedCount);
             Assert.AreEqual(1, resp.DectActiveCount);
-            Assert.AreEqual(11, resp.DectActivedCount);
+            Assert.AreEqual(11, resp.DectActivatedCount);
+        }
+
+        [TestMethod]
+        public void CanSerializeGetPPDevSummary()
+        {
+            var rfpSummary = new GetPPDevSummary();
+            var xml = _serializer.Serialize(rfpSummary);
+            Assert.AreEqual("<GetPPDevSummary />", xml);
+        }
+
+        [TestMethod]
+        public void CanDeserializeGetPPDevSummaryResp()
+        {
+            var message = "<GetPPDevSummaryResp nRecords=\"3\" ppnFirst=\"116\" subscribedDevs=\"2\" />";
+            var resp = _serializer.Deserialize<GetPPDevSummaryResp>(message);
+            Assert.IsNotNull(resp);
+            Assert.AreEqual(3, resp.TotalCount);
+            Assert.AreEqual(2, resp.SubscribedCount);
         }
     }
 }

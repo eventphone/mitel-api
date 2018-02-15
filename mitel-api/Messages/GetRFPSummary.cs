@@ -21,7 +21,7 @@ namespace mitelapi.Messages
         public int DectActiveCount { get; set; }
 
         [XmlAttribute("DECTactivatedRFPs")]
-        public int DectActivedCount { get; set; }
+        public int DectActivatedCount { get; set; }
 
         [XmlAttribute("nConnected")]
         public int ConnectedCount { get; set; }

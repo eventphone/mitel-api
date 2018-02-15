@@ -2,7 +2,9 @@
 using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
@@ -14,6 +16,7 @@ namespace mitelapi
     {
         private readonly XmlSerializer _deserializer;
         private readonly ConcurrentDictionary<Type, XmlSerializer> _serializers = new ConcurrentDictionary<Type, XmlSerializer>();
+        private readonly SemaphoreSlim _writeLock = new SemaphoreSlim(1, 1);
 
         private readonly XmlWriterSettings _writerSettings = new XmlWriterSettings
         {
@@ -57,9 +60,17 @@ namespace mitelapi
         {
             using (var sw = new StreamWriter(stream, Encoding.UTF8, 1024, true))
             {
-                Serialize(request, sw);
-                stream.WriteByte(0);
-                await sw.FlushAsync();
+                await _writeLock.WaitAsync();
+                try
+                {
+                    Serialize(request, sw);
+                    stream.WriteByte(0);
+                    await sw.FlushAsync();
+                }
+                finally
+                {
+                    _writeLock.Release();
+                }
             }
         }
 

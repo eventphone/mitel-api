@@ -53,17 +53,38 @@ namespace mitelapi
 
         private async void SendPing(object state)
         {
-            await Ping();
+            await Ping(CancellationToken.None);
         }
 
-        public async Task Ping()
+        public async Task Ping(CancellationToken cancellationToken)
         {
             var ping = new Ping();
-            var pong = await SendAsync<Ping, PingResp>(ping, CancellationToken.None);
+            var pong = await SendAsync<Ping, PingResp>(ping, cancellationToken);
             if (pong.TimeStamp.HasValue)
             {
                 Rtt = TimeSpan.FromSeconds(ping.Timestamp - pong.TimeStamp.Value);
             }
+        }
+
+        public async Task<GetRFPSummaryResp> GetRFPSummary(CancellationToken cancellationToken)
+        {
+            var request = new GetRFPSummary();
+            var response = await SendAsync<GetRFPSummary, GetRFPSummaryResp>(request, cancellationToken);
+            return response;
+        }
+
+        public async Task<GetPPDevSummaryResp> GetPPDevSummary(CancellationToken cancellationToken)
+        {
+            var request = new GetPPDevSummary();
+            var response = await SendAsync<GetPPDevSummary, GetPPDevSummaryResp>(request, cancellationToken);
+            return response;
+        }
+
+        public async Task<GetPPUserSummaryResp> GetPPUserSummary(CancellationToken cancellationToken)
+        {
+            var request = new GetPPUserSummary();
+            var response = await SendAsync<GetPPUserSummary, GetPPUserSummaryResp>(request, cancellationToken);
+            return response;
         }
 
         private async Task<TResponse> SendAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken) where TRequest:BaseRequest where TResponse:BaseResponse

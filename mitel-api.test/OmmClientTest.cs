@@ -62,7 +62,7 @@ namespace mitel_api.test
         public async Task CanPing()
         {
             await CanLogin();
-            await _client.Ping();
+            await _client.Ping(CancellationToken.None);
             Console.WriteLine(_client.Rtt);
         }
     }
