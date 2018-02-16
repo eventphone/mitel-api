@@ -11,8 +11,16 @@ namespace mitelapi.Messages
     // wrongVersionedRFPs="0" newAvailSWRFPs="0" DecryptedDECTRFPs="0" usbOverloads="0" DECTactivatedRFPs="1"
     // DECTactiveRFPs="0" advancedFeaturesErrorRFPs="0" usedDECTclusters="1" usedPagingAreas="1"
     // WLANactivatedRFPs="1" WLANrunningRFPs="1" usedWLANprofiles="1" />
+    public interface IRfpSummary
+    {
+        int TotalCount { get; set; }
+        int DectActiveCount { get; set; }
+        int DectActivatedCount { get; set; }
+        int ConnectedCount { get; set; }
+    }
+
     [XmlRoot("GetRFPSummaryResp", Namespace = "")]
-    public class GetRFPSummaryResp : BaseResponse
+    public class GetRFPSummaryResp : BaseResponse, IRfpSummary
     {
         [XmlAttribute("nRFPs")]
         public int TotalCount { get; set; }

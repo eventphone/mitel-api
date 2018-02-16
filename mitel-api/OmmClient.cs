@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Diagnostics;
 using System.IO;
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using mitelapi.Events;
 using mitelapi.Messages;
 
 namespace mitelapi
@@ -47,7 +47,7 @@ namespace mitelapi
             MessageReceived += MessageRecievedHandler;
             _reader.Start();
             var open = new Open {Username = username, Password = password, OmpClient = true};
-            var resp = await SendAsync<Open, OpenResp>(open, cancellationToken);
+            await SendAsync<Open, OpenResp>(open, cancellationToken);
             _pingTimer.Change(TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60));
         }
 
@@ -64,6 +64,22 @@ namespace mitelapi
             {
                 Rtt = TimeSpan.FromSeconds(ping.Timestamp - pong.TimeStamp.Value);
             }
+        }
+
+        public Task Subscribe(EventType type, CancellationToken cancellationToken)
+        {
+            return Subscribe(new SubscribeCmd(type), cancellationToken);
+        }
+
+        public Task Subscribe(SubscribeCmd command, CancellationToken cancellationToken)
+        {
+            return Subscribe(new[] {command}, cancellationToken);
+        }
+
+        public async Task Subscribe(SubscribeCmd[] commands, CancellationToken cancellationToken)
+        {
+            var subscribe = new Subscribe {Commands = commands};
+            await SendAsync<Subscribe, SubscribeResp>(subscribe, cancellationToken);
         }
 
         public async Task<GetRFPSummaryResp> GetRFPSummary(CancellationToken cancellationToken)
@@ -114,6 +130,12 @@ namespace mitelapi
 
         private event EventHandler<MessageReceivedEventArgs> MessageReceived;
 
+        public event EventHandler<OmmEventArgs<EventDECTSubscriptionMode>> DECTSubscriptionModeChanged;
+        public event EventHandler<OmmEventArgs<EventAlarmCallProgress>> AlarmCallProgress;
+        public event EventHandler<OmmEventArgs<EventRFPSummary>> RfpSummary;
+        public event EventHandler<OmmEventArgs<EventPPDevSummary>> PPDevSummary;
+        public event EventHandler<OmmEventArgs<EventPPUserSummary>> PPUserSummary;
+
         private void Read()
         {
             byte[] buffer = new byte[1024];
@@ -133,9 +155,10 @@ namespace mitelapi
                         if (nullIndex > 0)
                         {
                             var message = Encoding.UTF8.GetString(buffer, 0, nullIndex);
-                            var response = _serializer.Deserialize(message);
+                            var response = _serializer.DeserializeWrapper(message);
                             LastMessage = DateTime.Now;
-                            OnMessageRecieved(response);
+                            OnMessageReceived(response.Response);
+                            OnEventReceived(response.Event);
                         }
                         Buffer.BlockCopy(buffer, nullIndex + 1, buffer, 0, offset - (nullIndex +1));
                         offset -= (nullIndex + 1);
@@ -157,9 +180,35 @@ namespace mitelapi
             }
         }
 
-        private void OnMessageRecieved(BaseResponse message)
+        private void OnMessageReceived(BaseResponse message)
         {
+            if (message == null) return;
             MessageReceived?.Invoke(this, new MessageReceivedEventArgs(message));
+        }
+
+        private void OnEventReceived(BaseEvent ommEvent)
+        {
+            if (ommEvent == null) return;
+            if (ommEvent is EventDECTSubscriptionMode dectSubscriptionMode)
+            {
+                DECTSubscriptionModeChanged?.Invoke(this, new OmmEventArgs<EventDECTSubscriptionMode>(dectSubscriptionMode));
+            }
+            else if (ommEvent is EventAlarmCallProgress alarmCallProgress)
+            {
+                AlarmCallProgress?.Invoke(this, new OmmEventArgs<EventAlarmCallProgress>(alarmCallProgress));
+            }
+            else if (ommEvent is EventRFPSummary rfpSummary)
+            {
+                RfpSummary?.Invoke(this, new OmmEventArgs<EventRFPSummary>(rfpSummary));
+            }
+            else if (ommEvent is EventPPDevSummary ppDevSummary)
+            {
+                PPDevSummary?.Invoke(this, new OmmEventArgs<EventPPDevSummary>(ppDevSummary));
+            }
+            else if (ommEvent is EventPPUserSummary ppUserSummary)
+            {
+                PPUserSummary?.Invoke(this, new OmmEventArgs<EventPPUserSummary>(ppUserSummary));
+            }
         }
 
         protected virtual void Dispose(bool disposing)

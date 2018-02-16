@@ -8,8 +8,15 @@ namespace mitelapi.Messages
     }
 
     //<GetPPDevSummaryResp nRecords="3" ppnFirst="116" subscribedDevs="2" />
+    public interface IPPDevSummary
+    {
+        int TotalCount { get; set; }
+
+        int SubscribedCount { get; set; }
+    }
+
     [XmlRoot("GetPPDevSummaryResp", Namespace = "")]
-    public class GetPPDevSummaryResp : BaseResponse
+    public class GetPPDevSummaryResp : BaseResponse, IPPDevSummary
     {
         [XmlAttribute("nRecords")]
         public int TotalCount { get; set; }

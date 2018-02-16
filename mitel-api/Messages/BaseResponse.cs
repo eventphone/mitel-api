@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Xml.Serialization;
+using mitelapi.Events;
 
 namespace mitelapi.Messages
 {
@@ -11,10 +12,17 @@ namespace mitelapi.Messages
         [XmlElement(nameof(GetRFPSummaryResp), typeof(GetRFPSummaryResp))]
         [XmlElement(nameof(GetPPDevSummaryResp), typeof(GetPPDevSummaryResp))]
         [XmlElement(nameof(GetPPUserSummaryResp), typeof(GetPPUserSummaryResp))]
-        public BaseResponse Element { get; set; }
+        [XmlElement(nameof(SubscribeResp), typeof(SubscribeResp))]
+        public BaseResponse Response { get; set; }
+
+        [XmlElement(nameof(EventDECTSubscriptionMode), typeof(EventDECTSubscriptionMode))]
+        [XmlElement(nameof(EventRFPSummary), typeof(EventRFPSummary))]
+        [XmlElement(nameof(EventAlarmCallProgress), typeof(EventAlarmCallProgress))]
+        [XmlElement(nameof(EventPPDevSummary), typeof(EventPPDevSummary))]
+        [XmlElement(nameof(EventPPUserSummary), typeof(EventPPUserSummary))]
+        public BaseEvent Event { get; set; }
     }
 
-    [XmlInclude(typeof(OpenResp))]
     public abstract class BaseResponse
     {
         [XmlIgnore]

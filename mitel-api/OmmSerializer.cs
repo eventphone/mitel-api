@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.IO;
-using System.Linq;
-using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
+using mitelapi.Events;
 using mitelapi.Messages;
 
 namespace mitelapi
@@ -34,15 +33,21 @@ namespace mitelapi
 
         public T Deserialize<T>(string message) where T:BaseResponse
         {
-            return (T) Deserialize(message);
+            var wrapper = DeserializeWrapper(message);
+            return (T) wrapper.Response;
         }
 
-        public BaseResponse Deserialize(string message)
+        public T DeserializeEvent<T>(string message) where T:BaseEvent
+        {
+            var wrapper = DeserializeWrapper(message);
+            return (T) wrapper.Event;
+        }
+
+        internal OmmResponseWrapper DeserializeWrapper(string message)
         {
             using (var reader = new StringReader($"<root>{message}</root>"))
             {
-                var wrapper = (OmmResponseWrapper) _deserializer.Deserialize(reader);
-                return wrapper.Element;
+                return(OmmResponseWrapper) _deserializer.Deserialize(reader);
             }
         }
 
