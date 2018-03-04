@@ -26,12 +26,23 @@ namespace mitelapi.Messages
         [XmlIgnore]
         public bool OmpClient { get; set; }
 
+		[XmlIgnore]
+        public bool UserDeviceSyncClient { get; set; }
+		
         [XmlAttribute("OMPClient")]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public string OmpClientSerialize
         {
             get { return OmpClient ? "1" : "0";}
             set { OmpClient = value == "1"; }
+        }
+		
+		[XmlAttribute("UserDeviceSyncClient")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public string OmpClientSerialize
+        {
+            get { return UserDeviceSyncClient ? "true" : "false";}
+            set { UserDeviceSyncClient = value == "true"; }
         }
     }
 
