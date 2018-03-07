@@ -32,6 +32,12 @@ namespace mitel_api.test
         }
 
         [TestMethod]
+        public async Task CanLoginAsMOM()
+        {
+            await _client.LoginAsync("omm", "omm", true);
+        }
+
+        [TestMethod]
         public async Task EmptyPasswordThrowsException()
         {
             try

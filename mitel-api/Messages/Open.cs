@@ -39,7 +39,7 @@ namespace mitelapi.Messages
 		
 		[XmlAttribute("UserDeviceSyncClient")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string OmpClientSerialize
+        public string UserDeviceSyncClientSerialize
         {
             get { return UserDeviceSyncClient ? "true" : "false";}
             set { UserDeviceSyncClient = value == "true"; }

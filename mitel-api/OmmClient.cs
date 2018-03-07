@@ -37,7 +37,7 @@ namespace mitelapi
 
         public TimeSpan Rtt { get; private set; }
 
-        public async Task LoginAsync(string username, string password, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task LoginAsync(string username, string password, bool userDeviceSync = false,  CancellationToken cancellationToken = default(CancellationToken))
         {
             await _client.ConnectAsync(_hostname, _port).ConfigureAwait(false);
             _ssl = new SslStream(_client.GetStream());
@@ -46,7 +46,7 @@ namespace mitelapi
             _reader = new Thread(Read) {IsBackground = true, Name = "OmmClientReader"};
             MessageReceived += MessageRecievedHandler;
             _reader.Start();
-            var open = new Open {Username = username, Password = password, OmpClient = true};
+            var open = new Open {Username = username, Password = password, OmpClient = !userDeviceSync, UserDeviceSyncClient = userDeviceSync};
             await SendAsync<Open, OpenResp>(open, cancellationToken);
             _pingTimer.Change(TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60));
         }
