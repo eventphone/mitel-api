@@ -1,6 +1,9 @@
+using System;
+using System.Security.Cryptography;
+using System.Text;
 using System.Xml.Serialization;
 
-namespace mitelapi.Events
+namespace mitelapi.Types
 {
     /// <summary>
     /// This type contains all data fields of a DECT phone device. 
@@ -21,6 +24,12 @@ namespace mitelapi.Events
         /// </summary>
         [XmlAttribute("timeStamp")]
         public long TimeStamp { get; set; }
+
+        /// <summary>
+        /// Type or state of a relationship to a DECT phone device
+        /// </summary>
+        [XmlAttribute("relType")]
+        public PPRelTypeType RelType { get; set; }
 
         /// <summary>
         /// PPN of the DECT phone device which is linked to this DECT phone user, if any 
@@ -364,7 +373,27 @@ namespace mitelapi.Events
         /// <summary>
         /// Calculated SIP port for registering the user at the call server. If calculatedSipPort=0, the fixedSipPort is used. This value is read only.
         /// </summary>
-        [XmlAttribute("calculatedSipPort ")]
-        public int CalculatedSipPort { get; set; }  
+        [XmlAttribute("calculatedSipPort")]
+        public int CalculatedSipPort { get; set; }
+
+        private static byte[] StringToByteArray(string hex)
+        {
+            byte[] bytes = new byte[hex.Length / 2];
+            for (int i = 0; i < hex.Length; i += 2)
+                bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
+            return bytes;
+        }
+
+        public static string EncryptData(string modulus, string exponent, string data)
+        {
+            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
+            rsa.ImportParameters(new RSAParameters()
+            {
+                Modulus = StringToByteArray(modulus),
+                Exponent = StringToByteArray(exponent)
+            });
+            var crypted = rsa.Encrypt(Encoding.ASCII.GetBytes(data), false);
+            return Convert.ToBase64String(crypted);
+        }
     }
 }

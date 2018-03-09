@@ -1,3 +1,4 @@
+using mitelapi.Types;
 using System.Xml.Serialization;
 
 namespace mitelapi.Events

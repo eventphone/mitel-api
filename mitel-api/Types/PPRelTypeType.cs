@@ -1,5 +1,5 @@
 using System.Xml.Serialization;
-namespace mitelapi.Messages
+namespace mitelapi.Types
 {
     /// <summary>
     /// Describes the type of a relation between a DECT phone device and a DECT phone user 

@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using mitelapi.Messages;
+using mitelapi.Types;
 
 namespace mitelapi
 {

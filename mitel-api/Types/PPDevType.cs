@@ -1,7 +1,7 @@
 using System.Xml.Serialization;
 using mitelapi.Messages;
 
-namespace mitelapi.Events
+namespace mitelapi.Types
 {
     /// <summary>
     /// This type contains all data fields of a DECT phone device. 

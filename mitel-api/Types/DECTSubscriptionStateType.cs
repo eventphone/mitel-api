@@ -1,6 +1,6 @@
 using System.Xml.Serialization;
 
-namespace mitelapi.Events
+namespace mitelapi.Types
 {
     /// Describes available subscription states
     public enum DECTSubscriptionStateType {

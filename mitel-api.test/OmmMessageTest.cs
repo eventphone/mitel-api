@@ -6,6 +6,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using mitelapi;
 using mitelapi.Events;
+using mitelapi.Types;
 using mitelapi.Messages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -46,13 +47,14 @@ namespace mitel_api.test
         {
             var open = new Open
             {
-                ProtocolVersion = 45,
                 Username = "omm",
-                Password = "omm",
-                OmpClient = true
+                Password = "omm"
             };
             var xml = _serializer.Serialize(open);
-            Assert.AreEqual("<Open protocolVersion=\"45\" username=\"omm\" password=\"omm\" OMPClient=\"1\" />", xml);
+            Assert.AreEqual("<Open username=\"omm\" password=\"omm\" />", xml);
+            open.UserDeviceSyncClient = true;
+            xml = _serializer.Serialize(open);
+            Assert.AreEqual("<Open username=\"omm\" password=\"omm\" UserDeviceSyncClient=\"true\" />", xml);
         }
 
         [TestMethod]
@@ -109,6 +111,128 @@ namespace mitel_api.test
         }
 
         [TestMethod]
+        public void CanSerializeSetPP()
+        {
+            var setPP = new SetPP()
+            {
+                PortablePart = new PPDevType() {
+                    Ppn = 1,
+                    RelType = PPRelTypeType.Unbound,
+                    Uid = 0
+                },
+                User = new PPUserType() {
+                    Uid = 1,
+                    RelType = PPRelTypeType.Unbound,
+                    Ppn = 0
+                }
+            };
+
+            var xml = _serializer.Serialize(setPP);
+            Assert.AreEqual("<SetPP><pp ppn=\"1\" timeStamp=\"0\" relType=\"Unbound\" uid=\"0\" s=\"No\" encrypt=\"false\" capMessaging=\"false\" " +
+                "capMessagingForInternalUse=\"false\" capEnhLocating=\"false\" capBluetooth=\"false\" hwType=\"Unknown\" " +
+                "ppProfileCapability=\"false\" ppDefaultProfileLoaded=\"false\" subscribeToPARIOnly=\"false\" /><user uid=\"1\" timeStamp=\"0\" " +
+                "relType=\"Unbound\" ppn=\"0\" forwardState=\"Off\" forwardTime=\"0\" lang=\"English\" holdRingBackTime=\"0\" autoAnswer=\"On\" " +
+                "warningTone=\"On\" allowBargeIn=\"On\" callWaitingDisabled=\"false\" external=\"false\" trackingActive=\"false\" locatable=\"false\" " +
+                "BTlocatable=\"false\" locRight=\"false\" msgRight=\"false\" sendVcardRight=\"false\" recvVcardRight=\"false\" keepLocalPB=\"false\" " +
+                "vip=\"false\" sipRegisterCheck=\"false\" allowVideoStream=\"false\" CUS=\"Unknown\" HAS=\"Unknown\" HSS=\"Unknown\" HRS=\"Unknown\" " +
+                "HCS=\"Unknown\" SRS=\"Unknown\" SCS=\"Unknown\" CDS=\"Unknown\" HBS=\"Unknown\" BTS=\"Unknown\" SWS=\"Unknown\" " +
+                "configurationDataLoaded=\"false\" ppProfileId=\"0\" fixedSipPort=\"0\" calculatedSipPort=\"0\" /></SetPP>", xml);
+        }
+
+        [TestMethod]
+        public void CanDeserializeSetPPResp()
+        {
+            var message = "<SetPPResp seq=\"2\"><pp ppn=\"32\" ppnSec=\"0\" relType=\"Unbound\" uid=\"0\" timeStamp=\"1520386972\""+
+                " ipei=\"03074 0220259 3\" ac=\"\" s=\"Yes\" uak=\"C70FF5D60D1448184995414BA9577C5B\" encrypt=\"1\" capMessaging=\"0\" "+
+                "capMessagingForInternalUse=\"0\" capEnhLocating=\"1\" capBluetooth=\"0\" ethAddr=\"\" hwType=\"Unknown\" ppProfileCapability=\"0\""+
+                " ppDefaultProfileLoaded=\"0\" subscribeToPARIOnly=\"0\" ommId=\"102A7C82\" ommIdAck=\"102A7C82\" timeStampAdmin=\"1520386972\""+
+                " timeStampRelation=\"1520386972\" timeStampRoaming=\"1510486477\" timeStampSubscription=\"1510486477\" autoCreate=\"1\""+
+                " roaming=\"RoamingComplete\" modicType=\"01\" locationData=\"000001000000\" dectIeFixedId=\"06A0A0102A7C8200\" "+
+                "subscriptionId=\"0500C0235C630000\" /><user uid=\"4\" uidSec=\"0\" permanent=\"0\" relType=\"Unbound\" ppn=\"0\" "+
+                "timeStamp=\"1520386972\" name=\"1234\" num=\"1234\" hierarchy1=\"\" hierarchy2=\"\" addId=\"1234\" sipAuthId=\"1234\" "+
+                "sipPw=\"kmmpH8QRJL5Jv6sbbub65gEPutga0wL9zuVibv6VRkeCwbnoAnCK1VckA3UBQLiZgtroPxYYstDudjqzeSEDiA==\" sosNum=\"\" manDownNum=\"\" "+
+                "voiceboxNum=\"\" pin=\"hdwySugH1CFKm1KawJzMcfTgNDq/ycDIyp+wlEA7wM7oQPXhu589CyaJXuF8UjAnh2hM5Kyb27Tib1Rv2IZIKg==\" lang=\"English\" "+
+                "forwardState=\"Off\" forwardDest=\"\" forwardTime=\"0\" holdRingBackTime=\"3\" callWaitingDisabled=\"0\" autoAnswer=\"Global\" "+
+                "microphoneMute=\"Global\" warningTone=\"Global\" allowBargeIn=\"Global\" trackingActive=\"0\" autoLogoutOnCharge=\"0\" "+
+                "locRight=\"0\" locatable=\"0\" msgRight=\"1\" sendVcardRight=\"1\" recvVcardRight=\"0\" keepLocalPB=\"0\" vip=\"0\" "+
+                "sipRegisterCheck=\"1\" external=\"0\" BTlocatable=\"0\" BTsensitivity=\"high\" conferenceServerType=\"Global\" "+
+                "conferenceServerURI=\"\" monitoringMode=\"Off\" HAS=\"Unknown\" HSS=\"Unknown\" HRS=\"Unknown\" HCS=\"Unknown\" SRS=\"Unknown\""+
+                " SCS=\"Unknown\" CDS=\"Unknown\" HBS=\"Unknown\" BTS=\"Unknown\" SWS=\"Unknown\" CUS=\"Unknown\" allowVideoStream=\"0\" "+
+                "credentialPw=\"mJJxssWIaZLc0+pN3Nkfcnkzi4YH4YPkSvUIaYJlBwB08YmkzF9qngcXwHBN1ocwsz3KjdmgP13JlJ7DHBKQSA==\" fixedSipPort=\"0\" "+
+                "calculatedSipPort=\"5060\" hotDeskingSupport=\"0\" useSIPUserName=\"Global\" useSIPUserAuthentication=\"Global\" "+
+                "serviceUserName=\"\" serviceAuthName=\"\" "+
+                "serviceAuthPassword=\"V8SPo26k/NRNY5XfeMb5tqUfqmJ2ozp300P9AA6KR5IePKUTd76J6JN7XKoqq8/zGzFathgsmdEoYydeFyY1+A==\" "+
+                "configurationDataLoaded=\"0\" ppProfileId=\"0\" ppnOld=\"32\" timeStampAdmin=\"1520386972\" timeStampRelation=\"1520386972\" /></SetPPResp>";
+            var resp = _serializer.Deserialize<SetPPResp>(message);
+            Assert.IsNotNull(resp);
+            Assert.IsNotNull(resp.PortablePart);
+            Assert.IsNotNull(resp.User);
+            Assert.AreEqual(resp.PortablePart.RelType, PPRelTypeType.Unbound);
+            Assert.AreEqual(resp.User.RelType, PPRelTypeType.Unbound);
+            Assert.AreEqual(resp.User.Uid, 4);
+            Assert.AreEqual(resp.User.Ppn, 0);
+            Assert.AreEqual(resp.PortablePart.Ppn, 32);
+            Assert.AreEqual(resp.PortablePart.Uid, 0);
+        }
+
+        [TestMethod]
+        public void CanSerializeCreatePPUser()
+        {
+            var create = new CreatePPUser()
+            {
+                User = new PPUserType()
+                {
+                    Name = "UnitTestUser",
+                    Num = "9900",
+                    Hierarchy1 = "Beschreibung1",
+                    Hierarchy2 = "Beschreibung2",
+                    AddId = "9900",
+                    Pin = "1234",
+                    SipAuthId = "9900",
+                    SipPw = "9900"
+                }
+            };
+
+            var xml = _serializer.Serialize(create);
+            Assert.AreEqual("<CreatePPUser><user uid=\"0\" timeStamp=\"0\" relType=\"Unbound\" ppn=\"0\" name=\"UnitTestUser\" num=\"9900\" "+
+                "hierarchy1=\"Beschreibung1\" hierarchy2=\"Beschreibung2\" addId=\"9900\" pin=\"1234\" sipAuthId=\"9900\" sipPw=\"9900\" " +
+                "forwardState=\"Off\" forwardTime=\"0\" lang=\"English\" holdRingBackTime=\"0\" autoAnswer=\"On\" warningTone=\"On\" " +
+                "allowBargeIn=\"On\" callWaitingDisabled=\"false\" external=\"false\" trackingActive=\"false\" locatable=\"false\" " +
+                "BTlocatable=\"false\" locRight=\"false\" msgRight=\"false\" sendVcardRight=\"false\" recvVcardRight=\"false\" keepLocalPB=\"false\" " +
+                "vip=\"false\" sipRegisterCheck=\"false\" allowVideoStream=\"false\" CUS=\"Unknown\" HAS=\"Unknown\" HSS=\"Unknown\" HRS=\"Unknown\" " +
+                "HCS=\"Unknown\" SRS=\"Unknown\" SCS=\"Unknown\" CDS=\"Unknown\" HBS=\"Unknown\" BTS=\"Unknown\" SWS=\"Unknown\" " +
+                "configurationDataLoaded=\"false\" ppProfileId=\"0\" fixedSipPort=\"0\" calculatedSipPort=\"0\" /></CreatePPUser>", xml);
+        }
+
+        [TestMethod]
+        public void CanDeserializeCreatePPUserResp()
+        {
+            var message = "<CreatePPUserResp seq=\"2\"><user uid=\"6\" uidSec=\"0\" permanent=\"0\" relType=\"Unbound\" ppn=\"0\" timeStamp=\"1520550838\" "+
+                "name=\"UnitTestUser\" num=\"9900\" hierarchy1=\"Beschreibung1\" hierarchy2=\"Beschreibung2\" addId=\"9900\" sipAuthId=\"9900\" "+
+                "sipPw=\"if2arwBYiCVve6enyZyjhsYYKAIFvAhnEb4HuBP88muqMiI63jxtutU7r6Z+xz57BQuukvT9iZTSrCNF6Z3/IQ==\" sosNum=\"\" manDownNum=\"\" "+
+                "voiceboxNum=\"\" pin=\"OB5aKJg//nQtlxjALg44SnW3MRPxQIC8XHWxGk1q6NBdgrpIAof63pMjYrI7PODoLu/BJR9DSHtN4a9IVDFudw==\" lang=\"English\" "+
+                "forwardState=\"Off\" forwardDest=\"\" forwardTime=\"0\" holdRingBackTime=\"3\" callWaitingDisabled=\"0\" autoAnswer=\"Global\" "+
+                "microphoneMute=\"Global\" warningTone=\"Global\" allowBargeIn=\"Global\" trackingActive=\"0\" autoLogoutOnCharge=\"0\" locRight=\"0\" "+
+                "locatable=\"0\" msgRight=\"1\" sendVcardRight=\"1\" recvVcardRight=\"0\" keepLocalPB=\"0\" vip=\"0\" sipRegisterCheck=\"0\" external=\"0\" "+
+                "BTlocatable=\"0\" BTsensitivity=\"high\" conferenceServerType=\"Global\" conferenceServerURI=\"\" monitoringMode=\"Off\" HAS=\"Unknown\" "+
+                "HSS=\"Unknown\" HRS=\"Unknown\" HCS=\"Unknown\" SRS=\"Unknown\" SCS=\"Unknown\" CDS=\"Unknown\" HBS=\"Unknown\" BTS=\"Unknown\" "+
+                "SWS=\"Unknown\" CUS=\"Unknown\" allowVideoStream=\"0\" "+
+                "credentialPw=\"UWXjt3WYcxi7bK+RNA8J/oP7hia8Zer/7EcmkVvJ1KrtZ9h53uwy/GhHif+qSZrH8V+cgCGTMtlMM5vHSvHUjA==\" fixedSipPort=\"0\" "+
+                "calculatedSipPort=\"0\" hotDeskingSupport=\"0\" useSIPUserName=\"Global\" useSIPUserAuthentication=\"Global\" serviceUserName=\"\" "+
+                "serviceAuthName=\"\" serviceAuthPassword=\"ILLSNSY77GNuSMwTOhx+ef6Bw2iYu2ByhdNBmNE1rtCkN8YzM1AQXvCvefXtGKu6TnIsReF86wlgELyLyS2Myw==\" "+
+                "configurationDataLoaded=\"0\" ppProfileId=\"0\" /></CreatePPUserResp>";
+            var resp = _serializer.Deserialize<CreatePPUserResp>(message);
+            Assert.IsNotNull(resp);
+            Assert.IsNotNull(resp.User);
+            Assert.AreEqual(resp.User.RelType, PPRelTypeType.Unbound);
+            Assert.AreEqual(resp.User.Uid, 6);
+            Assert.AreEqual(resp.User.Ppn, 0);
+            Assert.AreEqual(resp.User.Num, "9900");
+            Assert.AreEqual(resp.User.Hierarchy1, "Beschreibung1");
+            Assert.AreEqual(resp.User.Hierarchy2, "Beschreibung2");
+        }
+
+        [TestMethod]
         public void CanSerializeSubscribe()
         {
             var subscribe = new Subscribe
@@ -134,7 +258,7 @@ namespace mitel_api.test
             var message = "<EventDECTSubscriptionMode mode=\"Configured\" />";
             var dectEvent = _serializer.DeserializeEvent<EventDECTSubscriptionMode>(message);
             Assert.IsNotNull(dectEvent);
-            Assert.AreEqual(DECTSubscriptionMode.Configured, dectEvent.Mode);
+            Assert.AreEqual(DECTSubscriptionModeType.Configured, dectEvent.Mode);
         }
 
         [TestMethod]

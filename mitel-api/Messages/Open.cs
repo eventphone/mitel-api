@@ -9,40 +9,19 @@ namespace mitelapi.Messages
     [XmlRoot("Open",Namespace = "")]
     public class Open:BaseRequest
     {
-        public Open()
-        {
-            ProtocolVersion = 45;
-        }
-
-        [XmlAttribute("protocolVersion")]
-        public int ProtocolVersion { get; set; }
-
         [XmlAttribute("username")]
         public string Username { get; set; }
 
         [XmlAttribute("password")]
         public string Password { get; set; }
 
-        [XmlIgnore]
-        public bool OmpClient { get; set; }
-
-		[XmlIgnore]
+        [XmlAttribute("UserDeviceSyncClient")]
         public bool UserDeviceSyncClient { get; set; }
-		
-        [XmlAttribute("OMPClient")]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public string OmpClientSerialize
-        {
-            get { return OmpClient ? "1" : "0";}
-            set { OmpClient = value == "1"; }
-        }
-		
-		[XmlAttribute("UserDeviceSyncClient")]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public string UserDeviceSyncClientSerialize
-        {
-            get { return UserDeviceSyncClient ? "true" : "false";}
-            set { UserDeviceSyncClient = value == "true"; }
+
+        [XmlIgnore]
+        public bool UserDeviceSyncClientSpecified {
+            get { return UserDeviceSyncClient; }
+            set {}
         }
     }
 

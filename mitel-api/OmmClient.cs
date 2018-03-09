@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using mitelapi.Events;
 using mitelapi.Messages;
+using mitelapi.Types;
 
 namespace mitelapi
 {
@@ -23,6 +24,8 @@ namespace mitelapi
         private readonly OmmSerializer _serializer;
         private ConcurrentDictionary<int, ReceiveContainer> _receiveQueue = new ConcurrentDictionary<int, ReceiveContainer>();
         private Timer _pingTimer;
+        private string _modulus;
+        private string _exponent;
 
         public OmmClient(string hostname, int port = 12622)
         {
@@ -46,9 +49,11 @@ namespace mitelapi
             _reader = new Thread(Read) {IsBackground = true, Name = "OmmClientReader"};
             MessageReceived += MessageRecievedHandler;
             _reader.Start();
-            var open = new Open {Username = username, Password = password, OmpClient = !userDeviceSync, UserDeviceSyncClient = userDeviceSync};
-            await SendAsync<Open, OpenResp>(open, cancellationToken);
+            var open = new Open {Username = username, Password = password, UserDeviceSyncClient = userDeviceSync};
+            var response = await SendAsync<Open, OpenResp>(open, cancellationToken);
             _pingTimer.Change(TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60));
+            _exponent = response.PublicKey.Exponent;
+            _modulus = response.PublicKey.Modulus;
         }
 
         private async void SendPing(object state)
@@ -64,6 +69,12 @@ namespace mitelapi
             {
                 Rtt = TimeSpan.FromSeconds(ping.Timestamp - pong.TimeStamp.Value);
             }
+        }
+
+        public async Task GetVersions(CancellationToken cancellationToken)
+        {
+            var getversions = new GetVersions();
+            await SendAsync<GetVersions, GetVersionsResp>(getversions, cancellationToken);
         }
 
         public Task Subscribe(EventType type, CancellationToken cancellationToken)
@@ -103,6 +114,30 @@ namespace mitelapi
             return response;
         }
 
+        public async Task<CreatePPUserResp> CreatePPUser(PPUserType user, CancellationToken cancellationToken)
+        {
+            var request = new CreatePPUser()
+            {
+                User = user
+            };
+            if (request.User.Pin != null)
+                request.User.Pin = PPUserType.EncryptData(_modulus, _exponent, request.User.Pin);
+            if (request.User.SipPw != null)
+                request.User.SipPw = PPUserType.EncryptData(_modulus, _exponent, request.User.SipPw);
+            var response = await SendAsync<CreatePPUser, CreatePPUserResp>(request, cancellationToken);
+            return response;
+        }
+
+        public async Task<SetPPResp> SetPP(PPDevType pp, PPUserType user, CancellationToken cancellationToken)
+        {
+            var request = new SetPP() {
+                PortablePart = pp,
+                User = user 
+            };
+            var response = await SendAsync<SetPP, SetPPResp>(request, cancellationToken);
+            return response;
+        }
+
         private async Task<TResponse> SendAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken) where TRequest:BaseRequest where TResponse:BaseResponse
         {
             var sequence = Interlocked.Increment(ref _seq);
@@ -131,6 +166,8 @@ namespace mitelapi
         private event EventHandler<MessageReceivedEventArgs> MessageReceived;
 
         public event EventHandler<OmmEventArgs<EventDECTSubscriptionMode>> DECTSubscriptionModeChanged;
+        public event EventHandler<OmmEventArgs<EventPPDevCnf>> PPDevCnf;
+        public event EventHandler<OmmEventArgs<EventPPUserCnf>> PPUserCnf;
         public event EventHandler<OmmEventArgs<EventAlarmCallProgress>> AlarmCallProgress;
         public event EventHandler<OmmEventArgs<EventRFPSummary>> RfpSummary;
         public event EventHandler<OmmEventArgs<EventPPDevSummary>> PPDevSummary;
@@ -208,6 +245,14 @@ namespace mitelapi
             else if (ommEvent is EventPPUserSummary ppUserSummary)
             {
                 PPUserSummary?.Invoke(this, new OmmEventArgs<EventPPUserSummary>(ppUserSummary));
+            }
+            else if (ommEvent is EventPPDevCnf ppDevCnf)
+            {
+                PPDevCnf?.Invoke(this, new OmmEventArgs<EventPPDevCnf>(ppDevCnf));
+            }
+            else if (ommEvent is EventPPUserCnf ppUserCnf)
+            {
+                PPUserCnf?.Invoke(this, new OmmEventArgs<EventPPUserCnf>(ppUserCnf));
             }
         }
 
