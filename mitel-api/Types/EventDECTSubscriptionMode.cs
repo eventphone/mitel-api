@@ -1,5 +1,6 @@
 ﻿using System.Xml.Serialization;
 using mitelapi.Messages;
+using mitelapi.Types;
 
 namespace mitelapi.Events
 {
@@ -7,6 +8,6 @@ namespace mitelapi.Events
     public class EventDECTSubscriptionMode:BaseEvent
     {
         [XmlAttribute("mode")]
-        public DECTSubscriptionMode Mode { get; set; }
+        public DECTSubscriptionModeType Mode { get; set; }
     }
 }

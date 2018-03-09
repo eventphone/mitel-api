@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using mitelapi.Messages;
+using mitelapi.Types;
 
 namespace mitelapi
 {

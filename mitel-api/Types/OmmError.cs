@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace mitelapi.Messages
+namespace mitelapi.Types
 {
     public enum OmmError
     {
