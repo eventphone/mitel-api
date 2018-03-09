@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.IO;
+using System.Linq;
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Text;
@@ -26,6 +27,7 @@ namespace mitelapi
         private Timer _pingTimer;
         private string _modulus;
         private string _exponent;
+        private ConcurrentDictionary<string, int> _uidMapping = new ConcurrentDictionary<string, int>();
 
         public OmmClient(string hostname, int port = 12622)
         {
@@ -54,6 +56,52 @@ namespace mitelapi
             _pingTimer.Change(TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60));
             _exponent = response.PublicKey.Exponent;
             _modulus = response.PublicKey.Modulus;
+            await LoadUsersAsync(cancellationToken);
+        }
+
+        private async Task LoadUsersAsync(CancellationToken cancellationToken)
+        {
+            var uid = 0;
+            while (true)
+            {
+                try
+                {
+                    var users = await SendAsync<GetPPUser, GetPPUserResp>(new GetPPUser { Uid = uid, MaxRecords = 20 }, cancellationToken);
+                    uid = users.Users.Max(x => x.Uid) + 1;
+                    foreach(var user in users.Users)
+                    {
+                        _uidMapping.TryAdd(user.Num, user.Uid);
+                    }
+                }
+                catch (OmmNoEntryException)
+                {
+                    break;
+                }
+            }
+            this.PPUserCnf += UpdateUserCache;
+            await Subscribe(new SubscribeCmd(EventType.PPUserCnf) { Uid = -1 }, cancellationToken);
+        }
+
+        private void UpdateUserCache(object sender, OmmEventArgs<EventPPUserCnf> e)
+        {
+            if (e.Event.Deleted)
+            {
+                var num = _uidMapping.Where(x => x.Value == e.Event.User.Uid).Select(x => x.Key).FirstOrDefault();
+                _uidMapping.TryRemove(num, out int unused);
+            }
+            else
+            {
+                if (String.IsNullOrEmpty(e.Event.User.Num)) return;
+                var num = _uidMapping.Where(x => x.Value == e.Event.User.Uid).Select(x => x.Key).FirstOrDefault();
+                if (num != null)
+                    _uidMapping.TryRemove(num, out int unused);
+                _uidMapping.TryAdd(e.Event.User.Num, e.Event.User.Uid);
+            }
+        }
+
+        public bool TryLookupExtension(string extension, out int uid)
+        {
+            return _uidMapping.TryGetValue(extension, out uid);
         }
 
         private async void SendPing(object state)
@@ -135,6 +183,17 @@ namespace mitelapi
                 User = user 
             };
             var response = await SendAsync<SetPP, SetPPResp>(request, cancellationToken);
+            return response;
+        }
+
+        public async Task<GetPPResp> GetPP(int ppn, int uid, CancellationToken cancellationToken)
+        {
+            var request = new GetPP()
+            {
+                uid = uid,
+                ppn = ppn
+            };
+            var response = await SendAsync<GetPP, GetPPResp>(request, cancellationToken);
             return response;
         }
 

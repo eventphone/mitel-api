@@ -5,6 +5,13 @@ using mitelapi.Types;
 
 namespace mitelapi
 {
+    public class OmmNoEntryException : OmmException
+    {
+        public OmmNoEntryException(string info) : base(OmmError.ENoEnt, info, null, null)
+        {
+        }
+    }
+
     public class OmmException : Exception
     {
         private static readonly Dictionary<OmmError, string> _messages = new Dictionary<OmmError, string>

@@ -82,6 +82,13 @@ namespace mitel_api.test
         }
 
         [TestMethod]
+        public async Task CanGetUser()
+        {
+            await CanLoginAsMOM();
+            await _client.GetPP(3, 0, CancellationToken.None);
+        }
+
+        [TestMethod]
         public async Task EmptyPasswordThrowsException()
         {
             try

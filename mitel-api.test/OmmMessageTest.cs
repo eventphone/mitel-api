@@ -288,5 +288,25 @@ namespace mitel_api.test
             Assert.AreEqual(0, dectEvent.DectActiveCount);
             Assert.AreEqual(5, dectEvent.TotalCount);
         }
+
+        [TestMethod]
+        public void CanSerializeGetPPUser()
+        {
+            var getPPUser = new GetPPUser
+            {
+                Uid = 3,
+                MaxRecords = 20
+            };
+            var xml = _serializer.Serialize(getPPUser);
+            Assert.AreEqual("<GetPPUser uid=\"3\" maxRecords=\"20\" />", xml);
+        }
+
+        [TestMethod]
+        public void CanDeserializeGetPPUserResp()
+        {
+            var message = "<GetPPUserResp><user uid=\"1\" /><user uid=\"2\" /><user uid=\"3\" /></GetPPUserResp>";
+            var getPPUserResp = _serializer.Deserialize<GetPPUserResp>(message);
+            Assert.AreEqual(3, getPPUserResp.Users.Length);
+        }
     }
 }

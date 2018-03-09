@@ -37,11 +37,15 @@ namespace mitelapi
         {
             await _resetEvent.WaitAsync(cancellationToken).ConfigureAwait(false);
             var result = Response;
-            if (result.ErrorCode != OmmError.None)
+            switch (result.ErrorCode)
             {
-                throw new OmmException(result.ErrorCode, result.Info, result.ErrorBad, result.ErrorMaxLength);
+                case OmmError.None:
+                    return result;
+                case OmmError.ENoEnt:
+                    throw new OmmNoEntryException(result.Info);
+                default:
+                    throw new OmmException(result.ErrorCode, result.Info, result.ErrorBad, result.ErrorMaxLength);
             }
-            return result;
         }
         
         protected virtual void Dispose(bool disposing)
