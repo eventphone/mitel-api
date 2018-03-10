@@ -316,5 +316,25 @@ namespace mitelapi.Types
         [XmlIgnore]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public bool XmlSubscribeToPARIOnlySpecified { get; set; }
+
+        [XmlIgnore]
+        public bool? AutoCreate
+        {
+            get { return XmlAutoCreateSpecified ? (bool?)XmlAutoCreate : null; }
+            set
+            {
+                XmlAutoCreateSpecified = value.HasValue;
+                XmlAutoCreate = value.GetValueOrDefault();
+            }
+        }
+
+        [XmlAttribute("autoCreate")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlAutoCreate { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlAutoCreateSpecified { get; set; }
+
     }
 }

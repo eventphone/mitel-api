@@ -25,5 +25,8 @@ namespace mitelapi.Events
         /// </summary>
         [XmlAttribute("deletedUser")]
         public bool DeletedUser { get; set; }
+
+        [XmlElement("pp")]
+        public PPDevType Device { get; set; }
     }
 }
