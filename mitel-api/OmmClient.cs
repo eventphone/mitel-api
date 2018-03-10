@@ -79,23 +79,35 @@ namespace mitelapi
                 }
             }
             this.PPUserCnf += UpdateUserCache;
+            this.PPCnf += UpdateUserCache;
             await Subscribe(new SubscribeCmd(EventType.PPUserCnf) { Uid = -1 }, cancellationToken);
+        }
+
+        private void UpdateUserCache(object sender, OmmEventArgs<EventPPCnf> e)
+        {
+            if (e.Event.User != null)
+                UpdateUserCache(e.Event.DeletedUser, e.Event.User.Uid, e.Event.User.Num);
         }
 
         private void UpdateUserCache(object sender, OmmEventArgs<EventPPUserCnf> e)
         {
-            if (e.Event.Deleted)
+            UpdateUserCache(e.Event.Deleted, e.Event.User.Uid, e.Event.User.Num);
+        }
+
+        private void UpdateUserCache(bool deleted, int uid, string num)
+        {
+            if (deleted)
             {
-                var num = _uidMapping.Where(x => x.Value == e.Event.User.Uid).Select(x => x.Key).FirstOrDefault();
-                _uidMapping.TryRemove(num, out int unused);
+                var oldNum = _uidMapping.Where(x => x.Value == uid).Select(x => x.Key).FirstOrDefault();
+                _uidMapping.TryRemove(oldNum, out int unused);
             }
             else
             {
-                if (String.IsNullOrEmpty(e.Event.User.Num)) return;
-                var num = _uidMapping.Where(x => x.Value == e.Event.User.Uid).Select(x => x.Key).FirstOrDefault();
-                if (num != null)
-                    _uidMapping.TryRemove(num, out int unused);
-                _uidMapping.TryAdd(e.Event.User.Num, e.Event.User.Uid);
+                if (String.IsNullOrEmpty(num)) return;
+                var oldNum = _uidMapping.Where(x => x.Value == uid).Select(x => x.Key).FirstOrDefault();
+                if (oldNum != null)
+                    _uidMapping.TryRemove(oldNum, out int unused);
+                _uidMapping.TryAdd(num, uid);
             }
         }
 
@@ -197,6 +209,17 @@ namespace mitelapi
             return response;
         }
 
+        public async Task<PPUserType> GetPPUser(int uid, CancellationToken cancellationToken)
+        {
+            var response = await SendAsync<GetPPUser, GetPPUserResp>(new GetPPUser { Uid = uid }, cancellationToken);
+            return response.Users[0];
+        }
+
+        public async Task DeletePPUser(int uid, CancellationToken cancellationToken)
+        {
+            await SendAsync<DeletePPUser, DeletePPUserResp>(new DeletePPUser { Uid = uid }, cancellationToken);
+        }
+
         private async Task<TResponse> SendAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken) where TRequest:BaseRequest where TResponse:BaseResponse
         {
             var sequence = Interlocked.Increment(ref _seq);
@@ -227,6 +250,7 @@ namespace mitelapi
         public event EventHandler<OmmEventArgs<EventDECTSubscriptionMode>> DECTSubscriptionModeChanged;
         public event EventHandler<OmmEventArgs<EventPPDevCnf>> PPDevCnf;
         public event EventHandler<OmmEventArgs<EventPPUserCnf>> PPUserCnf;
+        public event EventHandler<OmmEventArgs<EventPPCnf>> PPCnf;
         public event EventHandler<OmmEventArgs<EventAlarmCallProgress>> AlarmCallProgress;
         public event EventHandler<OmmEventArgs<EventRFPSummary>> RfpSummary;
         public event EventHandler<OmmEventArgs<EventPPDevSummary>> PPDevSummary;
@@ -312,6 +336,10 @@ namespace mitelapi
             else if (ommEvent is EventPPUserCnf ppUserCnf)
             {
                 PPUserCnf?.Invoke(this, new OmmEventArgs<EventPPUserCnf>(ppUserCnf));
+            }
+            else if (ommEvent is EventPPCnf ppCnf)
+            {
+                PPCnf?.Invoke(this, new OmmEventArgs<EventPPCnf>(ppCnf));
             }
         }
 

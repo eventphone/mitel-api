@@ -128,15 +128,7 @@ namespace mitel_api.test
             };
 
             var xml = _serializer.Serialize(setPP);
-            Assert.AreEqual("<SetPP><pp ppn=\"1\" timeStamp=\"0\" relType=\"Unbound\" uid=\"0\" s=\"No\" encrypt=\"false\" capMessaging=\"false\" " +
-                "capMessagingForInternalUse=\"false\" capEnhLocating=\"false\" capBluetooth=\"false\" hwType=\"Unknown\" " +
-                "ppProfileCapability=\"false\" ppDefaultProfileLoaded=\"false\" subscribeToPARIOnly=\"false\" /><user uid=\"1\" timeStamp=\"0\" " +
-                "relType=\"Unbound\" ppn=\"0\" forwardState=\"Off\" forwardTime=\"0\" lang=\"English\" holdRingBackTime=\"0\" autoAnswer=\"On\" " +
-                "warningTone=\"On\" allowBargeIn=\"On\" callWaitingDisabled=\"false\" external=\"false\" trackingActive=\"false\" locatable=\"false\" " +
-                "BTlocatable=\"false\" locRight=\"false\" msgRight=\"false\" sendVcardRight=\"false\" recvVcardRight=\"false\" keepLocalPB=\"false\" " +
-                "vip=\"false\" sipRegisterCheck=\"false\" allowVideoStream=\"false\" CUS=\"Unknown\" HAS=\"Unknown\" HSS=\"Unknown\" HRS=\"Unknown\" " +
-                "HCS=\"Unknown\" SRS=\"Unknown\" SCS=\"Unknown\" CDS=\"Unknown\" HBS=\"Unknown\" BTS=\"Unknown\" SWS=\"Unknown\" " +
-                "configurationDataLoaded=\"false\" ppProfileId=\"0\" fixedSipPort=\"0\" calculatedSipPort=\"0\" /></SetPP>", xml);
+            Assert.AreEqual("<SetPP><pp ppn=\"1\" relType=\"Unbound\" uid=\"0\" /><user uid=\"1\" relType=\"Unbound\" ppn=\"0\" /></SetPP>", xml);
         }
 
         [TestMethod]
@@ -287,6 +279,16 @@ namespace mitel_api.test
             Assert.AreEqual(1, dectEvent.DectActivatedCount);
             Assert.AreEqual(0, dectEvent.DectActiveCount);
             Assert.AreEqual(5, dectEvent.TotalCount);
+        }
+
+        [TestMethod]
+        public void CanDeserializeEventPPCnf()
+        {
+            var message = "<EventPPCnf deletedUser=\"1\"><user uid=\"25\" uidSec=\"0\" /></EventPPCnf>";
+            var ppnCnfEvent = _serializer.DeserializeEvent<EventPPCnf>(message);
+            Assert.IsNotNull(ppnCnfEvent);
+            Assert.IsTrue(ppnCnfEvent.DeletedUser);
+            Assert.AreEqual(25, ppnCnfEvent.User.Uid);
         }
 
         [TestMethod]

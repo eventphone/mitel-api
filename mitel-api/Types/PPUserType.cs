@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Security.Cryptography;
 using System.Text;
 using System.Xml.Serialization;
@@ -22,14 +23,46 @@ namespace mitelapi.Types
         /// Last change time stamp of this element in seconds since 1970/1/1. 
         /// When this element is not used in a create or set request the element is only changed when the data record differs from the record already stored in the OMM database.
         /// </summary>
+        [XmlIgnore]
+        public long? TimeStamp
+        {
+            get { return XmlTimeStampSpecified ? (long?)XmlTimeStamp : null; }
+            set
+            {
+                XmlTimeStampSpecified = value.HasValue;
+                XmlTimeStamp = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("timeStamp")]
-        public long TimeStamp { get; set; }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public long XmlTimeStamp { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlTimeStampSpecified { get; set; }
 
         /// <summary>
         /// Type or state of a relationship to a DECT phone device
         /// </summary>
+        [XmlIgnore]
+        public PPRelTypeType? RelType
+        {
+            get { return XmlRelTypeSpecified ? (PPRelTypeType?)XmlRelType : null; }
+            set
+            {
+                XmlRelTypeSpecified = value.HasValue;
+                XmlRelType = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("relType")]
-        public PPRelTypeType RelType { get; set; }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public PPRelTypeType XmlRelType { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlRelTypeSpecified { get; set; }
 
         /// <summary>
         /// PPN of the DECT phone device which is linked to this DECT phone user, if any 
@@ -109,15 +142,47 @@ namespace mitelapi.Types
         /// <summary>
         /// Call forwarding setting
         /// </summary>
+        [XmlIgnore]
+        public CallForwardStateType? ForwardState
+        {
+            get { return XmlForwardStateSpecified ? (CallForwardStateType?)XmlForwardState : null; }
+            set
+            {
+                XmlForwardStateSpecified = value.HasValue;
+                XmlForwardState = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("forwardState")]
-        public CallForwardStateType ForwardState { get; set; }
-        
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public CallForwardStateType XmlForwardState { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlForwardStateSpecified { get; set; }
+
         /// <summary>
         /// Time for call forward
         /// </summary>
+        [XmlIgnore]
+        public int? ForwardTime
+        {
+            get { return XmlForwardTimeSpecified ? (int?)XmlForwardTime : null; }
+            set
+            {
+                XmlForwardTimeSpecified = value.HasValue;
+                XmlForwardTime = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("forwardTime")]
-        public int ForwardTime { get; set; }
-        
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public int XmlForwardTime { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlForwardTimeSpecified { get; set; }
+
         /// <summary>
         /// Call forward destination
         /// </summary>
@@ -127,63 +192,223 @@ namespace mitelapi.Types
         /// <summary>
         /// User language, read only 
         /// </summary>
+        [XmlIgnore]
+        public PPLanguageType? Lang
+        {
+            get { return XmlLangSpecified ? (PPLanguageType?)XmlLang : null; }
+            set
+            {
+                XmlLangSpecified = value.HasValue;
+                XmlLang = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("lang")]
-        public PPLanguageType Lang { get; set; }
-        
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public PPLanguageType XmlLang { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlLangSpecified { get; set; }
+
         /// <summary>
         /// Hold ring back time, 0 for off, time steps 1..5 
         /// </summary>
+        [XmlIgnore]
+        public int? HoldRingBackTime
+        {
+            get { return XmlHoldRingBackTimeSpecified ? (int?)XmlHoldRingBackTime : null; }
+            set
+            {
+                XmlHoldRingBackTimeSpecified = value.HasValue;
+                XmlHoldRingBackTime = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("holdRingBackTime")]
-        public int HoldRingBackTime { get; set; }
-        
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public int XmlHoldRingBackTime { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlHoldRingBackTimeSpecified { get; set; }
+
         /// <summary>
         /// Auto-answer setting for incoming calls.
         /// </summary>
+        [XmlIgnore]
+        public CallSettingType? AutoAnswer
+        {
+            get { return XmlAutoAnswerSpecified ? (CallSettingType?)XmlAutoAnswer : null; }
+            set
+            {
+                XmlAutoAnswerSpecified = value.HasValue;
+                XmlAutoAnswer = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("autoAnswer")]
-        public CallSettingType AutoAnswer { get; set; }
-        
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public CallSettingType XmlAutoAnswer { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlAutoAnswerSpecified { get; set; }
+
         /// <summary>
         /// Warning tone setting for incoming calls.
         /// </summary>
+        [XmlIgnore]
+        public CallSettingType? WarningTone
+        {
+            get { return XmlWarningToneSpecified ? (CallSettingType?)XmlWarningTone : null; }
+            set
+            {
+                XmlWarningToneSpecified = value.HasValue;
+                XmlWarningTone = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("warningTone")]
-        public CallSettingType WarningTone { get; set; }
-        
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public CallSettingType XmlWarningTone { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlWarningToneSpecified { get; set; }
+
         /// <summary>
         /// Allow barge in setting for incoming calls.
         /// </summary>
+        [XmlIgnore]
+        public CallSettingType? AllowBargeIn
+        {
+            get { return XmlAllowBargeInSpecified ? (CallSettingType?)XmlAllowBargeIn : null; }
+            set
+            {
+                XmlAllowBargeInSpecified = value.HasValue;
+                XmlAllowBargeIn = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("allowBargeIn")]
-        public CallSettingType AllowBargeIn { get; set; }
-        
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public CallSettingType XmlAllowBargeIn { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlAllowBargeInSpecified { get; set; }
+
         /// <summary>
         /// Determines whether call waiting is disabled
         /// </summary>
+        [XmlIgnore]
+        public bool? CallWaitingDisabled
+        {
+            get { return XmlCallWaitingDisabledSpecified ? (bool?)XmlCallWaitingDisabled : null; }
+            set
+            {
+                XmlCallWaitingDisabledSpecified = value.HasValue;
+                XmlCallWaitingDisabled = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("callWaitingDisabled")]
-        public bool callWaitingDisabled { get; set; }
-        
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlCallWaitingDisabled { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlCallWaitingDisabledSpecified { get; set; }
+
         /// <summary>
         /// Determines whether this data set comes from an external server 
         /// </summary>
+        [XmlIgnore]
+        public bool? External
+        {
+            get { return XmlExternalSpecified ? (bool?)XmlExternal : null; }
+            set
+            {
+                XmlExternalSpecified = value.HasValue;
+                XmlExternal = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("external")]
-        public bool External { get; set; }
-        
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlExternal { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlExternalSpecified { get; set; }
+
         /// <summary>
         /// Determines whether the location of this user is being tracked 
         /// </summary>
+        [XmlIgnore]
+        public bool? TrackingActive
+        {
+            get { return XmlTrackingActiveSpecified ? (bool?)XmlTrackingActive : null; }
+            set
+            {
+                XmlTrackingActiveSpecified = value.HasValue;
+                XmlTrackingActive = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("trackingActive")]
-        public bool TrackingActive { get; set; }
-        
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlTrackingActive { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlTrackingActiveSpecified { get; set; }
+
         /// <summary>
         /// Determines whether the position of this user may be locatable and trackable
         /// </summary>
+        [XmlIgnore]
+        public bool? Locatable
+        {
+            get { return XmlLocatableSpecified ? (bool?)XmlLocatable : null; }
+            set
+            {
+                XmlLocatableSpecified = value.HasValue;
+                XmlLocatable = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("locatable")]
-        public bool Locatable { get; set; }
-        
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlLocatable { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlLocatableSpecified { get; set; }
+
         /// <summary>
         /// Determines whether the position of this user may be locatable and trackable by a Bluetooth beacon
         /// </summary>
+        [XmlIgnore]
+        public bool? BTlocatable
+        {
+            get { return XmlBTlocatableSpecified ? (bool?)XmlBTlocatable : null; }
+            set
+            {
+                XmlBTlocatableSpecified = value.HasValue;
+                XmlBTlocatable = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("BTlocatable")]
-        public bool BTlocatable { get; set; }  
-        
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlBTlocatable { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlBTlocatableSpecified { get; set; }
+
         /// <summary>
         /// Bluetooth module sensitivity. One of “low”, “medium” or “high”
         /// </summary>
@@ -193,54 +418,182 @@ namespace mitelapi.Types
         /// <summary>
         /// Determines whether this user may locate other users which are locatable
         /// </summary>
+        [XmlIgnore]
+        public bool? LocRight
+        {
+            get { return XmlLocRightSpecified ? (bool?)XmlLocRight : null; }
+            set
+            {
+                XmlLocRightSpecified = value.HasValue;
+                XmlLocRight = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("locRight")]
-        public bool LocRight { get; set; } 
-        
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlLocRight { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlLocRightSpecified { get; set; }
+
         /// <summary>
         /// Determines whether this user may send messages. Default setting is “1”
         /// </summary>
+        [XmlIgnore]
+        public bool? MsgRight
+        {
+            get { return XmlMsgRightSpecified ? (bool?)XmlMsgRight : null; }
+            set
+            {
+                XmlMsgRightSpecified = value.HasValue;
+                XmlMsgRight = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("msgRight")]
-        public bool MsgRight { get; set; }
-        
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlMsgRight { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlMsgRightSpecified { get; set; }
+
         /// <summary>
         /// Determines whether this user has the permission to send Vcard entries. Default setting is “1”
         /// </summary>
+        [XmlIgnore]
+        public bool? SendVcardRight
+        {
+            get { return XmlSendVcardRightSpecified ? (bool?)XmlSendVcardRight : null; }
+            set
+            {
+                XmlSendVcardRightSpecified = value.HasValue;
+                XmlSendVcardRight = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("sendVcardRight")]
-        public bool SendVcardRight { get; set; }
-        
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlSendVcardRight { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlSendVcardRightSpecified { get; set; }
+
         /// <summary>
         /// Determines whether this user has the permission to receive Vcard entries
         /// </summary>
+        [XmlIgnore]
+        public bool? RecvVcardRight
+        {
+            get { return XmlRecvVcardRightSpecified ? (bool?)XmlRecvVcardRight : null; }
+            set
+            {
+                XmlRecvVcardRightSpecified = value.HasValue;
+                XmlRecvVcardRight = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("recvVcardRight")]
-        public bool RecvVcardRight { get; set; }   
-        
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlRecvVcardRight { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlRecvVcardRightSpecified { get; set; }
+
         /// <summary>
         /// Determines whether this user may keep the phonebook in the DECT phone after a user logout.
         /// </summary>
+        [XmlIgnore]
+        public bool? KeepLocalPB
+        {
+            get { return XmlKeepLocalPBSpecified ? (bool?)XmlKeepLocalPB : null; }
+            set
+            {
+                XmlKeepLocalPBSpecified = value.HasValue;
+                XmlKeepLocalPB = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("keepLocalPB")]
-        public bool KeepLocalPB { get; set; } 
-        
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlKeepLocalPB { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlKeepLocalPBSpecified { get; set; }
+
         /// <summary>
         /// Determines whether this user is priorisized with its SIP registration
         /// </summary>
+        [XmlIgnore]
+        public bool? Vip
+        {
+            get { return XmlVipSpecified ? (bool?)XmlVip : null; }
+            set
+            {
+                XmlVipSpecified = value.HasValue;
+                XmlVip = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("vip")]
-        public bool Vip { get; set; } 
-        
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlVip { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlVipSpecified { get; set; }
+
         /// <summary>
         /// Determines whether this user is used for the PBX SIP register check. 
         /// Note: Only one user in the system can be set for this register check. 
         /// Setting this attribute to “false” results to the default setting (the user with the lowest num will automatically set this attribute to true). 
         /// Setting this attribute to “true” results to setting this attribute to “false” for the user having this attribute set. 
         /// </summary>
+        [XmlIgnore]
+        public bool? SipRegisterCheck
+        {
+            get { return XmlSipRegisterCheckSpecified ? (bool?)XmlSipRegisterCheck : null; }
+            set
+            {
+                XmlSipRegisterCheckSpecified = value.HasValue;
+                XmlSipRegisterCheck = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("sipRegisterCheck")]
-        public bool SipRegisterCheck { get; set; } 
-        
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlSipRegisterCheck { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlSipRegisterCheckSpecified { get; set; }
+
         /// <summary>
         /// Determines whether this user is is allowed to use video streaming of video devices
         /// </summary>
+        [XmlIgnore]
+        public bool? AllowVideoStream
+        {
+            get { return XmlAllowVideoStreamSpecified ? (bool?)XmlAllowVideoStream : null; }
+            set
+            {
+                XmlAllowVideoStreamSpecified = value.HasValue;
+                XmlAllowVideoStream = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("allowVideoStream")]
-        public bool AllowVideoStream { get; set; }  
-                
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlAllowVideoStream { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlAllowVideoStreamSpecified { get; set; }
+
         /// <summary>
         /// Type of the user specific conference server. One of “None”, “External”, “Integrated”, “ExternalBlindTransfer” or “Global”. 
         /// </summary>
@@ -262,69 +615,245 @@ namespace mitelapi.Types
         /// <summary>
         /// Current combined user monitoring state (CUS) of all User monitoring states. Cannot be set.
         /// </summary>
+        [XmlIgnore]
+        public MonitoringStateType? CUS
+        {
+            get { return XmlCUSSpecified ? (MonitoringStateType?)XmlCUS : null; }
+            set
+            {
+                XmlCUSSpecified = value.HasValue;
+                XmlCUS = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("CUS")]
-        public MonitoringStateType CUS { get; set; }  
-              
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public MonitoringStateType XmlCUS { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlCUSSpecified { get; set; }
+
         /// <summary>
         /// Current user monitoring state of the DECT phone assignment status (HAS). Cannot be set. 
         /// </summary>
+        [XmlIgnore]
+        public MonitoringStateType? HAS
+        {
+            get { return XmlHASSpecified ? (MonitoringStateType?)XmlHAS : null; }
+            set
+            {
+                XmlHASSpecified = value.HasValue;
+                XmlHAS = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("HAS")]
-        public MonitoringStateType HAS { get; set; }   
-              
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public MonitoringStateType XmlHAS { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlHASSpecified { get; set; }
+
         /// <summary>
         /// Current user monitoring state of the DECT phone subscription status (HSS). Cannot be set.
         /// </summary>
+        [XmlIgnore]
+        public MonitoringStateType? HSS
+        {
+            get { return XmlHSSSpecified ? (MonitoringStateType?)XmlHSS : null; }
+            set
+            {
+                XmlHSSSpecified = value.HasValue;
+                XmlHSS = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("HSS")]
-        public MonitoringStateType HSS { get; set; }  
-              
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public MonitoringStateType XmlHSS { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlHSSSpecified { get; set; }
+
         /// <summary>
         /// Current user monitoring state of the DECT phone registration status (HRS). Cannot be set.
         /// </summary>
+        [XmlIgnore]
+        public MonitoringStateType? HRS
+        {
+            get { return XmlHRSSpecified ? (MonitoringStateType?)XmlHRS : null; }
+            set
+            {
+                XmlHRSSpecified = value.HasValue;
+                XmlHRS = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("HRS")]
-        public MonitoringStateType HRS { get; set; }  
-              
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public MonitoringStateType XmlHRS { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlHRSSpecified { get; set; }
+
         /// <summary>
         /// Current user monitoring state of the DECT phone activity status (HCS). Cannot be set
         /// </summary>
+        [XmlIgnore]
+        public MonitoringStateType? HCS
+        {
+            get { return XmlHCSSpecified ? (MonitoringStateType?)XmlHCS : null; }
+            set
+            {
+                XmlHCSSpecified = value.HasValue;
+                XmlHCS = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("HCS")]
-        public MonitoringStateType HCS { get; set; }  
-              
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public MonitoringStateType XmlHCS { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlHCSSpecified { get; set; }
+
         /// <summary>
         /// Current user monitoring state of the SIP user registration status (SRS). Cannot be set.
         /// </summary>
+        [XmlIgnore]
+        public MonitoringStateType? SRS
+        {
+            get { return XmlSRSSpecified ? (MonitoringStateType?)XmlSRS : null; }
+            set
+            {
+                XmlSRSSpecified = value.HasValue;
+                XmlSRS = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("SRS")]
-        public MonitoringStateType SRS { get; set; }  
-              
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public MonitoringStateType XmlSRS { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlSRSSpecified { get; set; }
+
         /// <summary>
         /// Current user monitoring state of the silent charging status (SCS). Cannot be set.
         /// </summary>
+        [XmlIgnore]
+        public MonitoringStateType? SCS
+        {
+            get { return XmlSCSSpecified ? (MonitoringStateType?)XmlSCS : null; }
+            set
+            {
+                XmlSCSSpecified = value.HasValue;
+                XmlSCS = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("SCS")]
-        public MonitoringStateType SCS { get; set; }   
-              
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public MonitoringStateType XmlSCS { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlSCSSpecified { get; set; }
+
         /// <summary>
         /// Current user monitoring state of the Call delivery status (CDS). Cannot be set.
         /// </summary>
+        [XmlIgnore]
+        public MonitoringStateType? CDS
+        {
+            get { return XmlCDSSpecified ? (MonitoringStateType?)XmlCDS : null; }
+            set
+            {
+                XmlCDSSpecified = value.HasValue;
+                XmlCDS = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("CDS")]
-        public MonitoringStateType CDS { get; set; }   
-              
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public MonitoringStateType XmlCDS { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlCDSSpecified { get; set; }
+
         /// <summary>
         /// Current user monitoring state of the DECT phone DECT phone battery status (HBS). Cannot be set. 
         /// </summary>
+        [XmlIgnore]
+        public MonitoringStateType? HBS
+        {
+            get { return XmlHBSSpecified ? (MonitoringStateType?)XmlHBS : null; }
+            set
+            {
+                XmlHBSSpecified = value.HasValue;
+                XmlHBS = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("HBS")]
-        public MonitoringStateType HBS { get; set; }   
-              
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public MonitoringStateType XmlHBS { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlHBSSpecified { get; set; }
+
         /// <summary>
         /// Current user monitoring state of the  DECT phone Bluetooth status (BTS). Cannot be set.
         /// </summary>
+        [XmlIgnore]
+        public MonitoringStateType? BTS
+        {
+            get { return XmlBTSSpecified ? (MonitoringStateType?)XmlBTS : null; }
+            set
+            {
+                XmlBTSSpecified = value.HasValue;
+                XmlBTS = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("BTS")]
-        public MonitoringStateType BTS { get; set; }     
-              
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public MonitoringStateType XmlBTS { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlBTSSpecified { get; set; }
+
         /// <summary>
         /// Current user monitoring state of the  DECT phone software status (SWS). Cannot be set.
         /// </summary>
+        [XmlIgnore]
+        public MonitoringStateType? SWS
+        {
+            get { return XmlSWSSpecified ? (MonitoringStateType?)XmlSWS : null; }
+            set
+            {
+                XmlSWSSpecified = value.HasValue;
+                XmlSWS = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("SWS")]
-        public MonitoringStateType SWS { get; set; }    
-              
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public MonitoringStateType XmlSWS { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlSWSSpecified { get; set; }
+
         /// <summary>
         /// User credential password for user authentication to get the user configuration file from the external server - encrypted with public key.
         /// This value is used when the access to the user data server requires user credentials, see Set/Get/EventUserDataServer(Cnf). This value is normaly set at  DECT phone during login. 
@@ -335,9 +864,25 @@ namespace mitelapi.Types
         /// <summary>
         /// Determines whether DECT phone user configuration data (DECT phone profile or user specific configuration data) for this user has been downloaded successfully to the  DECT phone. This value is read only.
         /// </summary>
+        [XmlIgnore]
+        public bool? ConfigurationDataLoaded
+        {
+            get { return XmlConfigurationDataLoadedSpecified ? (bool?)XmlConfigurationDataLoaded : null; }
+            set
+            {
+                XmlConfigurationDataLoadedSpecified = value.HasValue;
+                XmlConfigurationDataLoaded = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("configurationDataLoaded")]
-        public bool ConfigurationDataLoaded { get; set; }     
-              
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlConfigurationDataLoaded { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlConfigurationDataLoadedSpecified { get; set; }
+
         /// <summary>
         /// Configuration data to be downloaded to the DECT phone for this user. 
         /// The data consists of a sequence of lines containing one setting per line. 
@@ -361,20 +906,68 @@ namespace mitelapi.Types
         /// Note: Before loading the DECT phone profile data into the  DECT phone the DECT phone configuration data are merged.
         /// First the DECT phone default configuration data are used second the DECT phone profile data of this id are used and finally the user individual DECT phone configuration data. 
         /// </summary>
+        [XmlIgnore]
+        public int? PpProfileId
+        {
+            get { return XmlPpProfileIdSpecified ? (int?)XmlPpProfileId : null; }
+            set
+            {
+                XmlPpProfileIdSpecified = value.HasValue;
+                XmlPpProfileId = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("ppProfileId")]
-        public int PpProfileId { get; set; }
-              
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public int XmlPpProfileId { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlPpProfileIdSpecified { get; set; }
+
         /// <summary>
         /// Explicitly used SIP port for registering the user at the call server. If fixedSipPort=0, no specific port is used for this user and the calculatedSipPort is used. 
         /// </summary>
+        [XmlIgnore]
+        public int? FixedSipPort
+        {
+            get { return XmlFixedSipPortSpecified ? (int?)XmlFixedSipPort : null; }
+            set
+            {
+                XmlFixedSipPortSpecified = value.HasValue;
+                XmlFixedSipPort = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("fixedSipPort")]
-        public int FixedSipPort { get; set; }
-              
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public int XmlFixedSipPort { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlFixedSipPortSpecified { get; set; }
+
         /// <summary>
         /// Calculated SIP port for registering the user at the call server. If calculatedSipPort=0, the fixedSipPort is used. This value is read only.
         /// </summary>
+        [XmlIgnore]
+        public int? CalculatedSipPort
+        {
+            get { return XmlCalculatedSipPortSpecified ? (int?)XmlCalculatedSipPort : null; }
+            set
+            {
+                XmlCalculatedSipPortSpecified = value.HasValue;
+                XmlCalculatedSipPort = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("calculatedSipPort")]
-        public int CalculatedSipPort { get; set; }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public int XmlCalculatedSipPort { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlCalculatedSipPortSpecified { get; set; }
 
         private static byte[] StringToByteArray(string hex)
         {

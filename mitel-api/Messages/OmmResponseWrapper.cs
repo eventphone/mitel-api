@@ -18,6 +18,8 @@ namespace mitelapi.Messages
         [XmlElement(nameof(GetPPResp), typeof(GetPPResp))]
         [XmlElement(nameof(CreatePPUserResp), typeof(CreatePPUserResp))]
         [XmlElement(nameof(GetPPUserResp), typeof(GetPPUserResp))]
+        [XmlElement(nameof(SetPPUserResp), typeof(SetPPUserResp))]
+        [XmlElement(nameof(DeletePPUserResp), typeof(DeletePPUserResp))]
         public BaseResponse Response { get; set; }
 
         [XmlElement(nameof(EventDECTSubscriptionMode), typeof(EventDECTSubscriptionMode))]
@@ -27,6 +29,7 @@ namespace mitelapi.Messages
         [XmlElement(nameof(EventPPUserSummary), typeof(EventPPUserSummary))]
         [XmlElement(nameof(EventPPDevCnf), typeof(EventPPDevCnf))]
         [XmlElement(nameof(EventPPUserCnf), typeof(EventPPUserCnf))]
+        [XmlElement(nameof(EventPPCnf), typeof(EventPPCnf))]
         public BaseEvent Event { get; set; }
     }
 }
