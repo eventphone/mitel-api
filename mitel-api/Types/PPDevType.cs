@@ -66,8 +66,24 @@ namespace mitelapi.Types
         /// <summary>
         /// User ID of the DECT phone user which is linked to this DECT phone device, if any.
         /// </summary>
+        [XmlIgnore]
+        public int? Uid
+        {
+            get { return XmlUidSpecified ? (int?)XmlUid : null; }
+            set
+            {
+                XmlUidSpecified = value.HasValue;
+                XmlUid = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("uid")]
-        public int Uid { get; set; }        
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public int XmlUid { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlUidSpecified { get; set; }
 
         /// <summary>
         /// IPEI, globally unique identifier for a DECT phone. 

@@ -129,6 +129,16 @@ namespace mitel_api.test
 
             var xml = _serializer.Serialize(setPP);
             Assert.AreEqual("<SetPP><pp ppn=\"1\" relType=\"Unbound\" uid=\"0\" /><user uid=\"1\" relType=\"Unbound\" ppn=\"0\" /></SetPP>", xml);
+            setPP = new SetPP
+            {
+                PortablePart = new PPDevType
+                {
+                    Ppn = 1,
+                    Encrypt = true,
+                }
+            };
+            xml = _serializer.Serialize(setPP);
+            Assert.AreEqual("<SetPP><pp ppn=\"1\" encrypt=\"true\" /></SetPP>", xml);
         }
 
         [TestMethod]
@@ -186,14 +196,8 @@ namespace mitel_api.test
             };
 
             var xml = _serializer.Serialize(create);
-            Assert.AreEqual("<CreatePPUser><user uid=\"0\" timeStamp=\"0\" relType=\"Unbound\" ppn=\"0\" name=\"UnitTestUser\" num=\"9900\" "+
-                "hierarchy1=\"Beschreibung1\" hierarchy2=\"Beschreibung2\" addId=\"9900\" pin=\"1234\" sipAuthId=\"9900\" sipPw=\"9900\" " +
-                "forwardState=\"Off\" forwardTime=\"0\" lang=\"English\" holdRingBackTime=\"0\" autoAnswer=\"On\" warningTone=\"On\" " +
-                "allowBargeIn=\"On\" callWaitingDisabled=\"false\" external=\"false\" trackingActive=\"false\" locatable=\"false\" " +
-                "BTlocatable=\"false\" locRight=\"false\" msgRight=\"false\" sendVcardRight=\"false\" recvVcardRight=\"false\" keepLocalPB=\"false\" " +
-                "vip=\"false\" sipRegisterCheck=\"false\" allowVideoStream=\"false\" CUS=\"Unknown\" HAS=\"Unknown\" HSS=\"Unknown\" HRS=\"Unknown\" " +
-                "HCS=\"Unknown\" SRS=\"Unknown\" SCS=\"Unknown\" CDS=\"Unknown\" HBS=\"Unknown\" BTS=\"Unknown\" SWS=\"Unknown\" " +
-                "configurationDataLoaded=\"false\" ppProfileId=\"0\" fixedSipPort=\"0\" calculatedSipPort=\"0\" /></CreatePPUser>", xml);
+            Assert.AreEqual("<CreatePPUser><user uid=\"0\" ppn=\"0\" name=\"UnitTestUser\" num=\"9900\" " +
+                "hierarchy1=\"Beschreibung1\" hierarchy2=\"Beschreibung2\" addId=\"9900\" pin=\"1234\" sipAuthId=\"9900\" sipPw=\"9900\" /></CreatePPUser>", xml);
         }
 
         [TestMethod]
