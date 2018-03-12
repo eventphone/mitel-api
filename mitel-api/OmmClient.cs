@@ -220,6 +220,31 @@ namespace mitelapi
             await SendAsync<DeletePPUser, DeletePPUserResp>(new DeletePPUser { Uid = uid }, cancellationToken);
         }
 
+        public async Task UploadFile(string filename, Stream file, CancellationToken cancellationToken)
+        {
+            var buffer = new byte[500];
+            int read;
+            int offset = 0;
+            while ((read = await file.ReadAsync(buffer, 0, buffer.Length, cancellationToken)) != -1)
+            {
+                var request = new PutFile
+                {
+                    Name = filename,
+                    Offset =  offset,
+                    Data = Convert.ToBase64String(buffer, 0, read),
+                };
+                await SendAsync<PutFile, PutFileResp>(request, cancellationToken);
+                offset += read;
+            }
+            var eof = new PutFile
+            {
+                Name = filename,
+                Offset = offset,
+                Eof = true
+            };
+            await SendAsync<PutFile, PutFileResp>(eof, cancellationToken);
+        }
+
         private async Task<TResponse> SendAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken) where TRequest:BaseRequest where TResponse:BaseResponse
         {
             var sequence = Interlocked.Increment(ref _seq);

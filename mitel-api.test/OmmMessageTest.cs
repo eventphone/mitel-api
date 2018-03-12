@@ -310,5 +310,26 @@ namespace mitel_api.test
             var getPPUserResp = _serializer.Deserialize<GetPPUserResp>(message);
             Assert.AreEqual(3, getPPUserResp.Users.Length);
         }
+
+        [TestMethod]
+        public void CanSerializePutFile()
+        {
+            var putFile = new PutFile
+            {
+                Name = ":license",
+                Data = "bnNlRmlsZT4=",
+                Offset = 1000,
+            };
+            var xml = _serializer.Serialize(putFile);
+            Assert.AreEqual("<PutFile name=\":license\" offset=\"1000\" data=\"bnNlRmlsZT4=\" />", xml);
+            putFile = new PutFile
+            {
+                Name = ":license",
+                Eof = true,
+                Offset = 1008,
+            };
+            xml = _serializer.Serialize(putFile);
+            Assert.AreEqual("<PutFile name=\":license\" offset=\"1008\" data=\"\" eof=\"true\" />", xml);
+        }
     }
 }
