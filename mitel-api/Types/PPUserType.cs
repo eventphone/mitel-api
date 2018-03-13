@@ -17,7 +17,7 @@ namespace mitelapi.Types
         /// User ID, numbering starts at 1, 0 is invalid
         /// </summary>
         [XmlAttribute("uid")]
-        public int Uid { get; set; } 
+        public int Uid { get; set; }
 
         /// <summary>
         /// Last change time stamp of this element in seconds since 1970/1/1. 
