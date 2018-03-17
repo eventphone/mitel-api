@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Net.Security;
@@ -215,9 +217,61 @@ namespace mitelapi
             return response.Users[0];
         }
 
+        public async Task<List<PPUserType>> GetPPAllUser(CancellationToken cancellationToken)
+        {
+            var uid = 0;
+            var result = new List<PPUserType>();
+            while (true)
+            {
+                try
+                {
+                    var users = await SendAsync<GetPPUser, GetPPUserResp>(new GetPPUser { Uid = uid, MaxRecords = 20 }, cancellationToken);
+                    uid = users.Users.Max(x => x.Uid) + 1;
+                    foreach (var user in users.Users)
+                    {
+                        result.Add(user);
+                    }
+                }
+                catch (OmmNoEntryException)
+                {
+                    break;
+                }
+            }
+            return result;
+        }
+
         public async Task DeletePPUser(int uid, CancellationToken cancellationToken)
         {
             await SendAsync<DeletePPUser, DeletePPUserResp>(new DeletePPUser { Uid = uid }, cancellationToken);
+        }
+
+        public async Task<PPDevType> GetPPDev(int ppn, CancellationToken cancellationToken)
+        {
+            var response = await SendAsync<GetPPDev, GetPPDevResp>(new GetPPDev { Ppn = ppn }, cancellationToken);
+            return response.Devices[0];
+        }
+
+        public async Task<List<PPDevType>> GetPPAllDev(CancellationToken cancellationToken)
+        {
+            var ppn = 0;
+            var result = new List<PPDevType>();
+            while (true)
+            {
+                try
+                {
+                    var devices = await SendAsync<GetPPDev, GetPPDevResp>(new GetPPDev { Ppn = ppn, MaxRecords = 20 }, cancellationToken);
+                    ppn = devices.Devices.Max(x => x.Ppn) + 1;
+                    foreach (var device in devices.Devices)
+                    {
+                        result.Add(device);
+                    }
+                }
+                catch (OmmNoEntryException)
+                {
+                    break;
+                }
+            }
+            return result;
         }
 
         public async Task UploadFile(string filename, Stream file, CancellationToken cancellationToken)

@@ -19,6 +19,7 @@ namespace mitelapi.Messages
         [XmlElement(nameof(CreatePPUserResp), typeof(CreatePPUserResp))]
         [XmlElement(nameof(GetPPUserResp), typeof(GetPPUserResp))]
         [XmlElement(nameof(SetPPUserResp), typeof(SetPPUserResp))]
+        [XmlElement(nameof(GetPPDevResp), typeof(GetPPDevResp))]
         [XmlElement(nameof(DeletePPUserResp), typeof(DeletePPUserResp))]
         [XmlElement(nameof(PutFileResp), typeof(PutFileResp))]
         public BaseResponse Response { get; set; }
