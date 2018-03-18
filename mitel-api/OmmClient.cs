@@ -274,6 +274,11 @@ namespace mitelapi
             return result;
         }
 
+        public async Task<GetRFPSyncResp> GetRFPSync(int id, CancellationToken cancellationToken)
+        {
+            return await SendAsync<GetRFPSync, GetRFPSyncResp>(new GetRFPSync { Id = id }, cancellationToken);
+        }
+
         public async Task<RFPType> GetRFP(int id, bool withDetails, bool withState, CancellationToken cancellationToken)
         {
             var response = await SendAsync<GetRFP, GetRFPResp>(new GetRFP { Id = id, WithDetails=withDetails, WithState=withState, MaxRecords=1 }, cancellationToken);
