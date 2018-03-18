@@ -13,6 +13,8 @@ namespace mitelapi.Types
     /// </summary>
     public class RFPType
     {
+        private static List<RFPHwTypeType> _outdoortypes = new List<RFPHwTypeType>() { RFPHwTypeType.RFP33, RFPHwTypeType.RFP34, RFPHwTypeType.RFP36, RFPHwTypeType.RFP37 };
+
         /// <summary>
         /// Unique RFP identifier. The numbering starts at 0
         /// </summary>
@@ -517,6 +519,15 @@ namespace mitelapi.Types
         {
             get { return OutdoorType ? "1" : "0"; }
             set { OutdoorType = value == "1"; }
+        }
+
+        [XmlIgnore]
+        public bool IsOutdoor
+        {
+            get
+            {
+                return _outdoortypes.Contains(HwType);
+            }
         }
 
         /// <summary>
