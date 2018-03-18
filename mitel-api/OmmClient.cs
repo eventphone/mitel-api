@@ -274,6 +274,35 @@ namespace mitelapi
             return result;
         }
 
+        public async Task<RFPType> GetRFP(int id, bool withDetails, bool withState, CancellationToken cancellationToken)
+        {
+            var response = await SendAsync<GetRFP, GetRFPResp>(new GetRFP { Id = id, WithDetails=withDetails, WithState=withState, MaxRecords=1 }, cancellationToken);
+            return response.RFPs[0];
+        }
+
+        public async Task<List<RFPType>> GetRFPAll(bool withDetails, bool withState, CancellationToken cancellationToken)
+        {
+            var id = 0;
+            var result = new List<RFPType>();
+            while (true)
+            {
+                try
+                {
+                    var rfps = await SendAsync<GetRFP, GetRFPResp>(new GetRFP { Id = id, MaxRecords = 20, WithDetails=withDetails, WithState=withState }, cancellationToken);
+                    id = rfps.RFPs.Max(x => x.Id) + 1;
+                    foreach (var rfp in rfps.RFPs)
+                    {
+                        result.Add(rfp);
+                    }
+                }
+                catch (OmmNoEntryException)
+                {
+                    break;
+                }
+            }
+            return result;
+        }
+
         public async Task UploadFile(string filename, Stream file, CancellationToken cancellationToken)
         {
             var buffer = new byte[500];
