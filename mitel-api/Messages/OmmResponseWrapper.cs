@@ -34,6 +34,8 @@ namespace mitelapi.Messages
         [XmlElement(nameof(EventPPDevCnf), typeof(EventPPDevCnf))]
         [XmlElement(nameof(EventPPUserCnf), typeof(EventPPUserCnf))]
         [XmlElement(nameof(EventPPCnf), typeof(EventPPCnf))]
+        [XmlElement(nameof(EventRFPSyncRel), typeof(EventRFPSyncRel))]
+        [XmlElement(nameof(EventRFPState), typeof(EventRFPState))]
         public BaseEvent Event { get; set; }
     }
 }

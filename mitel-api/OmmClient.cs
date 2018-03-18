@@ -368,6 +368,8 @@ namespace mitelapi
         public event EventHandler<OmmEventArgs<EventRFPSummary>> RfpSummary;
         public event EventHandler<OmmEventArgs<EventPPDevSummary>> PPDevSummary;
         public event EventHandler<OmmEventArgs<EventPPUserSummary>> PPUserSummary;
+        public event EventHandler<OmmEventArgs<EventRFPState>> RFPState;
+        public event EventHandler<OmmEventArgs<EventRFPSyncRel>> RFPSyncRel;
 
         private void Read()
         {
@@ -382,7 +384,7 @@ namespace mitelapi
                     {
                         offset += read;
                     }
-                    var nullIndex = buffer.AsSpan().Slice(0, offset).IndexOf(0);
+                    var nullIndex = buffer.AsSpan().Slice(0, offset).IndexOf((byte)0);
                     if (nullIndex >= 0)
                     {
                         if (nullIndex > 0)
@@ -453,6 +455,14 @@ namespace mitelapi
             else if (ommEvent is EventPPCnf ppCnf)
             {
                 PPCnf?.Invoke(this, new OmmEventArgs<EventPPCnf>(ppCnf));
+            }
+            else if (ommEvent is EventRFPState rfpState)
+            {
+                RFPState?.Invoke(this, new OmmEventArgs<EventRFPState>(rfpState));
+            }
+            else if (ommEvent is EventRFPSyncRel rfpSyncRel)
+            {
+                RFPSyncRel?.Invoke(this, new OmmEventArgs<EventRFPSyncRel>(rfpSyncRel));
             }
         }
 
