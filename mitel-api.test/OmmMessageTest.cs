@@ -129,6 +129,16 @@ namespace mitel_api.test
 
             var xml = _serializer.Serialize(setPP);
             Assert.AreEqual("<SetPP><pp ppn=\"1\" relType=\"Unbound\" uid=\"0\" /><user uid=\"1\" relType=\"Unbound\" ppn=\"0\" /></SetPP>", xml);
+            setPP = new SetPP
+            {
+                PortablePart = new PPDevType
+                {
+                    Ppn = 1,
+                    Encrypt = true,
+                }
+            };
+            xml = _serializer.Serialize(setPP);
+            Assert.AreEqual("<SetPP><pp ppn=\"1\" encrypt=\"true\" /></SetPP>", xml);
         }
 
         [TestMethod]
@@ -200,8 +210,8 @@ namespace mitel_api.test
             };
 
             var xml = _serializer.Serialize(create);
-            Assert.AreEqual("<CreatePPUser><user uid=\"0\" ppn=\"0\" name=\"UnitTestUser\" num=\"9900\" hierarchy1=\"Beschreibung1\" " +
-                "hierarchy2=\"Beschreibung2\" addId=\"9900\" pin=\"1234\" sipAuthId=\"9900\" sipPw=\"9900\" /></CreatePPUser>", xml);
+            Assert.AreEqual("<CreatePPUser><user uid=\"0\" ppn=\"0\" name=\"UnitTestUser\" num=\"9900\" " +
+                "hierarchy1=\"Beschreibung1\" hierarchy2=\"Beschreibung2\" addId=\"9900\" pin=\"1234\" sipAuthId=\"9900\" sipPw=\"9900\" /></CreatePPUser>", xml);
         }
 
         [TestMethod]
