@@ -285,6 +285,11 @@ namespace mitelapi
             return response.RFPs[0];
         }
 
+        public async Task SetRFP(RFPType rfp, CancellationToken cancellationToken)
+        {
+            await SendAsync<SetRFP, SetRFPResp>(new SetRFP { Rfp = rfp}, cancellationToken);
+        }
+
         public async Task<List<RFPType>> GetRFPAll(bool withDetails, bool withState, CancellationToken cancellationToken)
         {
             var id = 0;

@@ -31,43 +31,67 @@ namespace mitelapi.Types
         /// „1” or “true”, if DECT is enabled on this RFP
         /// </summary>
         [XmlIgnore]
-        public bool DectOn { get; set; }
+        public bool? DectOn
+        {
+            get { return XmlDectOnSpecified ? (bool?)(XmlDectOn == "1"): null; }
+            set
+            {
+                XmlDectOnSpecified = value.HasValue;
+                XmlDectOn = value.GetValueOrDefault() ? "1" : "0";
+            }
+        }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlDectOnSpecified { get; set; }
 
         [XmlAttribute("dectOn")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string DectOnSerialize
-        {
-            get { return DectOn ? "1" : "0"; }
-            set { DectOn = value == "1"; }
-        }
+        public string XmlDectOn { get; set; }
 
         /// <summary>
         /// „1” or “true”, if WLAN is enabled on this RFP
         /// </summary>
         [XmlIgnore]
-        public bool WlanOn { get; set; }
+        public bool? WlanOn
+        {
+            get { return XmlWlanOnSpecified ? (bool?)(XmlWlanOn == "1") : null; }
+            set
+            {
+                XmlWlanOnSpecified = value.HasValue;
+                XmlWlanOn = value.GetValueOrDefault() ? "1" : "0";
+            }
+        }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlWlanOnSpecified { get; set; }
 
         [XmlAttribute("wlanOn")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string WlanOnSerialize
-        {
-            get { return WlanOn ? "1" : "0"; }
-            set { WlanOn = value == "1"; }
-        }
+        public string XmlWlanOn { get; set; }
 
         /// <summary>
         /// This RFP is used for licensing, it cannot be deleted
         /// </summary>
         [XmlIgnore]
-        public bool LicenseRFP { get; set; }
+        public bool? LicenseRFP
+        {
+            get { return XmlLicenseRFPSpecified ? (bool?)(XmlLicenseRFP == "1") : null; }
+            set
+            {
+                XmlLicenseRFPSpecified = value.HasValue;
+                XmlLicenseRFP = value.GetValueOrDefault() ? "1" : "0";
+            }
+        }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlLicenseRFPSpecified { get; set; }
 
         [XmlAttribute("licenseRfp")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string LicenseRFPSerialize
-        {
-            get { return LicenseRFP ? "1" : "0"; }
-            set { LicenseRFP = value == "1"; }
-        }
+        public string XmlLicenseRFP { get; set; }
 
         /// <summary>
         /// Name of this RFP, free format text
@@ -102,72 +126,198 @@ namespace mitelapi.Types
         /// <summary>
         /// DECT RPN
         /// </summary>
+        [XmlIgnore]
+        public int? Rpn
+        {
+            get { return XmlRpnSpecified ? (int?)Rpn : null; }
+            set
+            {
+                XmlRpnSpecified = value.HasValue;
+                Rpn = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("rpn")]
-        public int Rpn { get; set; }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public int XmlRpn { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlRpnSpecified { get; set; }
 
         /// <summary>
         /// Paging area number, -1 for unassigned
         /// </summary>
+        [XmlIgnore]
+        public int? PagingArea
+        {
+            get { return XmlPagingAreaSpecified ? (int?)XmlPagingArea : null; }
+            set
+            {
+                XmlPagingAreaSpecified = value.HasValue;
+                XmlPagingArea = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("pagingArea")]
-        public int PagingArea { get; set; }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public int XmlPagingArea { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlPagingAreaSpecified { get; set; }
 
         /// <summary>
         /// Synchronization cluster, 0 is invalid
         /// </summary>
+        [XmlIgnore]
+        public int? Cluster
+        {
+            get { return XmlClusterSpecified ? (int?)XmlCluster : null; }
+            set
+            {
+                XmlClusterSpecified = value.HasValue;
+                XmlCluster = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("cluster")]
-        public int Cluster { get; set; }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public int XmlCluster { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlClusterSpecified { get; set; }
 
         /// <summary>
         /// This RFP is preferred in sync start up
         /// </summary>
         [XmlIgnore]
-        public bool PreferredSync { get; set; }
+        public bool? PreferredSync
+        {
+            get { return XmlPreferredSyncSpecified ? (bool?)(XmlPreferredSync == "1") : null; }
+            set
+            {
+                XmlPreferredSyncSpecified = value.HasValue;
+                XmlPreferredSync = value.GetValueOrDefault() ? "1" : "0";
+            }
+        }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlPreferredSyncSpecified { get; set; }
 
         [XmlAttribute("preferredSync")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string PreferredSyncSerialize
-        {
-            get { return PreferredSync ? "1" : "0"; }
-            set { PreferredSync = value == "1"; }
-        }
+        public string XmlPreferredSync { get; set; }
 
         /// <summary>
         /// This RFP is located in a reflective environment
         /// </summary>
         [XmlIgnore]
-        public bool ReflectiveEnv { get; set; }
+        public bool? ReflectiveEnv
+        {
+            get { return XmlReflectiveEnvSpecified ? (bool?)(XmlReflectiveEnv == "1") : null; }
+            set
+            {
+                XmlReflectiveEnvSpecified = value.HasValue;
+                XmlReflectiveEnv = value.GetValueOrDefault() ? "1" : "0";
+            }
+        }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlReflectiveEnvSpecified { get; set; }
 
         [XmlAttribute("reflectiveEnv")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string ReflectiveEnvSerialize
-        {
-            get { return ReflectiveEnv ? "1" : "0"; }
-            set { ReflectiveEnv = value == "1"; }
-        }
+        public string XmlReflectiveEnv { get; set; }
 
         /// <summary>
         /// Reference to site data set id.
         /// </summary>
+        [XmlIgnore]
+        public int? Site
+        {
+            get { return XmlSiteSpecified ? (int?)XmlSite : null; }
+            set
+            {
+                XmlSiteSpecified = value.HasValue;
+                XmlSite = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("site")]
-        public int Site { get; set; }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public int XmlSite { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlSiteSpecified { get; set; }
 
         /// <summary>
         /// X coordinate for visualization
         /// </summary>
+        [XmlIgnore]
+        public int? X
+        {
+            get { return XmlXSpecified ? (int?)XmlX : null; }
+            set
+            {
+                XmlXSpecified = value.HasValue;
+                XmlX = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("x")]
-        public int X { get; set; }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public int XmlX { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlXSpecified { get; set; }
 
         /// <summary>
         /// Y coordinate for visualization
         /// </summary>
+        [XmlIgnore]
+        public int? Y
+        {
+            get { return XmlYSpecified ? (int?)XmlY : null; }
+            set
+            {
+                XmlYSpecified = value.HasValue;
+                XmlY = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("y")]
-        public int Y { get; set; }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public int XmlY { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlYSpecified { get; set; }
 
         /// <summary>
         /// Type of hardware for this RFP
         /// </summary>
+        [XmlIgnore]
+        public RFPHwTypeType? HwType
+        {
+            get { return XmlHwTypeSpecified ? (RFPHwTypeType?)XmlHwType : null; }
+            set
+            {
+                XmlHwTypeSpecified = value.HasValue;
+                XmlHwType = value.GetValueOrDefault();
+            }
+        }
         [XmlAttribute("hwType")]
-        public RFPHwTypeType HwType { get; set; }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public RFPHwTypeType XmlHwType { get; set; }
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlHwTypeSpecified { get; set; }
 
         /// <summary>
         /// Read only value to indicate the possibility to configure the hwType.
@@ -176,82 +326,178 @@ namespace mitelapi.Types
         /// to false!
         /// </summary>
         [XmlIgnore]
-        public bool HwTypeLocked { get; set; }
+        public bool? HwTypeLocked
+        {
+            get { return XmlHwTypeLockedSpecified ? (bool?)(XmlHwTypeLocked == "1") : null; }
+            set
+            {
+                XmlHwTypeLockedSpecified = value.HasValue;
+                XmlHwTypeLocked = value.GetValueOrDefault() ? "1" : "0";
+            }
+        }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlHwTypeLockedSpecified { get; set; }
 
         [XmlAttribute("hwTypeLocked")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string HwTypeLockedSerialize
-        {
-            get { return HwTypeLocked ? "1" : "0"; }
-            set { HwTypeLocked = value == "1"; }
-        }
+        public string XmlHwTypeLocked { get; set; }
 
         /// <summary>
         /// WLAN profile 0 is invalid
         /// </summary>
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public int? WlanProfile
+        {
+            get { return XmlWlanProfileSpecified ? (int?)XmlWlanProfile : null; }
+            set
+            {
+                XmlWlanProfileSpecified = value.HasValue;
+                XmlWlanProfile = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("wlanProfile")]
-        public int WlanProfile { get; set; }
+        public int XmlWlanProfile { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlWlanProfileSpecified { get; set; }
 
         /// <summary>
         /// „1” or “true”, if WLAN antenna diversity is set
         /// </summary>
         [XmlIgnore]
-        public bool WlanAntennaDiv { get; set; }
+        public bool? WlanAntennaDiv
+        {
+            get { return XmlWlanAntennaDivSpecified ? (bool?)(XmlWlanAntennaDiv == "1") : null; }
+            set
+            {
+                XmlWlanAntennaDivSpecified = value.HasValue;
+                XmlWlanAntennaDiv = value.GetValueOrDefault() ? "1" : "0";
+            }
+        }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlWlanAntennaDivSpecified { get; set; }
 
         [XmlAttribute("wlanAntennaDiv")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string WlanAntennaDivSerialize
-        {
-            get { return WlanAntennaDiv ? "1" : "0"; }
-            set { WlanAntennaDiv = value == "1"; }
-        }
+        public string XmlWlanAntennaDiv { get; set; }
 
         /// <summary>
         /// Selected WLAN antenna, 1 or 2
         /// </summary>
+        [XmlIgnore]
+        public int? WlanAntenna
+        {
+            get { return XmlWlanAntennaSpecified ? (int?)XmlWlanAntenna : null; }
+            set
+            {
+                XmlWlanAntennaSpecified = value.HasValue;
+                XmlWlanAntenna = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("wlanAntenna")]
-        public int WlanAntenna { get; set; }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public int XmlWlanAntenna { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlWlanAntennaSpecified { get; set; }
 
         /// <summary>
         /// Configured WLAN channel, one of 1 to 14, 36, 40, 44, 48, 52, 56,
         /// 60, 64, 100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140, 147,        /// 151, 155, 159, 163, 167, 171
         /// </summary>
+        [XmlIgnore]
+        public int? WlanChannel
+        {
+            get { return XmlWlanChannelSpecified ? (int?)XmlWlanChannel : null; }
+            set
+            {
+                XmlWlanChannelSpecified = value.HasValue;
+                XmlWlanChannel = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("wlanChannel")]
-        public int WlanChannel { get; set; }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public int XmlWlanChannel { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlWlanChannelSpecified { get; set; }
 
         /// <summary>
         /// "1” or “true”, if WLAN high throughput mode 40 is set
         /// </summary>
         [XmlIgnore]
-        public bool WlanHighThroughput { get; set; }
+        public bool? WlanHighThroughput
+        {
+            get { return XmlWlanHighThroughputSpecified ? (bool?)(XmlWlanHighThroughput == "1") : null; }
+            set
+            {
+                XmlWlanHighThroughputSpecified = value.HasValue;
+                XmlWlanHighThroughput = value.GetValueOrDefault() ? "1" : "0";
+            }
+        }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlWlanHighThroughputSpecified { get; set; }
 
         [XmlAttribute("wlanHighThroughput")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string WlanHighThroughputSerialize
-        {
-            get { return WlanHighThroughput ? "1" : "0"; }
-            set { WlanHighThroughput = value == "1"; }
-        }
+        public string XmlWlanHighThroughput { get; set; }
 
         /// <summary>
         /// Cofigured WLAN transmit power in percent, one of 6, 12, 25, 50, 100.
         /// </summary>
+        [XmlIgnore]
+        public int? WlanPower
+        {
+            get { return XmlWlanPowerSpecified ? (int?)XmlWlanPower : null; }
+            set
+            {
+                XmlWlanPowerSpecified = value.HasValue;
+                XmlWlanPower = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("wlanPower")]
-        public int WlanPower { get; set; }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public int XmlWlanPower { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlWlanPowerSpecified { get; set; }
 
         /// <summary>
         /// „1” or “true”, if this RFP can be used for conference cahnnels
         /// </summary>
         [XmlIgnore]
-        public bool ConferenceChannels { get; set; }
+        public bool? ConferenceChannels
+        {
+            get { return XmlConferenceChannelsSpecified ? (bool?)(XmlConferenceChannels == "1") : null; }
+            set
+            {
+                XmlConferenceChannelsSpecified = value.HasValue;
+                XmlConferenceChannels = value.GetValueOrDefault() ? "1" : "0";
+            }
+        }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlConferenceChannelsSpecified { get; set; }
 
         [XmlAttribute("conferenceChannels")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string ConferenceChannelsSerialize
-        {
-            get { return ConferenceChannels ? "1" : "0"; }
-            set { ConferenceChannels = value == "1"; }
-        }
+        public string XmlConferenceChannels { get; set; }
 
         // The following attributes are transient (selected with withState in Requests):
 
@@ -259,15 +505,23 @@ namespace mitelapi.Types
         /// „1” or “true”, if this RFP is connected, transient
         /// </summary>
         [XmlIgnore]
-        public bool Connected { get; set; }
+        public bool? Connected
+        {
+            get { return XmlConnectedSpecified ? (bool?)(XmlConnected == "1") : null; }
+            set
+            {
+                XmlConnectedSpecified = value.HasValue;
+                XmlConnected = value.GetValueOrDefault() ? "1" : "0";
+            }
+        }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlConnectedSpecified { get; set; }
 
         [XmlAttribute("connected")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string ConnectedSerialize
-        {
-            get { return Connected ? "1" : "0"; }
-            set { Connected = value == "1"; }
-        }
+        public string XmlConnected { get; set; }
 
         /// <summary>
         /// Current or last known IP address, transient
@@ -280,100 +534,156 @@ namespace mitelapi.Types
         /// software., transient
         /// </summary>
         [XmlIgnore]
-        public bool NewSoftwareRequest { get; set; }
+        public bool? NewSoftwareRequest
+        {
+            get { return XmlNewSoftwareRequestSpecified ? (bool?)(XmlNewSoftwareRequest == "1") : null; }
+            set
+            {
+                XmlNewSoftwareRequestSpecified = value.HasValue;
+                XmlNewSoftwareRequest = value.GetValueOrDefault() ? "1" : "0";
+            }
+        }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlNewSoftwareRequestSpecified { get; set; }
 
         [XmlAttribute("newSoftwareRequest")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string NewSoftwareRequestSerialize
-        {
-            get { return NewSoftwareRequest ? "1" : "0"; }
-            set { NewSoftwareRequest = value == "1"; }
-        }
+        public string XmlNewSoftwareRequest { get; set; }
 
         /// <summary>
         /// 1” or “true”, if the DECT is running on this RFP., transient
         /// </summary>
         [XmlIgnore]
-        public bool DectRunning { get; set; }
+        public bool? DectRunning
+        {
+            get { return XmlDectRunningSpecified ? (bool?)(XmlDectRunning == "1") : null; }
+            set
+            {
+                XmlDectRunningSpecified = value.HasValue;
+                XmlDectRunning = value.GetValueOrDefault() ? "1" : "0";
+            }
+        }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlDectRunningSpecified { get; set; }
 
         [XmlAttribute("dectRunning")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string DectRunningSerialize
-        {
-            get { return DectRunning ? "1" : "0"; }
-            set { DectRunning = value == "1"; }
-        }
+        public string XmlDectRunning { get; set; }
 
         /// <summary>
         /// „1” or “true”, if the WLAN is running on this RFP, transient
         /// </summary>
         [XmlIgnore]
-        public bool WlanRunning { get; set; }
+        public bool? WlanRunning
+        {
+            get { return XmlWlanRunningSpecified ? (bool?)(XmlWlanRunning == "1") : null; }
+            set
+            {
+                XmlWlanRunningSpecified = value.HasValue;
+                XmlWlanRunning = value.GetValueOrDefault() ? "1" : "0";
+            }
+        }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlWlanRunningSpecified { get; set; }
 
         [XmlAttribute("wlanRunning")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string WlanRunningSerialize
-        {
-            get { return WlanRunning ? "1" : "0"; }
-            set { WlanRunning = value == "1"; }
-        }
+        public string XmlWlanRunning { get; set; }
 
         /// <summary>
         /// „1” or “true”, if the OMM is running on this RFP, transient
         /// </summary>
         [XmlIgnore]
-        public bool OmmRunning { get; set; }
+        public bool? OmmRunning
+        {
+            get { return XmlOmmRunningSpecified ? (bool?)(XmlOmmRunning == "1") : null; }
+            set
+            {
+                XmlOmmRunningSpecified = value.HasValue;
+                XmlOmmRunning = value.GetValueOrDefault() ? "1" : "0";
+            }
+        }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlOmmRunningSpecified { get; set; }
 
         [XmlAttribute("ommRunning")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string OmmRunningSerialize
-        {
-            get { return OmmRunning ? "1" : "0"; }
-            set { OmmRunning = value == "1"; }
-        }
+        public string XmlOmmRunning { get; set; }
 
         /// <summary>
         /// „1” or “true”, if the standby OMM is running on this RFP, transient
         /// </summary>
         [XmlIgnore]
-        public bool OmmStbRunning { get; set; }
+        public bool? OmmStbRunning
+        {
+            get { return XmlOmmStbRunningSpecified ? (bool?)(XmlOmmStbRunning == "1") : null; }
+            set
+            {
+                XmlOmmStbRunningSpecified = value.HasValue;
+                XmlOmmStbRunning = value.GetValueOrDefault() ? "1" : "0";
+            }
+        }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlOmmStbRunningSpecified { get; set; }
 
         [XmlAttribute("ommStbRunning")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string OmmStbRunningSerialize
-        {
-            get { return OmmStbRunning ? "1" : "0"; }
-            set { OmmStbRunning = value == "1"; }
-        }
+        public string XmlOmmStbRunning { get; set; }
 
         /// <summary>
         /// „1” or “true”, if WLAN is supported by this RFP hardware
         /// </summary>
         [XmlIgnore]
-        public bool HasWlan { get; set; }
+        public bool? HasWlan
+        {
+            get { return XmlHasWlanSpecified ? (bool?)(XmlHasWlan == "1") : null; }
+            set
+            {
+                XmlHasWlanSpecified = value.HasValue;
+                XmlHasWlan = value.GetValueOrDefault() ? "1" : "0";
+            }
+        }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlHasWlanSpecified { get; set; }
 
         [XmlAttribute("hasWlan")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string HasWlanSerialize
-        {
-            get { return HasWlan ? "1" : "0"; }
-            set { HasWlan = value == "1"; }
-        }
+        public string XmlHasWlan { get; set; }
 
         /// <summary>
         /// „1” or “true”, if encryption is supported by this RFP hardware
         /// These features can be configured within a site
         /// </summary>
         [XmlIgnore]
-        public bool HasEncryption { get; set; }
+        public bool? HasEncryption
+        {
+            get { return XmlHasEncryptionSpecified ? (bool?)(XmlHasEncryption == "1") : null; }
+            set
+            {
+                XmlHasEncryptionSpecified = value.HasValue;
+                XmlHasEncryption = value.GetValueOrDefault() ? "1" : "0";
+            }
+        }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlHasEncryptionSpecified { get; set; }
 
         [XmlAttribute("hasEncryption")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string HasEncryptionSerialize
-        {
-            get { return HasEncryption ? "1" : "0"; }
-            set { HasEncryption = value == "1"; }
-        }
+        public string XmlHasEncryption { get; set; }
 
         /// <summary>
         /// „1” or “true”, if Hi-Q audio technology (wide band) G.722, terminal
@@ -382,21 +692,43 @@ namespace mitelapi.Types
         /// These features can be configured within a site.
         /// </summary>
         [XmlIgnore]
-        public bool HasAdvancedFeatures { get; set; }
+        public bool? HasAdvancedFeatures
+        {
+            get { return XmlHasAdvancedFeaturesSpecified ? (bool?)(XmlHasAdvancedFeatures == "1") : null; }
+            set
+            {
+                XmlHasAdvancedFeaturesSpecified = value.HasValue;
+                XmlHasAdvancedFeatures = value.GetValueOrDefault() ? "1" : "0";
+            }
+        }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlHasAdvancedFeaturesSpecified { get; set; }
 
         [XmlAttribute("hasAdvancedFeatures")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string HasAdvancedFeaturesSerialize
-        {
-            get { return HasAdvancedFeatures ? "1" : "0"; }
-            set { HasAdvancedFeatures = value == "1"; }
-        }
+        public string XmlHasAdvancedFeatures { get; set; }
 
         /// <summary>
         /// Current DECT synchronization state for this RFP.
         /// </summary>
+        [XmlIgnore]
+        public RFPSyncStateType? SyncState
+        {
+            get { return XmlSyncStateSpecified ? (RFPSyncStateType?)XmlSyncState : null; }
+            set
+            {
+                XmlSyncStateSpecified = value.HasValue;
+                XmlSyncState = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("syncState")]
-        public RFPSyncStateType SyncState { get; set; }
+        public RFPSyncStateType XmlSyncState;
+
+        [XmlIgnore]
+        public bool XmlSyncStateSpecified;
 
         /// <summary>
         /// Current software version on this RFP in the format:
@@ -416,60 +748,92 @@ namespace mitelapi.Types
         /// „1” or “true”, if branding of this RFP and OMM do not fit together
         /// </summary>
         [XmlIgnore]
-        public bool BrandingMismatch { get; set; }
+        public bool? BrandingMismatch
+        {
+            get { return XmlBrandingMismatchSpecified ? (bool?)(XmlBrandingMismatch == "1") : null; }
+            set
+            {
+                XmlBrandingMismatchSpecified = value.HasValue;
+                XmlBrandingMismatch = value.GetValueOrDefault() ? "1" : "0";
+            }
+        }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlBrandingMismatchSpecified { get; set; }
 
         [XmlAttribute("brandingMismatch")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string BrandingMismatchSerialize
-        {
-            get { return BrandingMismatch ? "1" : "0"; }
-            set { BrandingMismatch = value == "1"; }
-        }
+        public string XmlBrandingMismatch { get; set; }
 
         /// <summary>
         /// „1” or “true”, if software version of this RFP and OMM do not fit
         /// together
         /// </summary>
         [XmlIgnore]
-        public bool VersionMismatch { get; set; }
+        public bool? VersionMismatch
+        {
+            get { return XmlVersionMismatchSpecified ? (bool?)(XmlVersionMismatch == "1") : null; }
+            set
+            {
+                XmlVersionMismatchSpecified = value.HasValue;
+                XmlVersionMismatch = value.GetValueOrDefault() ? "1" : "0";
+            }
+        }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlVersionMismatchSpecified { get; set; }
 
         [XmlAttribute("versionMismatch")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string VersionMismatchSerialize
-        {
-            get { return VersionMismatch ? "1" : "0"; }
-            set { VersionMismatch = value == "1"; }
-        }
+        public string XmlVersionMismatch { get; set; }
 
         /// <summary>
         /// „1” or “true”, if this RFP has an invalid OMM standby
         /// configuration.
         /// </summary>
         [XmlIgnore]
-        public bool StbMismatch { get; set; }
+        public bool? StbMismatch
+        {
+            get { return XmlStbMismatchSpecified ? (bool?)(XmlStbMismatch == "1") : null; }
+            set
+            {
+                XmlStbMismatchSpecified = value.HasValue;
+                XmlStbMismatch = value.GetValueOrDefault() ? "1" : "0";
+            }
+        }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlStbMismatchSpecified { get; set; }
 
         [XmlAttribute("stbMismatch")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string StbMismatchSerialize
-        {
-            get { return StbMismatch ? "1" : "0"; }
-            set { StbMismatch = value == "1"; }
-        }
+        public string XmlStbMismatch { get; set; }
 
         /// <summary>
         /// „1” or “true”, if the Ethernet link is too slow ( e. g. only 10 MBit/s)
         /// to enable WLAN on this RFP
         /// </summary>
         [XmlIgnore]
-        public bool WlanLinkNok { get; set; }
+        public bool? WlanLinkNok
+        {
+            get { return XmlWlanLinkNokSpecified ? (bool?)(XmlWlanLinkNok == "1") : null; }
+            set
+            {
+                XmlWlanLinkNokSpecified = value.HasValue;
+                XmlWlanLinkNok = value.GetValueOrDefault() ? "1" : "0";
+            }
+        }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlWlanLinkNokSpecified { get; set; }
 
         [XmlAttribute("wlanLinkNok")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string WlanLinkNokSerialize
-        {
-            get { return WlanLinkNok ? "1" : "0"; }
-            set { WlanLinkNok = value == "1"; }
-        }
+        public string XmlWlanLinkNok { get; set; }
 
         /// <summary>
         /// Used Channel one of 1 to 14, 36, 40, 44, 48, 52, 56, 60, 64, 100,
@@ -477,8 +841,24 @@ namespace mitelapi.Types
         /// 159, 163, 167, 171.
         /// This value is read only.
         /// </summary>
+        [XmlIgnore]
+        public int? WlanChannelUsed
+        {
+            get { return XmlWlanChannelUsedSpecified ? (int?)XmlWlanChannelUsed : null; }
+            set
+            {
+                XmlWlanChannelUsedSpecified = value.HasValue;
+                XmlWlanChannelUsed = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("wlanChannelUsed")]
-        public int WlanChannelUsed { get; set; }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public int XmlWlanChannelUsed { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlWlanChannelUsedSpecified { get; set; }
 
         /// <summary>
         /// Used high throughput channel type, one of “None”, “HT20”,
@@ -492,41 +872,94 @@ namespace mitelapi.Types
         /// Used WLAN transmit power in DBM (decibel per milliwatt) .
         /// This value is read only.
         /// </summary>
+        [XmlIgnore]
+        public int? WlanPowerUsed
+        {
+            get { return XmlWlanPowerUsedSpecified ? (int?)XmlWlanPowerUsed : null; }
+            set
+            {
+                XmlWlanPowerUsedSpecified = value.HasValue;
+                XmlWlanPowerUsed = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("wlanPowerUsed")]
-        public int WlanPowerUsed { get; set; }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public int XmlWlanPowerUsed { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlWlanPowerUsedSpecified { get; set; }
 
         /// <summary>
         /// Number of DECT synchronization relations
         /// </summary>
+        [XmlIgnore]
+        public int? NSyncRels
+        {
+            get { return XmlNSyncRelsSpecified ? (int?)XmlNSyncRels : null; }
+            set
+            {
+                XmlNSyncRelsSpecified = value.HasValue;
+                XmlNSyncRels = value.GetValueOrDefault();
+            }
+        }
+
         [XmlAttribute("nSyncRels")]
-        public int nSyncRels { get; set; }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public int XmlNSyncRels { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlNSyncRelsSpecified { get; set; }
 
         /// <summary>
         /// The DECT radio type of this RFP
         /// </summary>
+        [XmlIgnore]
+        public RfpRadioTypeType? RadioType
+        {
+            get { return XmlRadioTypeSpecified ? (RfpRadioTypeType?)XmlRadioType : null; }
+            set
+            {
+                XmlRadioTypeSpecified = value.HasValue;
+                XmlRadioType = value.GetValueOrDefault();
+            }
+        }
         [XmlAttribute("radioType")]
-        public RfpRadioTypeType RadioType { get; set; }
+        public RfpRadioTypeType XmlRadioType { get; set; }
+        [XmlIgnore]
+        public bool XmlRadioTypeSpecified { get; set; }
 
         /// <summary>
         /// „1” or “true”, if this is an outdoor RFP hardware
         /// </summary>
         [XmlIgnore]
-        public bool OutdoorType { get; set; }
+        public bool? OutdoorType
+        {
+            get { return XmlOutdoorTypeSpecified ? (bool?)(XmlOutdoorType == "1") : null; }
+            set
+            {
+                XmlOutdoorTypeSpecified = value.HasValue;
+                XmlOutdoorType = value.GetValueOrDefault() ? "1" : "0";
+            }
+        }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlOutdoorTypeSpecified { get; set; }
 
         [XmlAttribute("outdoorType")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string OutdoorTypeSerialize
-        {
-            get { return OutdoorType ? "1" : "0"; }
-            set { OutdoorType = value == "1"; }
-        }
+        public string XmlOutdoorType { get; set; }
 
         [XmlIgnore]
         public bool IsOutdoor
         {
             get
             {
-                return _outdoortypes.Contains(HwType);
+                if (!HwType.HasValue) return false;
+                return _outdoortypes.Contains(HwType.Value);
             }
         }
 
@@ -534,14 +967,22 @@ namespace mitelapi.Types
         /// „1” or “true”, if frequency shift is supported for this RFP
         /// </summary>
         [XmlIgnore]
-        public bool HasFreqShift { get; set; }
+        public bool? HasFreqShift
+        {
+            get { return XmlHasFreqShiftSpecified ? (bool?)(XmlHasFreqShift == "1") : null; }
+            set
+            {
+                XmlHasFreqShiftSpecified = value.HasValue;
+                XmlHasFreqShift = value.GetValueOrDefault() ? "1" : "0";
+            }
+        }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlHasFreqShiftSpecified { get; set; }
 
         [XmlAttribute("hasFreqShift")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string HasFreqShiftSerialize
-        {
-            get { return HasFreqShift ? "1" : "0"; }
-            set { HasFreqShift = value == "1"; }
-        }
+        public string XmlHasFreqShift { get; set; }
     }
 }

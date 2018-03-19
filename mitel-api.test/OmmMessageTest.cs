@@ -168,6 +168,20 @@ namespace mitel_api.test
         }
 
         [TestMethod]
+        public void CanSerializeRFPType()
+        {
+            var rfp = new RFPType()
+            {
+                Id = 3,
+                X = 10,
+                Y = 44
+
+            };
+            var xml = _serializer.Serialize(rfp);
+            Assert.AreEqual("<RFPType id=\"3\" x=\"10\" y=\"44\" />", xml);
+        }
+
+        [TestMethod]
         public void CanSerializeCreatePPUser()
         {
             var create = new CreatePPUser()
@@ -186,14 +200,8 @@ namespace mitel_api.test
             };
 
             var xml = _serializer.Serialize(create);
-            Assert.AreEqual("<CreatePPUser><user uid=\"0\" timeStamp=\"0\" relType=\"Unbound\" ppn=\"0\" name=\"UnitTestUser\" num=\"9900\" "+
-                "hierarchy1=\"Beschreibung1\" hierarchy2=\"Beschreibung2\" addId=\"9900\" pin=\"1234\" sipAuthId=\"9900\" sipPw=\"9900\" " +
-                "forwardState=\"Off\" forwardTime=\"0\" lang=\"English\" holdRingBackTime=\"0\" autoAnswer=\"On\" warningTone=\"On\" " +
-                "allowBargeIn=\"On\" callWaitingDisabled=\"false\" external=\"false\" trackingActive=\"false\" locatable=\"false\" " +
-                "BTlocatable=\"false\" locRight=\"false\" msgRight=\"false\" sendVcardRight=\"false\" recvVcardRight=\"false\" keepLocalPB=\"false\" " +
-                "vip=\"false\" sipRegisterCheck=\"false\" allowVideoStream=\"false\" CUS=\"Unknown\" HAS=\"Unknown\" HSS=\"Unknown\" HRS=\"Unknown\" " +
-                "HCS=\"Unknown\" SRS=\"Unknown\" SCS=\"Unknown\" CDS=\"Unknown\" HBS=\"Unknown\" BTS=\"Unknown\" SWS=\"Unknown\" " +
-                "configurationDataLoaded=\"false\" ppProfileId=\"0\" fixedSipPort=\"0\" calculatedSipPort=\"0\" /></CreatePPUser>", xml);
+            Assert.AreEqual("<CreatePPUser><user uid=\"0\" ppn=\"0\" name=\"UnitTestUser\" num=\"9900\" hierarchy1=\"Beschreibung1\" " +
+                "hierarchy2=\"Beschreibung2\" addId=\"9900\" pin=\"1234\" sipAuthId=\"9900\" sipPw=\"9900\" /></CreatePPUser>", xml);
         }
 
         [TestMethod]
