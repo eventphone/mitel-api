@@ -279,6 +279,11 @@ namespace mitelapi
             return await SendAsync<GetRFPSync, GetRFPSyncResp>(new GetRFPSync { Id = id }, cancellationToken);
         }
 
+        public async Task<GetRFPSyncQualityResp> GetRFPSyncQuality(int id, int maxRecords, CancellationToken cancellationToken)
+        {
+            return await SendAsync<GetRFPSyncQuality, GetRFPSyncQualityResp>(new GetRFPSyncQuality { Id = id, MaxRecords = maxRecords }, cancellationToken);
+        }
+
         public async Task<RFPType> GetRFP(int id, bool withDetails, bool withState, CancellationToken cancellationToken)
         {
             var response = await SendAsync<GetRFP, GetRFPResp>(new GetRFP { Id = id, WithDetails=withDetails, WithState=withState, MaxRecords=1 }, cancellationToken);
@@ -375,6 +380,7 @@ namespace mitelapi
         public event EventHandler<OmmEventArgs<EventPPUserSummary>> PPUserSummary;
         public event EventHandler<OmmEventArgs<EventRFPState>> RFPState;
         public event EventHandler<OmmEventArgs<EventRFPSyncRel>> RFPSyncRel;
+        public event EventHandler<OmmEventArgs<EventRFPSyncQuality>> RFPSyncQuality;
 
         private void Read()
         {
@@ -468,6 +474,10 @@ namespace mitelapi
             else if (ommEvent is EventRFPSyncRel rfpSyncRel)
             {
                 RFPSyncRel?.Invoke(this, new OmmEventArgs<EventRFPSyncRel>(rfpSyncRel));
+            }
+            else if (ommEvent is EventRFPSyncQuality rfpSyncQuality)
+            {
+                RFPSyncQuality?.Invoke(this, new OmmEventArgs<EventRFPSyncQuality>(rfpSyncQuality));
             }
         }
 

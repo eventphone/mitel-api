@@ -25,6 +25,7 @@ namespace mitelapi.Messages
         [XmlElement(nameof(GetRFPResp), typeof(GetRFPResp))]
         [XmlElement(nameof(SetRFPResp), typeof(SetRFPResp))]
         [XmlElement(nameof(GetRFPSyncResp), typeof(GetRFPSyncResp))]
+        [XmlElement(nameof(GetRFPSyncQualityResp), typeof(GetRFPSyncQualityResp))]
         public BaseResponse Response { get; set; }
 
         [XmlElement(nameof(EventDECTSubscriptionMode), typeof(EventDECTSubscriptionMode))]
@@ -37,6 +38,7 @@ namespace mitelapi.Messages
         [XmlElement(nameof(EventPPCnf), typeof(EventPPCnf))]
         [XmlElement(nameof(EventRFPSyncRel), typeof(EventRFPSyncRel))]
         [XmlElement(nameof(EventRFPState), typeof(EventRFPState))]
+        [XmlElement(nameof(EventRFPSyncQuality), typeof(EventRFPSyncQuality))]
         public BaseEvent Event { get; set; }
     }
 }
