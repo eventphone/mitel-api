@@ -343,6 +343,12 @@ namespace mitelapi
             await SendAsync<PutFile, PutFileResp>(eof, cancellationToken);
         }
 
+        public async Task<GetRFPStatisticConfigResp> GetRFPStatisticConfig(CancellationToken cancellationToken)
+        {
+            var response = await SendAsync<GetRFPStatisticConfig, GetRFPStatisticConfigResp>(new GetRFPStatisticConfig(), cancellationToken);
+            return response;
+        }
+
         private async Task<TResponse> SendAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken) where TRequest:BaseRequest where TResponse:BaseResponse
         {
             var sequence = Interlocked.Increment(ref _seq);

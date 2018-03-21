@@ -349,5 +349,28 @@ namespace mitel_api.test
             xml = _serializer.Serialize(putFile);
             Assert.AreEqual("<PutFile name=\":license\" offset=\"1008\" data=\"\" eof=\"true\" />", xml);
         }
+
+        [TestMethod]
+        public void CanSerializeGetRFPStatisticConfig()
+        {
+            var getRFPStatisticConfig = new GetRFPStatisticConfig();
+            var xml = _serializer.Serialize(getRFPStatisticConfig);
+            Assert.AreEqual("<GetRFPStatisticConfig />", xml);
+        }
+
+        [TestMethod]
+        public void CanDeserializeGetRFPStatisticConfigResp()
+        {
+            var message = "<GetRFPStatisticConfigResp>" +
+                          "<rfpStatHead numElemPerRec=\"28\" recordSets=\"3\" resolution=\"week\" />" +
+                          "<rfpStatName elemId=\"0\" group=\"Voice channels\" name=\"Only 2 voice channels free\" />" +
+                          "<rfpStatName elemId=\"1\" group=\"Voice channels\" name=\"Only 1 voice channels free\" />" +
+                          "</GetRFPStatisticConfigResp>";
+            var getRFPStatisticConfigResp = _serializer.Deserialize<GetRFPStatisticConfigResp>(message);
+            Assert.AreEqual(2, getRFPStatisticConfigResp.Name.Length);
+            Assert.AreEqual(1, getRFPStatisticConfigResp.Name[1].Id);
+            Assert.AreEqual("Voice channels", getRFPStatisticConfigResp.Name[1].Group);
+            Assert.AreEqual("Only 2 voice channels free", getRFPStatisticConfigResp.Name[0].Name);
+        }
     }
 }
