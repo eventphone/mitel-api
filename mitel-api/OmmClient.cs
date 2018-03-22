@@ -349,6 +349,28 @@ namespace mitelapi
             return response;
         }
 
+        /// <summary>
+        /// With this request the client can query the statistic counter of an RFP.
+        /// </summary>
+        /// <param name="id">Unique RFP identifier. The numbering starts at 0</param>
+        /// <param name="maxRecord">Maximal number of records to return. Not more than 20 allowed.
+        /// If maxRecord is equal 0, only the record of the RFP addressed by id should be fetched</param>
+        /// <param name="recordSet">Record set to read
+        /// Record 0 identifies the overall counter, 1 the current week, 2 the week before the current week and so on.</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public Task<GetRFPStatisticResp> GetRFPStatistic(int id, int maxRecord, int recordSet, CancellationToken cancellationToken)
+        {
+            var request = new GetRFPStatistic {Id = id, MaxRecords = maxRecord, RecordSet = recordSet};
+            return GetRFPStatistic(request, cancellationToken);
+        }
+
+        public async Task<GetRFPStatisticResp> GetRFPStatistic(GetRFPStatistic request, CancellationToken cancellationToken)
+        {
+            var response = await SendAsync<GetRFPStatistic, GetRFPStatisticResp>(request, cancellationToken);
+            return response;
+        }
+
         private async Task<TResponse> SendAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken) where TRequest:BaseRequest where TResponse:BaseResponse
         {
             var sequence = Interlocked.Increment(ref _seq);
