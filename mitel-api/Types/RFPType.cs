@@ -129,11 +129,11 @@ namespace mitelapi.Types
         [XmlIgnore]
         public int? Rpn
         {
-            get { return XmlRpnSpecified ? (int?)Rpn : null; }
+            get { return XmlRpnSpecified ? (int?)XmlRpn : null; }
             set
             {
                 XmlRpnSpecified = value.HasValue;
-                Rpn = value.GetValueOrDefault();
+                XmlRpn = value.GetValueOrDefault();
             }
         }
 
