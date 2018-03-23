@@ -280,9 +280,9 @@ namespace mitelapi
             return resp.Enable;
         }
 
-        public async void SetDevAutoCreate(bool enabled, CancellationToken cancellationToken)
+        public async Task<SetDevAutoCreateResp> SetDevAutoCreate(bool enabled, CancellationToken cancellationToken)
         {
-            await SendAsync<SetDevAutoCreate, SetDevAutoCreateResp>(new SetDevAutoCreate() { Enable = enabled}, cancellationToken);
+            return await SendAsync<SetDevAutoCreate, SetDevAutoCreateResp>(new SetDevAutoCreate() { Enable = enabled}, cancellationToken);
         }
 
         public async Task<DECTSubscriptionModeType> GetDECTSubscriptionMode(CancellationToken cancellationToken)
@@ -291,9 +291,9 @@ namespace mitelapi
             return resp.Mode;
         }
 
-        public async void SetDECTSubscriptionMode(DECTSubscriptionModeType mode, CancellationToken cancellationToken, int timeout = 3)
+        public async Task<SetDECTSubscriptionModeResp> SetDECTSubscriptionMode(DECTSubscriptionModeType mode, CancellationToken cancellationToken, int timeout = 3)
         {
-            await SendAsync<SetDECTSubscriptionMode, SetDECTSubscriptionModeResp>(new SetDECTSubscriptionMode() { Mode = mode, Timeout = timeout}, cancellationToken);
+            return await SendAsync<SetDECTSubscriptionMode, SetDECTSubscriptionModeResp>(new SetDECTSubscriptionMode() { Mode = mode, Timeout = timeout}, cancellationToken);
         }
 
         public async Task<GetRFPSyncResp> GetRFPSync(int id, CancellationToken cancellationToken)
