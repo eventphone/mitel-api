@@ -11,7 +11,7 @@ namespace mitelapi.Types
         /// <summary>
         /// Hardware type not known
         /// </summary>
-        [XmlEnum(Name = "Unknown")]
+        [XmlEnum(Name = "unknown")]
         Unknown,
         /// <summary>
         /// Non WLAN indoor RFP
