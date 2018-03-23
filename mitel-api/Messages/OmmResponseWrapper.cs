@@ -28,6 +28,10 @@ namespace mitelapi.Messages
         [XmlElement(nameof(GetRFPSyncQualityResp), typeof(GetRFPSyncQualityResp))]
         [XmlElement(nameof(GetRFPStatisticConfigResp), typeof(GetRFPStatisticConfigResp))]
         [XmlElement(nameof(GetRFPStatisticResp), typeof(GetRFPStatisticResp))]
+        [XmlElement(nameof(GetDECTSubscriptionModeResp), typeof(GetDECTSubscriptionModeResp))]
+        [XmlElement(nameof(SetDECTSubscriptionModeResp), typeof(SetDECTSubscriptionModeResp))]
+        [XmlElement(nameof(GetDevAutoCreateResp), typeof(GetDevAutoCreateResp))]
+        [XmlElement(nameof(SetDevAutoCreateResp), typeof(SetDevAutoCreateResp))]
         public BaseResponse Response { get; set; }
 
         [XmlElement(nameof(EventDECTSubscriptionMode), typeof(EventDECTSubscriptionMode))]

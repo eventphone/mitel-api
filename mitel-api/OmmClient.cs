@@ -274,6 +274,28 @@ namespace mitelapi
             return result;
         }
 
+        public async Task<bool> GetDevAutoCreate(CancellationToken cancellationToken)
+        {
+            var resp = await SendAsync<GetDevAutoCreate, GetDevAutoCreateResp>(new GetDevAutoCreate(), cancellationToken);
+            return resp.Enable;
+        }
+
+        public async void SetDevAutoCreate(bool enabled, CancellationToken cancellationToken)
+        {
+            await SendAsync<SetDevAutoCreate, SetDevAutoCreateResp>(new SetDevAutoCreate() { Enable = enabled}, cancellationToken);
+        }
+
+        public async Task<DECTSubscriptionModeType> GetDECTSubscriptionMode(CancellationToken cancellationToken)
+        {
+            var resp = await SendAsync<GetDECTSubscriptionMode, GetDECTSubscriptionModeResp>(new GetDECTSubscriptionMode(), cancellationToken);
+            return resp.Mode;
+        }
+
+        public async void SetDECTSubscriptionMode(DECTSubscriptionModeType mode, CancellationToken cancellationToken, int timeout = 3)
+        {
+            await SendAsync<SetDECTSubscriptionMode, SetDECTSubscriptionModeResp>(new SetDECTSubscriptionMode() { Mode = mode, Timeout = timeout}, cancellationToken);
+        }
+
         public async Task<GetRFPSyncResp> GetRFPSync(int id, CancellationToken cancellationToken)
         {
             return await SendAsync<GetRFPSync, GetRFPSyncResp>(new GetRFPSync { Id = id }, cancellationToken);
