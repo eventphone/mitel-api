@@ -18,8 +18,24 @@ namespace mitelapi.Types
         /// <summary>
         /// Unique RFP identifier. The numbering starts at 0
         /// </summary>
+        
+        public int? Id
+        {
+            get { return XmlIdSpecified ? (int?)XmlId : null; }
+            set
+            {
+                XmlIdSpecified = value.HasValue;
+                XmlId = value.GetValueOrDefault();
+            }
+        }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlIdSpecified { get; set; }
+
         [XmlAttribute("id")]
-        public int Id { get; set; }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public int XmlId { get; set; }
 
         /// <summary>
         /// Ethernet address, format "00:11:22:aa:bb:cc"

@@ -285,6 +285,32 @@ namespace mitelapi
             return await SendAsync<SetDevAutoCreate, SetDevAutoCreateResp>(new SetDevAutoCreate() { Enable = enabled}, cancellationToken);
         }
 
+        public async Task<bool> GetRFPCapture(CancellationToken cancellationToken)
+        {
+            var resp = await SendAsync<GetRFPCapture, GetRFPCaptureResp>(new GetRFPCapture(), cancellationToken);
+            return resp.Enable;
+        }
+
+        public async Task<DeleteRFPCaptureListElemResp> DeleteRFPCaptureListElem(string mac, CancellationToken cancellationToken)
+        {
+            return await SendAsync<DeleteRFPCaptureListElem, DeleteRFPCaptureListElemResp>(new DeleteRFPCaptureListElem() {EthAddr = mac }, cancellationToken);
+        }
+
+        public async Task<DeleteRFPCaptureListResp> DeleteRFPCaptureList(CancellationToken cancellationToken)
+        {
+            return await SendAsync<DeleteRFPCaptureList, DeleteRFPCaptureListResp>(new DeleteRFPCaptureList(), cancellationToken);
+        }
+
+        public async Task<SetRFPCaptureResp> SetRFPCapture(bool enabled, CancellationToken cancellationToken)
+        {
+            return await SendAsync<SetRFPCapture, SetRFPCaptureResp>(new SetRFPCapture() { Enable = enabled }, cancellationToken);
+        }
+
+        public async Task<GetRFPCaptureListResp> GetRFPCaptureList(CancellationToken cancellationToken)
+        {
+            return await SendAsync<GetRFPCaptureList, GetRFPCaptureListResp>(new GetRFPCaptureList(), cancellationToken);
+        }
+
         public async Task<DECTSubscriptionModeType> GetDECTSubscriptionMode(CancellationToken cancellationToken)
         {
             var resp = await SendAsync<GetDECTSubscriptionMode, GetDECTSubscriptionModeResp>(new GetDECTSubscriptionMode(), cancellationToken);
@@ -317,6 +343,16 @@ namespace mitelapi
             await SendAsync<SetRFP, SetRFPResp>(new SetRFP { Rfp = rfp}, cancellationToken);
         }
 
+        public async Task DeleteRFP(int id, CancellationToken cancellationToken)
+        {
+            await SendAsync<DeleteRFP, DeleteRFPResp>(new DeleteRFP { Id = id }, cancellationToken);
+        }
+
+        public async Task CreateRFP(RFPType rfp, CancellationToken cancellationToken)
+        {
+            await SendAsync<CreateRFP, CreateRFPResp>(new CreateRFP { Rfp = rfp }, cancellationToken);
+        }
+
         public async Task<List<RFPType>> GetRFPAll(bool withDetails, bool withState, CancellationToken cancellationToken)
         {
             var id = 0;
@@ -326,7 +362,7 @@ namespace mitelapi
                 try
                 {
                     var rfps = await SendAsync<GetRFP, GetRFPResp>(new GetRFP { Id = id, MaxRecords = 20, WithDetails=withDetails, WithState=withState }, cancellationToken);
-                    id = rfps.RFPs.Max(x => x.Id) + 1;
+                    id = rfps.RFPs.Max(x => x.Id.GetValueOrDefault()) + 1;
                     foreach (var rfp in rfps.RFPs)
                     {
                         result.Add(rfp);
