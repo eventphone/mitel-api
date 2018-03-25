@@ -28,6 +28,7 @@ namespace mitelapi
             }
             set
             {
+                if (_isDisposed) return;
                 _response = value;
                 _resetEvent.Release();
             }
@@ -47,12 +48,15 @@ namespace mitelapi
                     throw new OmmException(result.ErrorCode, result.Info, result.ErrorBad, result.ErrorMaxLength);
             }
         }
-        
+
+        private bool _isDisposed = false;
+
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)
             {
                 _resetEvent?.Dispose();
+                _isDisposed = true;
             }
         }
 

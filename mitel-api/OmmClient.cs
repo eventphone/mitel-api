@@ -44,6 +44,11 @@ namespace mitelapi
 
         public TimeSpan Rtt { get; private set; }
 
+        public int ReceiveQueueSize
+        {
+            get { return _receiveQueue.Count; }
+        }
+
         public async Task LoginAsync(string username, string password, bool userDeviceSync = false,  CancellationToken cancellationToken = default(CancellationToken))
         {
             await _client.ConnectAsync(_hostname, _port).ConfigureAwait(false);

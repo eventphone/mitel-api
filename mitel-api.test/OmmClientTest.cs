@@ -39,10 +39,22 @@ namespace mitel_api.test
         }
 
         [TestMethod]
+        public async Task CanCancelMessage()
+        {
+            try
+            {
+                await _client.LoginAsync("omm", "omm");
+                await _client.GetVersions(new CancellationToken(true));
+            }
+            catch(OperationCanceledException){}
+            await Task.Delay(TimeSpan.FromSeconds(1));
+            Assert.AreEqual(0, _client.ReceiveQueueSize);
+        }
+
+        [TestMethod]
         public async Task CanGetVersions()
         {
             await CanLogin();
-            return;
             await _client.GetVersions(CancellationToken.None);
         }
 
