@@ -63,7 +63,7 @@ namespace mitelapi
 
         public async Task Serialize<T>(T request, Stream stream)
         {
-            using (var sw = new StreamWriter(stream, Encoding.UTF8, 1024, true))
+            using (var sw = new StreamWriter(stream, new UTF8Encoding(false), 1024, true))
             {
                 await _writeLock.WaitAsync();
                 try
