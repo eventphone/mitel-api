@@ -265,6 +265,11 @@ namespace mitelapi
             return response.PortablePart;
         }
 
+        public async Task DeletePPDev(int ppn, CancellationToken cancellationToken)
+        {
+            await SendAsync<DeletePPDev, DeletePPDevResp>(new DeletePPDev {Ppn = ppn}, cancellationToken);
+        }
+
         public async Task<List<PPDevType>> GetPPAllDev(CancellationToken cancellationToken)
         {
             var ppn = 0;

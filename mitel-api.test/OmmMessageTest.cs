@@ -414,5 +414,16 @@ namespace mitel_api.test
             Assert.IsTrue(getRFPStatisticResp.Data.All(x=>x.Values.Length == 28));
             Assert.AreEqual(182L, getRFPStatisticResp.Data[0].Values[10]);
         }
+
+        [TestMethod]
+        public void CanSerializeDeletePPDev()
+        {
+            var deletePPDev = new DeletePPDev
+            {
+                Ppn = 7
+            };
+            var xml = _serializer.Serialize(deletePPDev);
+            Assert.AreEqual("<DeletePPDev ppn=\"7\" />", xml);
+        }
     }
 }
