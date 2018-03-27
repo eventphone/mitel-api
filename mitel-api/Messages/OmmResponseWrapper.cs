@@ -39,6 +39,7 @@ namespace mitelapi.Messages
         [XmlElement(nameof(DeleteRFPCaptureListResp), typeof(DeleteRFPCaptureListResp))]
         [XmlElement(nameof(DeleteRFPCaptureListElemResp), typeof(DeleteRFPCaptureListElemResp))]
         [XmlElement(nameof(GetRFPCaptureListResp), typeof(GetRFPCaptureListResp))]
+        [XmlElement(nameof(SetPPDevResp), typeof(SetPPDevResp))]
         public BaseResponse Response { get; set; }
 
         [XmlElement(nameof(EventDECTSubscriptionMode), typeof(EventDECTSubscriptionMode))]

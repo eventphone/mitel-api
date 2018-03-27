@@ -256,6 +256,15 @@ namespace mitelapi
             return response.Devices[0];
         }
 
+        public async Task<PPDevType> SetPPDev(PPDevType pp, CancellationToken cancellationToken)
+        {
+            var request = new SetPPDev {
+                PortablePart = pp,
+            };
+            var response = await SendAsync<SetPPDev, SetPPDevResp>(request, cancellationToken);
+            return response.PortablePart;
+        }
+
         public async Task<List<PPDevType>> GetPPAllDev(CancellationToken cancellationToken)
         {
             var ppn = 0;

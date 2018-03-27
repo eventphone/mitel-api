@@ -18,7 +18,7 @@ namespace mitelapi.Types
         /// <summary>
         /// Unique RFP identifier. The numbering starts at 0
         /// </summary>
-        
+        [XmlIgnore]
         public int? Id
         {
             get { return XmlIdSpecified ? (int?)XmlId : null; }
