@@ -455,7 +455,8 @@ namespace mitelapi
             using (var container = new ReceiveContainer(sequence))
             {
                 _receiveQueue.AddOrUpdate(sequence, container, (i, o) => container);
-                await _serializer.Serialize(request, _ssl);
+                var message = await _serializer.Serialize(request, _ssl);
+                OnMessageLog(message, MessageDirection.Out);
                 return (TResponse) await container.GetResponseAsync(cancellationToken);
             }
         }
@@ -487,6 +488,8 @@ namespace mitelapi
         public event EventHandler<OmmEventArgs<EventRFPSyncRel>> RFPSyncRel;
         public event EventHandler<OmmEventArgs<EventRFPSyncQuality>> RFPSyncQuality;
 
+        public event EventHandler<LogMessageEventArgs> MessageLog;
+
         private void Read()
         {
             byte[] buffer = new byte[1024];
@@ -506,6 +509,7 @@ namespace mitelapi
                         if (nullIndex > 0)
                         {
                             var message = Encoding.UTF8.GetString(buffer, 0, nullIndex);
+                            OnMessageLog(message, MessageDirection.In);
                             var response = _serializer.DeserializeWrapper(message);
                             LastMessage = DateTime.Now;
                             OnMessageReceived(response.Response);
@@ -535,6 +539,12 @@ namespace mitelapi
         {
             if (message == null) return;
             MessageReceived?.Invoke(this, new MessageReceivedEventArgs(message));
+        }
+
+        private void OnMessageLog(string message, MessageDirection direction)
+        {
+            if (String.IsNullOrEmpty(message)) return;
+            MessageLog?.Invoke(this, new LogMessageEventArgs(message, direction));
         }
 
         private void OnEventReceived(BaseEvent ommEvent)

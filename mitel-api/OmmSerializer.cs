@@ -61,7 +61,7 @@ namespace mitelapi
             }
         }
 
-        public async Task Serialize<T>(T request, Stream stream)
+        public async Task<string> Serialize<T>(T request, Stream stream)
         {
             using (var sw = new StreamWriter(stream, new UTF8Encoding(false), 1024, true))
             {
@@ -71,6 +71,7 @@ namespace mitelapi
                     Serialize(request, sw);
                     stream.WriteByte(0);
                     await sw.FlushAsync();
+                    return Serialize(request);
                 }
                 finally
                 {
