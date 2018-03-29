@@ -425,5 +425,16 @@ namespace mitel_api.test
             var xml = _serializer.Serialize(deletePPDev);
             Assert.AreEqual("<DeletePPDev ppn=\"7\" />", xml);
         }
+
+        [TestMethod]
+        public void CanSerializeDeletePPUser()
+        {
+            var deletePPUser = new DeletePPUser
+            {
+                Uid = 42
+            };
+            var xml = _serializer.Serialize(deletePPUser);
+            Assert.AreEqual("<DeletePPUser uid=\"42\" />", xml);
+        }
     }
 }

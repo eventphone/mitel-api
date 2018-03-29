@@ -21,6 +21,7 @@ namespace mitelapi.Messages
         [EditorBrowsable(EditorBrowsableState.Never)]
         public int XmlUid { get; set; }
 
+        [XmlIgnore]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public bool XmlUidSpecified { get; set; }
     }
