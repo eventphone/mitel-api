@@ -68,10 +68,11 @@ namespace mitelapi
                 await _writeLock.WaitAsync();
                 try
                 {
-                    Serialize(request, sw);
-                    stream.WriteByte(0);
+                    var result = Serialize(request);
+                    await sw.WriteAsync(result);
                     await sw.FlushAsync();
-                    return Serialize(request);
+                    stream.WriteByte(0);
+                    return result;
                 }
                 finally
                 {
