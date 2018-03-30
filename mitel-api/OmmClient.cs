@@ -77,7 +77,14 @@ namespace mitelapi
                     uid = users.Users.Max(x => x.Uid) + 1;
                     foreach(var user in users.Users)
                     {
-                        _uidMapping.TryAdd(user.Num, user.Uid);
+                        if (user.Ppn == 0)
+                        {
+                            await DeletePPUser(user.Uid, cancellationToken);
+                        }
+                        else
+                        {
+                            _uidMapping.TryAdd(user.Num, user.Uid);
+                        }
                     }
                 }
                 catch (OmmNoEntryException)
@@ -248,6 +255,12 @@ namespace mitelapi
         public async Task DeletePPUser(int uid, CancellationToken cancellationToken)
         {
             await SendAsync<DeletePPUser, DeletePPUserResp>(new DeletePPUser { Uid = uid }, cancellationToken);
+        }
+
+        public async Task<PPDevType[]> GetPPDev(int ppn, int maxRecords, CancellationToken cancellationToken)
+        {
+            var response = await SendAsync<GetPPDev, GetPPDevResp>(new GetPPDev { Ppn = ppn, MaxRecords = maxRecords }, cancellationToken);
+            return response.Devices;
         }
 
         public async Task<PPDevType> GetPPDev(int ppn, CancellationToken cancellationToken)
