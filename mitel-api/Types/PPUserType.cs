@@ -969,6 +969,25 @@ namespace mitelapi.Types
         [EditorBrowsable(EditorBrowsableState.Never)]
         public bool XmlCalculatedSipPortSpecified { get; set; }
 
+        [XmlIgnore]
+        public int? PpnOld
+        {
+            get { return XmlPpnOldSpecified ? (int?)XmlPpnOld : null; }
+            set
+            {
+                XmlPpnOldSpecified = value.HasValue;
+                XmlPpnOld = value.GetValueOrDefault();
+            }
+        }
+
+        [XmlAttribute("ppnOld")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public int XmlPpnOld { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlPpnOldSpecified { get; set; }
+
         private static byte[] StringToByteArray(string hex)
         {
             byte[] bytes = new byte[hex.Length / 2];
