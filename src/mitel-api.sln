@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mitel-api", "mitel-api\mitel-api.csproj", "{04183317-AADD-4993-971A-7EE322CE28A4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mitel-api.test", "mitel-api.test\mitel-api.test.csproj", "{7CC10805-35E2-4F8C-B0AD-88387EFFF2B1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{04183317-AADD-4993-971A-7EE322CE28A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04183317-AADD-4993-971A-7EE322CE28A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04183317-AADD-4993-971A-7EE322CE28A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04183317-AADD-4993-971A-7EE322CE28A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CC10805-35E2-4F8C-B0AD-88387EFFF2B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CC10805-35E2-4F8C-B0AD-88387EFFF2B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CC10805-35E2-4F8C-B0AD-88387EFFF2B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CC10805-35E2-4F8C-B0AD-88387EFFF2B1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F502C0FA-0812-4699-8F63-FDC4859D4C93}
+	EndGlobalSection
+EndGlobal
