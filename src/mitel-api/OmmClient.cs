@@ -76,7 +76,7 @@ namespace mitelapi
             }
             this.PPUserCnf += UpdateUserCache;
             this.PPCnf += UpdateUserCache;
-            await Subscribe(new SubscribeCmd(EventType.PPUserCnf) { Uid = -1 }, cancellationToken);
+            await SubscribeAsync(new SubscribeCmdType(EventType.PPUserCnf) { Uid = -1 }, cancellationToken);
         }
 
         private void UpdateUserCache(object sender, OmmEventArgs<EventPPCnf> e)
@@ -114,33 +114,7 @@ namespace mitelapi
 
         private async void SendPing(object state)
         {
-            await Ping(CancellationToken.None);
-        }
-
-        public async Task Ping(CancellationToken cancellationToken)
-        {
-            var ping = new Ping();
-            var pong = await SendAsync<Ping, PingResp>(ping, cancellationToken);
-            if (pong.TimeStamp.HasValue)
-            {
-                Rtt = TimeSpan.FromSeconds(ping.Timestamp - pong.TimeStamp.Value);
-            }
-        }
-
-        public Task Subscribe(EventType type, CancellationToken cancellationToken)
-        {
-            return Subscribe(new SubscribeCmd(type), cancellationToken);
-        }
-
-        public Task Subscribe(SubscribeCmd command, CancellationToken cancellationToken)
-        {
-            return Subscribe(new[] {command}, cancellationToken);
-        }
-
-        public async Task Subscribe(SubscribeCmd[] commands, CancellationToken cancellationToken)
-        {
-            var subscribe = new Subscribe {Commands = commands};
-            await SendAsync<Subscribe, SubscribeResp>(subscribe, cancellationToken);
+            await PingAsync(CancellationToken.None);
         }
 
         public async Task<GetRFPSummaryResp> GetRFPSummary(CancellationToken cancellationToken)

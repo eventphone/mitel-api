@@ -244,7 +244,7 @@ namespace mitel_api.test
         {
             var subscribe = new Subscribe
             {
-                Commands = new[] {new SubscribeCmd{Cmd = CmdType.On, Event = EventType.SystemState}}
+                Commands = new[] {new SubscribeCmdType{Cmd = CmdType.On, Event = EventType.SystemState}}
             };
             var xml = _serializer.Serialize(subscribe);
             Assert.AreEqual("<Subscribe><e cmd=\"On\" eventType=\"SystemState\" /></Subscribe>", xml);

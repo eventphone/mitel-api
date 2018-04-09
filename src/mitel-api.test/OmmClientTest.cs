@@ -132,7 +132,7 @@ namespace mitel_api.test
         public async Task CanPing()
         {
             await CanLogin();
-            await _client.Ping(CancellationToken.None);
+            await _client.PingAsync(CancellationToken.None);
             Console.WriteLine(_client.Rtt);
         }
 
@@ -140,7 +140,7 @@ namespace mitel_api.test
         public async Task CanSubscribe()
         {
             await CanLogin();
-            await _client.Subscribe(EventType.DECTSubscriptionMode, CancellationToken.None);
+            await _client.SubscribeAsync(EventType.DECTSubscriptionMode, CancellationToken.None);
             var resetEvent = new ManualResetEventSlim();
             _client.DECTSubscriptionModeChanged += (s, e) =>
             {
@@ -156,7 +156,7 @@ namespace mitel_api.test
         public async Task CanSubscribeAlarmCallProgress()
         {
             await CanLogin();
-            await _client.Subscribe(new SubscribeCmd(EventType.AlarmCallProgress){Ppn = -1, Trigger = "*"}, CancellationToken.None);
+            await _client.SubscribeAsync(new SubscribeCmdType(EventType.AlarmCallProgress){Ppn = -1, Trigger = "*"}, CancellationToken.None);
             var resetEvent = new ManualResetEventSlim();
             _client.AlarmCallProgress += (s, e) =>
             {
@@ -172,7 +172,7 @@ namespace mitel_api.test
         public async Task CanSubscribePPDevCnf()
         {
             await CanLogin();
-            await _client.Subscribe(new SubscribeCmd(EventType.PPDevCnf) { Ppn = -1 }, CancellationToken.None);
+            await _client.SubscribeAsync(new SubscribeCmdType(EventType.PPDevCnf) { Ppn = -1 }, CancellationToken.None);
             var resetEvent = new ManualResetEventSlim();
             _client.PPDevCnf += (s, e) =>
             {

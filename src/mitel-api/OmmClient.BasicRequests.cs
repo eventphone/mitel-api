@@ -4,6 +4,7 @@ using System.Net.Security;
 using System.Threading;
 using System.Threading.Tasks;
 using mitelapi.Messages;
+using mitelapi.Types;
 
 namespace mitelapi
 {
@@ -57,6 +58,59 @@ namespace mitelapi
         public async Task<LimitsResp> LimitsAsync(CancellationToken cancellation)
         {
             return await SendAsync<Limits, LimitsResp>(new Limits(), cancellation);
+        }
+        
+        /// <summary>
+        /// This request can be sent to OM AXI to change events the client wants to be notified of.
+        /// If the underlying TCP link gets closed by whatever reason, all notification subscriptions end automatically.
+        /// The subscription mechanism remembers a flag for each possible event and for each possible element (e. g. DECT phone).
+        /// The command “on” sets the corresponding flag in the OM AXI implementation for the given events. It can be reset by using “off”.
+        /// </summary>
+        public Task SubscribeAsync(EventType type, CancellationToken cancellationToken)
+        {
+            return SubscribeAsync(new SubscribeCmdType(type), cancellationToken);
+        }
+        
+        /// <summary>
+        /// This request can be sent to OM AXI to change events the client wants to be notified of.
+        /// If the underlying TCP link gets closed by whatever reason, all notification subscriptions end automatically.
+        /// The subscription mechanism remembers a flag for each possible event and for each possible element (e. g. DECT phone).
+        /// The command “on” sets the corresponding flag in the OM AXI implementation for the given events. It can be reset by using “off”.
+        /// </summary>
+        public Task SubscribeAsync(SubscribeCmdType command, CancellationToken cancellationToken)
+        {
+            return SubscribeAsync(new[] {command}, cancellationToken);
+        }
+
+        /// <summary>
+        /// This request can be sent to OM AXI to change events the client wants to be notified of.
+        /// If the underlying TCP link gets closed by whatever reason, all notification subscriptions end automatically.
+        /// The subscription mechanism remembers a flag for each possible event and for each possible element (e. g. DECT phone).
+        /// The command “on” sets the corresponding flag in the OM AXI implementation for the given events. It can be reset by using “off”.
+        /// </summary>
+        /// <param name="commands">Up to 20 event commands to be executed at once atomically.</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task SubscribeAsync(SubscribeCmdType[] commands, CancellationToken cancellationToken)
+        {
+            var subscribe = new Subscribe {Commands = commands};
+            await SendAsync<Subscribe, SubscribeResp>(subscribe, cancellationToken);
+        }
+
+        /// <summary>
+        /// With this request a client can keep the TCP link alive.
+        /// If the request is sent before the 5 minutes timeout expires, the link is kept open.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task PingAsync(CancellationToken cancellationToken)
+        {
+            var ping = new Ping();
+            var pong = await SendAsync<Ping, PingResp>(ping, cancellationToken);
+            if (pong.TimeStamp.HasValue)
+            {
+                Rtt = TimeSpan.FromSeconds(ping.Timestamp - pong.TimeStamp.Value);
+            }
         }
     }
 }
