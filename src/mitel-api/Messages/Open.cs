@@ -87,5 +87,11 @@ namespace mitelapi.Messages
         /// </summary>
         [XmlElement("publicKey")]
         public OmmPublicKey PublicKey { get; set; }
+
+        /// <summary>
+        /// State of the OMM standby feature.
+        /// </summary>
+        [XmlAttribute("ommStbState")]
+        public OmmStbState StandbyState { get; set; }
     }
 }

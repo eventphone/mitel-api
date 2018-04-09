@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 
 namespace mitelapi.Messages
 {
-    [XmlRoot("Ping", Namespace = "")]
+    [XmlRoot("Ping")]
     public class Ping : BaseRequest
     {
         public Ping()
@@ -19,7 +19,6 @@ namespace mitelapi.Messages
         public long Timestamp { get; set; }
     }
     
-    [XmlRoot("PingResp", Namespace = "")]
     public class PingResp:BaseResponse
     {
         /// <summary>

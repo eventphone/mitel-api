@@ -112,5 +112,15 @@ namespace mitelapi
                 Rtt = TimeSpan.FromSeconds(ping.Timestamp - pong.TimeStamp.Value);
             }
         }
+
+        /// <summary>
+        /// With this requests the client can ask for information about the current OMM standby state.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<GetStbStateResp> GetStbState(CancellationToken cancellationToken)
+        {
+            return await SendAsync<GetStbState, GetStbStateResp>(new GetStbState(), cancellationToken);
+        }
     }
 }
