@@ -1,60 +1,72 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Linq;
+using System.Reflection;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using mitelapi.Events;
 
 namespace mitelapi.Messages
 {
     [XmlRoot("root")]
-    public class OmmResponseWrapper
+    public class OmmResponseWrapper:IXmlSerializable
     {
-        [XmlElement(nameof(OpenResp), typeof(OpenResp))]
-        [XmlElement(nameof(PingResp), typeof(PingResp))]
-        [XmlElement(nameof(GetVersionsResp), typeof(GetVersionsResp))]
-        [XmlElement(nameof(GetRFPSummaryResp), typeof(GetRFPSummaryResp))]
-        [XmlElement(nameof(GetPPDevSummaryResp), typeof(GetPPDevSummaryResp))]
-        [XmlElement(nameof(GetPPUserSummaryResp), typeof(GetPPUserSummaryResp))]
-        [XmlElement(nameof(SetPPUserDevRelationResp), typeof(SetPPUserDevRelationResp))]
-        [XmlElement(nameof(SubscribeResp), typeof(SubscribeResp))]
-        [XmlElement(nameof(SetPPResp), typeof(SetPPResp))]
-        [XmlElement(nameof(GetPPResp), typeof(GetPPResp))]
-        [XmlElement(nameof(CreatePPUserResp), typeof(CreatePPUserResp))]
-        [XmlElement(nameof(GetPPUserResp), typeof(GetPPUserResp))]
-        [XmlElement(nameof(SetPPUserResp), typeof(SetPPUserResp))]
-        [XmlElement(nameof(GetPPDevResp), typeof(GetPPDevResp))]
-        [XmlElement(nameof(DeletePPUserResp), typeof(DeletePPUserResp))]
-        [XmlElement(nameof(PutFileResp), typeof(PutFileResp))]
-        [XmlElement(nameof(GetRFPResp), typeof(GetRFPResp))]
-        [XmlElement(nameof(SetRFPResp), typeof(SetRFPResp))]
-        [XmlElement(nameof(GetRFPSyncResp), typeof(GetRFPSyncResp))]
-        [XmlElement(nameof(GetRFPSyncQualityResp), typeof(GetRFPSyncQualityResp))]
-        [XmlElement(nameof(GetRFPStatisticConfigResp), typeof(GetRFPStatisticConfigResp))]
-        [XmlElement(nameof(GetRFPStatisticResp), typeof(GetRFPStatisticResp))]
-        [XmlElement(nameof(GetDECTSubscriptionModeResp), typeof(GetDECTSubscriptionModeResp))]
-        [XmlElement(nameof(SetDECTSubscriptionModeResp), typeof(SetDECTSubscriptionModeResp))]
-        [XmlElement(nameof(GetDevAutoCreateResp), typeof(GetDevAutoCreateResp))]
-        [XmlElement(nameof(SetDevAutoCreateResp), typeof(SetDevAutoCreateResp))]
-        [XmlElement(nameof(CreateRFPResp), typeof(CreateRFPResp))]
-        [XmlElement(nameof(DeleteRFPResp), typeof(DeleteRFPResp))]
-        [XmlElement(nameof(GetRFPCaptureResp), typeof(GetRFPCaptureResp))]
-        [XmlElement(nameof(SetRFPCaptureResp), typeof(SetRFPCaptureResp))]
-        [XmlElement(nameof(DeleteRFPCaptureListResp), typeof(DeleteRFPCaptureListResp))]
-        [XmlElement(nameof(DeleteRFPCaptureListElemResp), typeof(DeleteRFPCaptureListElemResp))]
-        [XmlElement(nameof(GetRFPCaptureListResp), typeof(GetRFPCaptureListResp))]
-        [XmlElement(nameof(SetPPDevResp), typeof(SetPPDevResp))]
-        [XmlElement(nameof(DeletePPDevResp), typeof(DeletePPDevResp))]
-        [XmlElement(nameof(LimitsResp), typeof(LimitsResp))]
         public BaseResponse Response { get; set; }
-
-        [XmlElement(nameof(EventDECTSubscriptionMode), typeof(EventDECTSubscriptionMode))]
-        [XmlElement(nameof(EventRFPSummary), typeof(EventRFPSummary))]
-        [XmlElement(nameof(EventAlarmCallProgress), typeof(EventAlarmCallProgress))]
-        [XmlElement(nameof(EventPPDevSummary), typeof(EventPPDevSummary))]
-        [XmlElement(nameof(EventPPUserSummary), typeof(EventPPUserSummary))]
-        [XmlElement(nameof(EventPPDevCnf), typeof(EventPPDevCnf))]
-        [XmlElement(nameof(EventPPUserCnf), typeof(EventPPUserCnf))]
-        [XmlElement(nameof(EventPPCnf), typeof(EventPPCnf))]
-        [XmlElement(nameof(EventRFPSyncRel), typeof(EventRFPSyncRel))]
-        [XmlElement(nameof(EventRFPState), typeof(EventRFPState))]
-        [XmlElement(nameof(EventRFPSyncQuality), typeof(EventRFPSyncQuality))]
+        
         public BaseEvent Event { get; set; }
+
+        public XmlSchema GetSchema()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            reader.ReadStartElement("root");
+            if (reader.NodeType != XmlNodeType.Element)
+                throw new NotSupportedException();
+            var name = reader.Name;
+            var serializer = ResolveType(name);
+            var content = serializer.Deserialize(reader);
+            if (content is BaseEvent baseEvent)
+                Event = baseEvent;
+            else if (content is BaseResponse baseResponse)
+                Response = baseResponse;
+            reader.ReadEndElement();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private static readonly ConcurrentDictionary<string, XmlSerializer> _typeCache = new ConcurrentDictionary<string, XmlSerializer>();
+        private static readonly Assembly _assembly = typeof(OmmResponseWrapper).Assembly;
+        private static XmlSerializer ResolveType(string name)
+        {
+            return _typeCache.GetOrAdd(name, FindType);
+        }
+
+        private static XmlSerializer FindType(string name)
+        {
+            if (name.StartsWith("Event"))
+            {
+                var type = _assembly.GetTypes()
+                    .Where(x => x.Namespace == typeof(BaseEvent).Namespace)
+                    .FirstOrDefault(x => x.Name == name);
+                if (type != null)
+                    return new XmlSerializer(type);
+            }
+            if (name.EndsWith("Resp"))
+            {
+                var type = _assembly.GetTypes()
+                    .Where(x => x.Namespace == typeof(BaseResponse).Namespace)
+                    .FirstOrDefault(x => x.Name == name);
+                if (type != null)
+                    return new XmlSerializer(type);
+            }
+            throw new NotSupportedException($"{name} is not supported");
+        }
     }
 }

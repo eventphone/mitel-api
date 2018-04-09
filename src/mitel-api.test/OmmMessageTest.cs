@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Reflection;
 using System.Xml.Serialization;
 using mitelapi;
 using mitelapi.Events;
@@ -28,15 +29,32 @@ namespace mitel_api.test
                 .Where(x => !x.IsAbstract)
                 .Where(x => typeof(BaseResponse).IsAssignableFrom(x))
                 .ToList();
-            var attributes = typeof(OmmResponseWrapper).GetProperty(nameof(OmmResponseWrapper.Response))
-                .GetCustomAttributes(typeof(XmlElementAttribute), false)
-                .OfType<XmlElementAttribute>()
-                .Select(x => x.Type);
-            foreach (var attribute in attributes)
+            var failed = true;
+            foreach (var type in respTypes)
             {
-                respTypes.Remove(attribute);
+                var xml = $"<{type.Name}/>";
+                _serializer.Deserialize<BaseResponse>(xml);
+                failed = false;
             }
-            Assert.IsTrue(respTypes.Count == 0, "XmlElement for (" + String.Join(", ", respTypes.Select(x=>x.Name)) + $") missing on {nameof(OmmResponseWrapper.Response)}");
+            Assert.IsFalse(failed);
+        }
+
+        [TestMethod]
+        public void OmmResponseWrapperDeclaresAllEventTypes()
+        {
+            var respTypes = typeof(BaseEvent).Assembly.GetTypes()
+                .Where(x => !x.IsInterface)
+                .Where(x => !x.IsAbstract)
+                .Where(x => typeof(BaseEvent).IsAssignableFrom(x))
+                .ToList();
+            var failed = true;
+            foreach (var type in respTypes)
+            {
+                var xml = $"<{type.Name}/>";
+                _serializer.DeserializeEvent<BaseEvent>(xml);
+                failed = false;
+            }
+            Assert.IsFalse(failed);
         }
 
         [TestMethod]
