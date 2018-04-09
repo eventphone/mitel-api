@@ -15,7 +15,6 @@ namespace mitelapi.Messages
     /// <summary>
     /// The reply to this request is an object called DeleteRFPCaptureListResp.
     /// </summary>
-    [XmlRoot("DeleteRFPCaptureListResp", Namespace = "")]
     public class DeleteRFPCaptureListResp : BaseResponse
     {
     }

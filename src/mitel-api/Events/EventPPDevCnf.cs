@@ -11,7 +11,6 @@ namespace mitelapi.Events
     /// This event is also sent upon creation of a record. 
     /// If the record has been deleted, this event is sent with only a ppn in the pp element and the attribute deleted="1". 
     /// </summary>
-    [XmlRoot("EventPPDevCnf", Namespace = "")]
     public class EventPPDevCnf : BaseEvent
     {
         /// <summary>

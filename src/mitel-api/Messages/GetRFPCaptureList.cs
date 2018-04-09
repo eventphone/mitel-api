@@ -16,7 +16,6 @@ namespace mitelapi.Messages
     /// <summary>
     /// The reply to this request is an object called GetRFPCaptureListResp
     /// </summary>
-    [XmlRoot("GetRFPCaptureListResp", Namespace = "")]
     public class GetRFPCaptureListResp : BaseResponse
     {
         /// <summary>

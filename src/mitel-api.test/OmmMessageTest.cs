@@ -1,8 +1,5 @@
 using System;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Xml;
 using System.Xml.Serialization;
 using mitelapi;
 using mitelapi.Events;
@@ -435,6 +432,143 @@ namespace mitel_api.test
             };
             var xml = _serializer.Serialize(deletePPUser);
             Assert.AreEqual("<DeletePPUser uid=\"42\" />", xml);
+        }
+
+        [TestMethod]
+        public void CanDeserializeGetVersionsResp()
+        {
+            var message = "<GetVersionsResp " +
+                          "ActivateRemoteSystemDump=\"1.0.1\" AddUserToConference=\"2.0.2\" CancelMessage=\"1.0.2\" ChangeUserInConference=\"2.0.1\" " +
+                          "ConferenceConfirmation=\"1.0.1\" CreateAccount=\"1.0.5\" CreateACLEntry=\"1.0.3\" CreateAlarmTrigger=\"1.0.9\" " +
+                          "CreateBluetoothBeacon=\"2.0.1\" CreateConference=\"1.0.1\" CreateConferenceRoom=\"1.0.2\" CreateDigitTreatment=\"1.0.1\" " +
+                          "CreateFixedPP=\"1.1.8\" CreateLDAP=\"1.0.3\" CreatePPDev=\"2.0.0\" CreatePPUser=\"1.1.11\" CreateRFP=\"2.0.2\" " +
+                          "CreateSite=\"1.0.2\" CreateVideoDev=\"2.1.1\" CreateWLANProfile=\"2.0.4\" CreateXMLApplication=\"3.0.3\" DeleteAccount=\"1.0.1\" " +
+                          "DeleteACLEntry=\"1.0.3\" DeleteAlarmTrigger=\"1.0.3\" DeleteBluetoothBeacon=\"1.0.1\" DeleteConference=\"1.0.1\" " +
+                          "DeleteConferenceRoom=\"1.0.1\" DeleteDigitTreatment=\"1.0.1\" DeleteEventLogBuffer=\"1.0.1\" DeleteLDAP=\"1.0.1\" " +
+                          "DeleteMessage=\"1.0.2\" DeletePPDev=\"1.0.1\" DeletePPUser=\"1.0.2\" DeleteRFPCaptureListElem=\"1.0.3\" " +
+                          "DeleteRFPCaptureList=\"1.0.3\" DeleteRFP=\"1.0.2\" DeleteSite=\"1.0.1\" DeleteUserFromConference=\"1.0.1\" DeleteVideoDev=\"1.0.1\" " +
+                          "DeleteWLANProfile=\"1.0.1\" DeleteXMLApplication=\"1.0.1\" EventAccountCnf=\"1.0.5\" EventAccountSummary=\"1.0.1\" " +
+                          "EventACLCnf=\"1.0.3\" EventAdditionalSettingsCnf=\"1.0.2\" EventAddUserToConference=\"2.0.2\" EventAdvancedSIPCnf=\"3.0.3\" " +
+                          "EventAlarmCallProgress=\"1.0.1\" EventAlarmTriggerCnf=\"1.0.1\" EventAlarmTrigger=\"1.0.7\" EventAutoDBBackupCnf=\"2.0.2\" " +
+                          "EventAutoDBBackupFileNameCnf=\"1.0.1\" EventBackupSIPCnf=\"1.0.1\" EventBasicSIPCnf=\"3.0.1\" EventBluetoothBeaconCnf=\"2.0.1\" " +
+                          "EventBluetoothBeaconSummary=\"1.0.1\" EventBluetoothClientStatistic=\"1.0.1\" EventBluetoothGlobalSettingsCnf=\"1.0.1\" " +
+                          "EventBluetoothSensitivityCnf=\"1.0.1\" EventChangeUserInConference=\"2.0.1\" EventConferenceRelease=\"1.0.1\" " +
+                          "EventConferenceRequest=\"1.0.1\" EventConferenceRoomCnf=\"1.0.2\" EventConferenceServerSIPCnf=\"1.0.2\" EventConfigURLCnf=\"1.0.2\" " +
+                          "EventCoreDumpURLCnf=\"1.0.2\" EventCreateConference=\"1.0.1\" EventDbTransferState=\"1.0.3\" EventDECTAuthCodeCnf=\"1.0.1\" " +
+                          "EventDECTEncryptionCnf=\"1.0.1\" EventDECTPagingAreaSizeCnf=\"1.0.1\" EventDECTPpSettingsCnf=\"2.0.1\" " +
+                          "EventDECTRegDomainCnf=\"1.0.2\" EventDECTSubscriptionMode=\"1.0.1\" EventDeleteConference=\"1.0.1\" " +
+                          "EventDeleteUserFromConference=\"1.0.1\" EventDevAutoCreateCnf=\"1.0.1\" EventDigitTreatmentCnf=\"1.0.1\" EventDTMFCnf=\"1.0.1\" " +
+                          "EventEULAConfirmCnf=\"1.0.1\" EventEventLogBufferDelete=\"1.0.0\" EventEventLogEntry=\"1.0.2\" EventFACCnf=\"1.0.3\" " +
+                          "EventFACPrefixCnf=\"1.0.1\" EventFreeConferenceChannels=\"1.0.1\" EventHealthState=\"1.1.9\" EventIMACnf=\"2.0.2\" " +
+                          "EventIntercomCallHandlingSIPCnf=\"1.0.1\" EventLDAPCnf=\"1.0.2\" EventLicenseCnf=\"2.0.2\" EventLicensedCodecLines=\"1.0.1\" " +
+                          "EventLicenseFile=\"1.0.1\" EventLicenseServerListCnf=\"1.0.1\" EventMessageConfirmation=\"1.0.1\" EventMessageProgress=\"1.0.2\" " +
+                          "EventMessageQueueEmpty=\"1.0.1\" EventMessageSend=\"1.0.7\" EventNetParamsCnf=\"1.0.1\" EventOMMCertificateCnf=\"1.0.2\" " +
+                          "EventPARKCnf=\"1.0.1\" EventPARKFromServerResult=\"1.0.1\" EventPermissionChange=\"1.0.4\" EventPortRangeSIPCnf=\"1.0.1\" " +
+                          "EventPositionHistory=\"1.0.1\" EventPositionInfo=\"1.0.1\" EventPositionRequest=\"1.0.1\" EventPositionTrack=\"1.0.1\" " +
+                          "EventDECTPowerLimitCnf=\"1.0.1\" EventPPCnf=\"2.0.0\" EventPPDevCnf=\"2.0.0\" EventPPDevSummary=\"1.0.1\" " +
+                          "EventPPFirmwareUpdateCnf=\"1.0.2\" EventPPFirmwareUpdateOverview=\"1.0.1\" EventPPFirmwareUpdateStatus=\"1.0.2\" " +
+                          "EventPPFirmwareURLCnf=\"1.0.2\" EventPPLoginVariantCnf=\"1.0.1\" EventPpProfileCnf=\"1.0.2\" EventPPState=\"1.1.3\" " +
+                          "EventPPTransaction=\"1.0.1\" EventPPUserCnf=\"1.1.9\" EventPPUserSummary=\"1.0.3\" EventPreserveUserDeviceRelationCnf=\"1.0.1\" " +
+                          "EventReadyForConferencing=\"1.0.1\" EventRegistrationTrafficShapingCnf=\"2.0.2\" EventRemoteAccessCnf=\"1.0.1\" " +
+                          "EventRemoteSystemDumpCnf=\"1.0.2\" EventRestrictedSubscriptionDurationCnf=\"1.0.1\" EventRFPCaptureCnf=\"1.1.2\" " +
+                          "EventRFPCapture=\"1.0.4\" EventRFPCnf=\"3.0.3\" EventRFPConnectAttempt=\"1.1.2\" EventRFPDetails=\"1.1.5\" EventRFPIpQuality=\"1.0.2\" " +
+                          "EventRFPMediaStreamQuality=\"1.0.1\" EventRFPState=\"1.1.5\" EventRFPSummary=\"1.0.5\" EventRFPSyncQuality=\"1.0.2\" " +
+                          "EventRFPSyncRel=\"1.0.1\" EventRTPCnf=\"3.0.1\" EventRTPConferenceStreamChg=\"1.0.1\" EventSARICnf=\"1.0.1\" EventSecureSIPCnf=\"2.0.1\" " +
+                          "EventSecureOMMCertificateServerImportCnf=\"1.0.5\" EventSecurePROVCertificateServerImportCnf=\"1.0.5\" " +
+                          "EventSecureSIPCertificateCnf=\"1.1.1\" EventSecureSIPCertificateServerImportCnf=\"2.0.5\" EventSupplicantCertificateCnf=\"1.0.0\" " +
+                          "EventSupplicantCertificateServerImportCnf=\"1.0.0\" EventSupplicantCnf=\"1.0.0\" EventSiteCnf=\"1.0.2\" EventSiteSummary=\"1.0.2\" " +
+                          "EventSNMPCnf=\"1.0.1\" EventSoftwareUpdateCnf=\"1.0.3\" EventSpecialBrandingCnf=\"1.0.2\" EventStbStateChange=\"1.0.1\" " +
+                          "EventSuplServCnf=\"1.0.7\" EventSyslogServerCnf=\"1.0.2\" EventSystemCredentialsCnf=\"1.0.1\" EventSystemNameCnf=\"1.0.1\" " +
+                          "EventSystemProvUpdTrigCnf=\"1.0.3\" EventSysToneSchemeCnf=\"1.0.1\" EventSysVoiceboxNumCnf=\"1.0.1\" EventUsedConfigURL=\"1.0.1\" " +
+                          "EventUserDataImport=\"1.0.1\" EventUserDataServerCnf=\"2.0.2\" EventUserDeviceSyncOMMCnf=\"1.0.1\" EventUserMonitoringCnf=\"1.0.1\" " +
+                          "EventVideoDevCnf=\"2.1.1\" EventVideoDevLink=\"1.0.1\" EventVideoDevSummary=\"1.0.1\" EventWLANClient=\"1.0.2\" " +
+                          "EventWLANProfileCnf=\"2.0.3\" EventWLANRegDomainCnf=\"1.0.1\" EventXMLApplicationCnf=\"3.0.3\" EventCorporateDirectoryCnf=\"1.0.0\" " +
+                          "EventCorporateDirectoryOrderCnf=\"1.0.0\" GenerateHealthStateAlarmTriggers=\"1.0.1\" GetAccount=\"1.0.5\" GetAccountSummary=\"1.0.2\" " +
+                          "GetACLEntry=\"1.0.2\" GetActivePPDev=\"1.0.1\" GetAdditionalSettings=\"1.0.2\" GetAdvancedSIP=\"3.0.3\" GetAlarmTrigger=\"1.1.6\" " +
+                          "GetAlarmTriggerSummary=\"1.0.1\" GetAutoDBBackupFileName=\"1.0.1\" GetAutoDBBackup=\"2.0.2\" GetBackupSIP=\"1.0.1\" GetBasicSIP=\"3.0.1\" " +
+                          "GetBluetoothBeacon=\"2.0.1\" GetBluetoothBeaconSummary=\"1.0.1\" GetBluetoothClientStatistic=\"1.0.1\" GetBluetoothGlobalSettings=\"1.0.1\" " +
+                          "GetBluetoothSensitivity=\"1.0.1\" GetConferenceRoom=\"1.0.2\" GetConferenceServerSIP=\"1.0.2\" GetConfigURL=\"1.0.1\" " +
+                          "GetCoreDumpURL=\"1.0.2\" GetDbTransferState=\"1.0.2\" GetDECTAuthCode=\"1.0.1\" GetDECTEncryption=\"1.0.1\" GetDECTPagingAreaSize=\"1.0.1\" " +
+                          "GetDECTPpSettings=\"2.0.1\" GetDECTRegDomain=\"1.0.2\" GetDECTSubscriptionMode=\"1.0.1\" GetDevAutoCreate=\"1.0.1\" " +
+                          "GetDigitTreatment=\"1.0.1\" GetDigitTreatmentSummary=\"1.0.1\" GetDTMF=\"1.0.1\" GetEULAConfirm=\"1.0.1\" GetEventLogBuffer=\"1.0.2\" " +
+                          "GetFACList=\"1.0.3\" GetFACPrefix=\"1.0.1\" GetFile=\"1.0.4\" GetFlashMemUsage=\"1.0.1\" GetFreeConferenceChannels=\"1.0.1\" " +
+                          "GetG729ChannelsForConference=\"1.0.1\" GetHealthState=\"1.1.9\" GetIMA=\"2.0.2\" GetIntercomCallHandlingSIP=\"1.0.1\" " +
+                          "GetLastPPDevAction=\"1.0.1\" GetLDAP=\"1.0.2\" GetLicensedCodecLines=\"1.0.1\" GetLicense=\"2.0.2\" GetLicenseServerList=\"1.0.1\" " +
+                          "GetNetParams=\"1.0.1\" GetOMMCertificate=\"1.0.2\" GetPARK=\"1.0.1\" GetPortRangeSIP=\"1.0.1\" GetPPDev=\"2.0.0\" GetPPDevByIPEI=\"2.0.0\" " +
+                          "GetPPDevSummary=\"1.0.2\" GetPPFirmwareUpdate=\"1.0.2\" GetPPFirmwareUpdateOverview=\"1.0.2\" GetPPFirmwareUpdateStatus=\"1.0.2\" " +
+                          "GetPPFirmwareURL=\"1.0.2\" GetPPLoginVariant=\"1.0.1\" GetPpProfile=\"1.0.2\" GetPPState=\"1.1.2\" GetDECTPowerLimit=\"1.0.1\" " +
+                          "GetPPUser=\"1.2.8\" GetPPUserByNumber=\"1.0.0\" GetPPUserSummary=\"1.0.3\" GetPreserveUserDeviceRelation=\"1.0.1\" GetPublicKey=\"1.0.1\" " +
+                          "GetReadyForConferencing=\"1.0.1\" GetRegistrationTrafficShaping=\"2.0.2\" GetRemoteAccess=\"1.0.1\" GetRemoteSystemDump=\"1.0.2\" " +
+                          "GetRestrictedSubscriptionDuration=\"1.0.1\" GetRFPCapture=\"1.1.2\" GetRFPCaptureList=\"1.1.5\" GetRFP=\"3.0.2\" GetRFPIpQuality=\"1.0.2\" " +
+                          "GetRFPMediaStreamQuality=\"1.0.2\" GetRFPStatisticConfig=\"1.0.1\" GetRFPStatistic=\"1.0.2\" GetRFPSummary=\"1.0.5\" GetRFPSync=\"1.0.1\" " +
+                          "GetRFPSyncQuality=\"1.0.2\" GetRTP=\"3.0.1\" GetSARI=\"1.0.1\" GetSecureSIP=\"2.0.1\" GetSecureOMMCertificateServerImport=\"1.0.4\" " +
+                          "GetSecurePROVCertificateServerImport=\"1.0.4\" GetSecureSIPCertificate=\"1.1.1\" GetSecureSIPCertificateServerImport=\"2.0.4\" " +
+                          "GetSupplicant=\"1.0.0\" GetSupplicantCertificate=\"1.0.0\" GetSupplicantCertificateServerImport=\"1.0.0\" GetSite=\"1.0.2\" " +
+                          "GetSiteSummary=\"1.0.3\" GetSNMP=\"1.0.1\" GetSoftwareUpdate=\"1.0.2\" GetSpecialBranding=\"1.0.2\" GetStbState=\"1.0.1\" GetSuplServ=\"1.0.7\" " +
+                          "GetSyslogServer=\"1.0.2\" GetSysStatisticConfig=\"1.0.1\" GetSysStatisticMinMax=\"1.0.2\" GetSysStatisticMinMaxRecord=\"1.0.2\" " +
+                          "GetSysStatisticMinMaxSummary=\"1.0.2\" GetSysStatisticOccurrence=\"1.0.2\" GetSystemCredentials=\"1.0.1\" GetSystemName=\"1.0.1\" " +
+                          "GetSystemProvUpdTrig=\"1.0.3\" GetSysToneScheme=\"1.0.1\" GetSysVoiceboxNum=\"1.0.1\" GetUsedConfigURL=\"1.0.1\" GetUserDataServer=\"2.0.2\" " +
+                          "GetUserDeviceSyncOMM=\"1.0.1\" GetUserMonitoring=\"1.0.1\" GetVersions=\"2.1.2\" GetVideoDev=\"2.1.1\" GetVideoDevLink=\"1.0.1\" " +
+                          "GetVideoDevSummary=\"1.0.1\" GetWLANClients=\"1.0.1\" GetWLANProfile=\"2.0.4\" GetWLANRegDomain=\"1.0.1\" GetWLANRegDomainList=\"1.0.1\" " +
+                          "GetXMLApplication=\"3.0.3\" GetCorporateDirectory=\"1.0.0\" GetCorporateDirectoryOrder=\"1.0.0\" Limits=\"2.0.4\" ManualDBBackup=\"2.0.2\" " +
+                          "ManualDBRestore=\"2.0.2\" ManualUserDataImport=\"1.0.1\" Open=\"1.0.18\" PARKFromServer=\"1.0.1\" Ping=\"1.0.2\" PutFile=\"1.1.5\" " +
+                          "RequestPositionInfo=\"1.0.1\" ResetRFPMediaStreamQuality=\"1.0.2\" ResetRFPStatistic=\"1.0.2\" ResetSysStatistic=\"1.0.2\" " +
+                          "SendMessage=\"1.0.7\" SetAccount=\"1.0.7\" SetACLEntry=\"1.0.1\" SetAdditionalSettings=\"1.0.2\" SetAdvancedSIP=\"3.0.3\" " +
+                          "SetAlarmTrigger=\"1.0.7\" SetAutoDBBackup=\"2.0.2\" SetBackupSIP=\"1.0.1\" SetBasicSIP=\"2.0.1\" SetBluetoothBeacon=\"2.0.1\" " +
+                          "SetBluetoothGlobalSettings=\"1.0.1\" SetBluetoothSensitivity=\"1.0.1\" SetConferenceRoom=\"1.0.2\" SetConferenceServerSIP=\"1.0.2\" " +
+                          "SetConfigURL=\"1.0.2\" SetCoreDumpURL=\"1.0.2\" SetDECTAuthCode=\"1.0.1\" SetDECTEncryption=\"1.0.2\" SetDECTPagingAreaSize=\"1.0.1\" " +
+                          "SetDECTPpSettings=\"2.0.1\" SetDECTRegDomain=\"1.1.2\" SetDECTSubscriptionMode=\"1.0.2\" SetDevAutoCreate=\"1.0.1\" " +
+                          "SetDigitTreatment=\"1.0.1\" SetDTMF=\"1.0.1\" SetEULAConfirm=\"1.0.1\" SetFAC=\"1.0.3\" SetFACList=\"1.0.3\" SetFACPrefix=\"1.0.1\" " +
+                          "SetIMA=\"2.0.3\" SetIntercomCallHandlingSIP=\"1.0.1\" SetLDAP=\"1.0.3\" SetLicenseServerList=\"1.0.1\" SetNetParams=\"1.0.1\" " +
+                          "SetOMMCertificate=\"1.0.4\" SetPARK=\"1.0.1\" SetPortRangeSIP=\"1.0.1\" GetPP=\"2.0.0\" SetPP=\"2.0.0\" SetPPDev=\"2.0.0\" " +
+                          "SetPPFirmwareUpdate=\"1.0.1\" SetPPFirmwareURL=\"1.0.2\" SetPPLink=\"1.0.1\" SetPPLoginVariant=\"1.0.2\" SetPpProfile=\"1.0.3\" " +
+                          "SetPPUserDevRelation=\"1.0.1\" SetPPUser=\"1.1.9\" SetDECTPowerLimit=\"1.0.1\" SetPPUserTracking=\"1.0.1\" SetPreserveUserDeviceRelation=\"1.0.1\" " +
+                          "SetRegistrationTrafficShaping=\"2.0.2\" SetRemoteAccess=\"1.0.1\" SetRemoteSystemDump=\"1.0.2\" SetRestrictedSubscriptionDuration=\"1.0.1\" " +
+                          "SetRFPCapture=\"1.1.2\" SetRFP=\"2.0.2\" SetRTPConferenceStreamChg=\"1.0.1\" SetRTP=\"3.0.1\" SetSARI=\"1.0.1\" SetSecureSIP=\"2.0.1\" " +
+                          "SetSecureOMMCertificateServerImport=\"1.0.4\" SetSecurePROVCertificateServerImport=\"1.0.4\" SetSecureSIPCertificate=\"1.1.2\" " +
+                          "SetSecureSIPCertificateServerImport=\"2.0.4\" SetSupplicant=\"1.0.0\" SetSupplicantCertificate=\"1.0.2\" " +
+                          "SetSupplicantCertificateServerImport=\"1.0.0\" SetSite=\"1.0.2\" SetSNMP=\"1.0.1\" SetSpecialBranding=\"1.0.2\" SetSuplServ=\"1.0.5\" " +
+                          "SetSyslogServer=\"1.0.2\" SetSystemCredentials=\"1.0.1\" SetSystemName=\"1.0.1\" SetSystemProvUpdTrig=\"1.0.3\" SetSysToneScheme=\"1.0.1\" " +
+                          "SetSysVoiceboxNum=\"1.0.1\" SetUserDataServer=\"2.0.2\" SetUserDeviceSyncOMM=\"1.0.1\" SetUserMonitoring=\"1.0.1\" SetVideoDev=\"2.1.1\" " +
+                          "SetWLANProfile=\"2.0.8\" SetWLANRegDomain=\"1.1.1\" SetXMLApplication=\"3.0.3\" SetCorporateDirectory=\"1.0.0\" " +
+                          "SetCorporateDirectoryOrder=\"1.0.0\" SoftwareUpdate=\"1.0.4\" Subscribe=\"3.1.2\" SystemRestart=\"1.0.2\" ApplicationDataChannel=\"1.0.0\" " +
+                          "CreateApplicationDataChannel=\"1.0.0\" DeleteApplicationDataChannel=\"1.0.0\" EventApplicationDataChannel=\"1.0.0\" " +
+                          "EventApplicationDataChannelCnf=\"1.0.0\" SubscribeApplicationDataChannel=\"1.0.0\" EventMOMControlState=\"1.0.0\" GetMOMControlState=\"1.0.0\" " +
+                          "SetMOMControlState=\"1.0.0\" EventDECTSubscribe=\"1.0.0\" DECTSubscribeReject=\"1.0.0\" EventDECTLocate=\"1.0.0\" DECTLocateReject=\"1.0.0\" " +
+                          "EventPPLogin=\"1.0.0\" EventPPUserMovedLocally=\"1.0.0\" EventPPLink=\"1.0.0\" EventPPSIPDeregistered=\"1.0.0\" PPSIPDeregister=\"1.0.0\" " +
+                          "PPSIPRegister=\"1.0.0\" RouteEventFromMOM=\"1.0.0\" RouteRequestToMOM=\"1.0.0\" RouteResponseFromMOM=\"1.0.0\" EventEventFromMOM=\"1.0.0\" " +
+                          "EventRequestToMOM=\"1.0.0\" EventResponseFromMOM=\"1.0.0\" ClientInfo=\"1.0.0\" EventClientInfo=\"1.0.0\" />";
+            var getVersionsResp = _serializer.Deserialize<GetVersionsResp>(message);
+            Assert.AreEqual("1.1.9", getVersionsResp.SetPPUser);
+        }
+
+        [TestMethod]
+        public void CanSerializeGetVersions()
+        {
+            var getVersions = new GetVersions();
+            var xml = _serializer.Serialize(getVersions);
+            Assert.AreEqual("<GetVersions />", xml);
+        }
+
+        [TestMethod]
+        public void CanDeserializeLimitsResp()
+        {
+            var message = "<LimitsResp axiClients=\"100\" omm=\"0\" codec=\"5\" rfpNum=\"4096\" site=\"250\" dnsServer=\"3\" " +
+                          "ntpServer=\"3\" ppProfileNum=\"20\" limitRTT1=\"25\" limitRTT2=\"50\" limitRTT3=\"150\" limitRTT4=\"500\" " +
+                          "ldapServer=\"5\" licLatency=\"43200\" ppnNum=\"10000\" records=\"20\" ssidWlan=\"4\" ssidWlanKey=\"4\" " +
+                          "trigger=\"100\" urlLen=\"513\" userId=\"100\" wlanMacFilter=\"512\" xmlBuiltInAppl=\"15\" xmlDynAppl=\"10\" " +
+                          "xmlCorpDirAppl=\"5\" wlanClients=\"262144\" wlanProfiles=\"20\" bluetoothBeacons=\"28672\" " +
+                          "bluetoothNeighbours=\"8\" bluetoothRssiValues=\"6\" conferenceRooms=\"100\" certificateNum=\"10\" ppVideoDevNum=\"10\" />";
+            var getVersionsResp = _serializer.Deserialize<LimitsResp>(message);
+            Assert.AreEqual(10000, getVersionsResp.MaxPP);
+        }
+
+        [TestMethod]
+        public void CanSerializeLimits()
+        {
+            var limits = new Limits();
+            var xml = _serializer.Serialize(limits);
+            Assert.AreEqual("<Limits />", xml);
         }
     }
 }

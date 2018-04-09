@@ -15,7 +15,6 @@ namespace mitelapi.Messages
         int SipRegistrationCount { get; set; }
     }
 
-    [XmlRoot("GetPPUserSummaryResp", Namespace = "")]
     public class GetPPUserSummaryResp : BaseResponse, IPPUserSummary
     {
         [XmlAttribute("nRecords")]

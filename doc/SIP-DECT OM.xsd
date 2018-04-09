@@ -93,12 +93,12 @@ elementFormDefault="qualified">
 <attribute name="privateKey" type="tns:SetSecureSIPListType"/>
 <attribute name="privateKeyPassword" type="string" use="optional"/>
 </complexType>
-<!--<complexType name="ServerType">
+<complexType name="ServerType">
 <complexContent>
 <attribute name="url" type="tns:URLType"/>
 <attribute name="enable" type="boolean"/>
 </complexContent>
-</complexType>-->
+</complexType>
 <simpleType name="PermissionType">
 <restriction base="string">
 <enumeration value="AllCnfWrite"/>
@@ -235,14 +235,14 @@ elementFormDefault="qualified">
 <attribute name="severity" type="tns:SeverityType" use="required"/>
 <attribute name="reason" type="string" use="optional"/>
 <attribute name="reasonCode" type="tns:ReasonType" use="required"/>
-<!--<simpleType>
+<simpleType>
 <restriction base="integer">
 <minInclusive value="0"/>
 <maxInclusive value="29"/>
 </restriction>
-</simpleType>-->
+</simpleType>
 </complexType>
-<!--<complexType name="GetHealthStateRespType">
+<complexType name="GetHealthStateRespType">
 <complexContent>
 <extension base="tns:RespType">
 <sequence>
@@ -250,7 +250,7 @@ elementFormDefault="qualified">
 </sequence>
 </extension>
 </complexContent>
-</complexType>-->
+</complexType>
 <simpleType name="PPUserCallStateType">
 <restriction base="string">
 <enumeration value="ringing"/>
@@ -719,10 +719,9 @@ elementFormDefault="qualified">
 </complexType>
 <complexType name="GetSummaryRespType">
 <complexContent>
-<extension base="tns:RespType">
+<extension base="tns:RespType"> </extension>
 <attribute name="nRecords" type="integer" use="required"/>
 <attribute name="idFirst" type="integer" use="required"/>
-</extension>
 </complexContent>
 </complexType>
 <!-- ===================== Basic related types ===================== -->
@@ -747,16 +746,18 @@ elementFormDefault="qualified">
 <complexType name="OpenRespType">
 <complexContent>
 <extension base="tns:RespType">
-<sequence>
-<element name="accountState" type="tns:AccountStateType"/>
-<element name="permission" type="tns:PermissionType"/>
-</sequence>
 <attribute name="protocolVersion" type="string" use="required"/>
 <attribute name="ommVersion" type="string" use="optional"/>
 <attribute name="axiClients" type="integer" use="optional"/>
 <attribute name="ommAxiSpecVersion" type="string" use="optional"/>
 <attribute name="minPPSwVersion1" type="string" use="optional"/>
 <attribute name="minPPSwVersion2" type="string" use="optional"/>
+<sequence>
+<element name="accountState" type="tns:AccountStateType" use="optional"/>
+</sequence>
+<sequence>
+<element name="permission" type="tns:PermissionType" use="optional"/>
+</sequence>
 <attribute name="ommStbState" type="tns:OmmStbStateType" use="required"/>
 <attribute name="ommStbAddr" type="string" use="optional"/>
 <attribute name="ommStream" type="string" use="optional"/>
@@ -830,8 +831,8 @@ elementFormDefault="qualified">
 <complexType name="VersionsType">
 <complexContent>
 <extension base="tns:ReqType">
-<sequence>
-<element name="version" type="tns:VersionType" />
+<sequence use="optional" >
+<attribute name="version" type="tns:VersionType" />
 </sequence>
 </extension>
 </complexContent>
@@ -1420,12 +1421,12 @@ elementFormDefault="qualified">
 <attribute name="ommStbState" type="tns:OmmStbStateType" use="required"/>
 <attribute name="ommStbAddr" type="string" use="optional"/>
 </complexType>
-<!--<complexType name="StbStateRespType">
+<complexType name="StbStateRespType">
 <complexContent>
 <extension base="tns:RespType"> </extension>
 <extension base="tns:StbStateType" use="required"> </extension>
 </complexContent>
-</complexType>-->
+</complexType>
 <complexType name="PermissionChangeEventType">
 <complexContent>
 <extension base="tns:RespType">
@@ -1463,21 +1464,16 @@ elementFormDefault="qualified">
 <attribute name="messagingLicenseRcvMsgs" type="boolean" use="required"/>
 <attribute name="locatingLicense" type="boolean" use="required"/>
 </complexType>
-<simpleType name="LicenseRFPType">
-<restriction>
+<complexType name="LicenseRFPType">
 <enumeration value="id"/>
 <enumeration value="ethAddr"/>
 <enumeration value="connected"/>
-</restriction>
-</simpleType>
-<simpleType name="LicenseTypeType">
-<restriction>
+</complexType>
+<complexType name="LicenseTypeType">
 <enumeration value="small"/>
 <enumeration value="standard"/>
-</restriction>
-</simpleType>
-<simpleType name="LicenseStateType">
-<restriction>
+</complexType>
+<complexType name="LicenseStateType">
 <enumeration value="noLicense"/>
 <enumeration value="inactiveLicense"/>
 <enumeration value="inactiveLicenseBlocked"/>
@@ -1485,50 +1481,39 @@ elementFormDefault="qualified">
 <enumeration value="noRedundancyLicenseBlocked"/>
 <enumeration value="activeLicense"/>
 <enumeration value="activeLicenseBlocked"/>
-</restriction>
-</simpleType>
-<simpleType name="LicenseViolationType">
-<restriction>
+</complexType>
+<complexType name="LicenseViolationType">
 <enumeration value="noViolation"/>
 <enumeration value="noLicense"/>
 <enumeration value="numRFPs"/>
 <enumeration value="swRelease"/>
 <enumeration value="numSendMsgs"/>
 <enumeration value="numLocatables"/>
-</restriction>
-</simpleType>
+</complexType>
 <complexType name="LicenseType">
-<sequence>
-<element name="violation" type="tns:LicenseViolationType"/>
-<element name="licenseRfp" type="tns:LicenseRFPType"/>
-</sequence>
+<complexContent>
 <attribute name="type" type="tns:LicenseTypeType" use="optional"/>
 <attribute name="state" type="tns:LicenseStateType" use="optional"/>
+<sequence>
+<attribute name="violation" type="tns:LicenseViolationType" use="optional"/>
+</sequence>
 <attribute name="latency" type="integer" use="optional"/>
 <attribute name="park" type="string" use="optional"/>
+<sequence>
+<attribute name="licenseRfp" type="tns:LicenseRFPType" use="optional"/>
+</sequence>
 <attribute name="sysLicense" type="tns:LicenseDataType" use="optional"/>
 <attribute name="msgLicense" type="tns:LicenseDataType" use="optional"/>
 <attribute name="locLicense" type="tns:LicenseDataType" use="optional"/>
 <attribute name="G729License" type="tns:LicenseDataType" use="optional"/>
+</complexContent>
 
 
 </complexType>
 <complexType name="LicenseRespType">
 <complexContent>
-<extension base="tns:RespType">
-<sequence>
-<element name="violation" type="tns:LicenseViolationType"/>
-<element name="licenseRfp" type="tns:LicenseRFPType"/>
-</sequence>
-<attribute name="type" type="tns:LicenseTypeType" use="optional"/>
-<attribute name="state" type="tns:LicenseStateType" use="optional"/>
-<attribute name="latency" type="integer" use="optional"/>
-<attribute name="park" type="string" use="optional"/>
-<attribute name="sysLicense" type="tns:LicenseDataType" use="optional"/>
-<attribute name="msgLicense" type="tns:LicenseDataType" use="optional"/>
-<attribute name="locLicense" type="tns:LicenseDataType" use="optional"/>
-<attribute name="G729License" type="tns:LicenseDataType" use="optional"/>
-</extension>
+<extension base="tns:RespType"> </extension>
+<extension base="tns:LicenseType"> </extension>
 </complexContent>
 </complexType>
 <complexType name="LicensedCodecLinesType">
@@ -1536,54 +1521,47 @@ elementFormDefault="qualified">
 </complexType>
 <complexType name="LicensedCodecLinesRespType">
 <complexContent>
-<extension base="tns:RespType">
-<attribute name="numberOfLines" type="integer" use="required"/>
-</extension>
+<extension base="tns:RespType"> </extension>
+<extension base="tns:LicensedCodecLinesType"> </extension>
 </complexContent>
 </complexType>
 <complexType name="LicensedCodecLinesRespType">
+<complexContent>
 <attribute name="server" type="string" use="optional"/>
 <attribute name="port" type="integer" use="optional"/>
 <attribute name="serverStandby" type="string" use="optional"/>
 <attribute name="portStandby" type="integer" use="optional"/>
+</complexContent>
 </complexType>
 <complexType name="LicenseServerListType">
+<complexContent>
 <attribute name="serverActive" type="boolean" use="optional"/>
 <attribute name="installationId" type="integer" use="optional"/>
 <attribute name="licenseServer1" type="tns:LicenseServerListElementType" use="optional"/>
 <attribute name="licenseServer2" type="tns:LicenseServerListElementType" use="optional"/>
 <attribute name="licenseServer3" type="tns:LicenseServerListElementType" use="optional"/>
+</complexContent>
 </complexType>
 <complexType name="SetLicenseServerListType">
 <complexContent>
-<extension base="tns:ReqType">
-<attribute name="serverActive" type="boolean" use="optional"/>
-<attribute name="installationId" type="integer" use="optional"/>
-<attribute name="licenseServer1" type="tns:LicenseServerListElementType" use="optional"/>
-<attribute name="licenseServer2" type="tns:LicenseServerListElementType" use="optional"/>
-<attribute name="licenseServer3" type="tns:LicenseServerListElementType" use="optional"/>
-</extension>
+<extension base="tns:ReqType"> </extension>
+<extension base="tns:LicenseServerListType"> </extension>
 </complexContent>
 </complexType>
 <complexType name="GetSetLicenseServerListRespType">
 <complexContent>
-<extension base="tns:RespType">
-<attribute name="serverActive" type="boolean" use="optional"/>
-<attribute name="installationId" type="integer" use="optional"/>
-<attribute name="licenseServer1" type="tns:LicenseServerListElementType" use="optional"/>
-<attribute name="licenseServer2" type="tns:LicenseServerListElementType" use="optional"/>
-<attribute name="licenseServer3" type="tns:LicenseServerListElementType" use="optional"/>
-</extension>
+<extension base="tns:RespType"> </extension>
+<extension base="tns:LicenseServerListType"> </extension>
 </complexContent>
 </complexType>
-<simpleType name="LicenseFileTypeType">
-<restriction>
+<complexType name="LicenseFileTypeType">
 <enumeration value="LicenseFile"/>
 <enumeration value="LicenseDataFile"/>
-</restriction>
-</simpleType>
+</complexType>
 <complexType name="LicenseFileType">
+<complexContent>
 <attribute name="type" type="tns:LicenseFileTypeType"/>
+</complexContent>
 
 
 </complexType>
@@ -1606,24 +1584,26 @@ elementFormDefault="qualified">
 </restriction>
 </simpleType>
 <complexType name="AccountType">
-<sequence>
-<element name="permission" type="tns:PermissionType"/>
-</sequence>
+<complexContent>
 <attribute name="id" type="integer" />
 <attribute name="username" type="string" />
 <attribute name="password" type="string" />
 <attribute name="oldPassword" type="string" />
+<sequence>
+<attribute name="permission" type="tns:PermissionType"/>
+</sequence>
 <attribute name="active" type="boolean" />
 <attribute name="aging" type="tns:AccountAgingType"/>
 <attribute name="expire" type="integer" />
 <attribute name="state" type="tns:AccountStateTypeType" />
+</complexContent>
 </complexType>
-<!--<complexType name="CreateAccountType">
+<complexType name="CreateAccountType">
 <complexContent>
 <extension base="tns:ReqType"> </extension>
 <extension base="tns:AccountType"> </extension>
 </complexContent>
-</complexType>-->
+</complexType>
 <complexType name="DeleteAccountType">
 <complexContent>
 <extension base="tns:ReqType">
@@ -1631,31 +1611,33 @@ elementFormDefault="qualified">
 </extension>
 </complexContent>
 </complexType>
-<!--<complexType name="GetAccountType">
+<complexType name="GetAccountType">
 <complexContent>
 <extension base="tns:ReqType"> </extension>
 <extension base="tns:GetRecordType"> </extension>
 </complexContent>
-</complexType>-->
-<!--<complexType name="SetAccountType">
+</complexType>
+<complexType name="SetAccountType">
 
 
 <complexContent>
 <extension base="tns:ReqType"> </extension>
 <extension base="tns:AccountType"> </extension>
 </complexContent>
-</complexType>-->
-<!--<complexType name="CreateGetSetAccountRespType">
+</complexType>
+<complexType name="CreateGetSetAccountRespType">
 <complexContent>
 <extension base="tns:RespType"> </extension>
 <sequence>
 <extension base="tns:AccountType"> </extension>
 </sequence>
 </complexContent>
-</complexType>-->
+</complexType>
 <complexType name="EventAccountSummaryType">
+<complexContent>
 <attribute name="nRecords" type="integer" use="required"/>
 <attribute name="idFirst" type="integer" use="required"/>
+</complexContent>
 </complexType>
 <!-- ===================== software management related types ===================== -->
 <complexType name="SoftwareUpdateType">
@@ -1666,42 +1648,34 @@ elementFormDefault="qualified">
 </complexType>
 <complexType name="SoftwareUpdateRespType">
 <complexContent>
-<extension base="tns:RespType">
-<attribute name="timedUpdate" type="boolean"/>
-<attribute name="allAtOnce" type="boolean"/>
-<attribute name="hour" type="integer"/>
-<attribute name="minute" type="integer"/>
-</extension>
+<extension base="tns:RespType"> </extension>
+<extension base="tns:SoftwareUpdateType"> </extension>
 </complexContent>
 </complexType>
 <complexType name="SoftwareUpdateReqType">
 <complexContent>
-<extension base="tns:RespType">
-<attribute name="timedUpdate" type="boolean"/>
-<attribute name="allAtOnce" type="boolean"/>
-<attribute name="hour" type="integer"/>
-<attribute name="minute" type="integer"/>
-</extension>
+<extension base="tns:RespType"> </extension>
+<extension base="tns:SoftwareUpdateType"> </extension>
 </complexContent>
 </complexType>
 <complexType name="PPFirmwareUpdateType">
+<complexContent>
 <attribute name="enable" type="boolean"/>
 <attribute name="name" type="string" use="optional"/>
+</complexContent>
 </complexType>
 <complexType name="SetPPFirmwareUpdateType">
 <complexContent>
-<extension base="tns:ReqType">
-<attribute name="enable" type="boolean"/>
-<attribute name="name" type="string" use="optional"/>
-</extension>
+<extension base="tns:ReqType"> </extension>
+<extension base="tns:PPFirmwareUpdateType"> </extension>
 </complexContent>
 </complexType>
 <complexType name="GetSetPPFirmwareUpdateRespType">
 <complexContent>
-<extension base="tns:RespType">
-<attribute name="enable" type="boolean"/>
-<attribute name="name" type="string" use="optional"/>
-</extension>
+<extension base="tns:RespType"> </extension>
+
+
+<extension base="tns:PPFirmwareUpdateType"> </extension>
 </complexContent>
 </complexType>
 <simpleType name="PPFirmwareUpdateOverviewStateType">
@@ -1740,6 +1714,7 @@ elementFormDefault="qualified">
 </restriction>
 </simpleType>
 <complexType name="PPFirmwareUpdateOverviewType">
+<complexContent>
 <attribute name="state" type="tns:PPFirmwareUpdateOverviewStateType"/>
 <attribute name="known" type="integer"/>
 <attribute name="ready" type="integer"/>
@@ -1750,8 +1725,10 @@ elementFormDefault="qualified">
 <attribute name="notReachable" type="integer"/>
 <attribute name="detached" type="integer"/>
 <attribute name="version" type="string"/>
+</complexContent>
 </complexType>
 <complexType name="PPFirmwareUpdateStatusType">
+<complexContent>
 <attribute name="ppn" type="integer"/>
 <attribute name="state" type="tns:PPFirmwareUpdateStatusStateType"/>
 <attribute name="cause" type="tns:PPFirmwareUpdateCauseStateType"/>
@@ -1759,21 +1736,12 @@ elementFormDefault="qualified">
 
 <attribute name="bytes" type="integer"/>
 <attribute name="version" type="string"/>
+</complexContent>
 </complexType>
 <complexType name="GetPPFirmwareUpdateOverviewRespType">
 <complexContent>
-<extension base="tns:RespType">
-<attribute name="state" type="tns:PPFirmwareUpdateOverviewStateType"/>
-<attribute name="known" type="integer"/>
-<attribute name="ready" type="integer"/>
-<attribute name="pending" type="integer"/>
-<attribute name="active" type="integer"/>
-<attribute name="barred" type="integer"/>
-<attribute name="errored" type="integer"/>
-<attribute name="notReachable" type="integer"/>
-<attribute name="detached" type="integer"/>
-<attribute name="version" type="string"/>
-</extension>
+<extension base="tns:RespType"> </extension>
+<extension base="tns:PPFirmwareUpdateOverviewType"> </extension>
 </complexContent>
 </complexType>
 <complexType name="GetPPFirmwareUpdateStatusType">
@@ -1788,14 +1756,16 @@ elementFormDefault="qualified">
 <complexContent>
 <extension base="tns:RespType">
 <sequence>
-<element name="pFwSt" type="tns:PPFirmwareUpdateStatusType"/>
+<attribute name="pFwSt" type="tns:PPFirmwareUpdateStatusType"/>
 </sequence>
 </extension>
 </complexContent>
 </complexType>
-<simpleType name="EventPPFirmwareUpdateStatusType">
+<complexType name="EventPPFirmwareUpdateStatusType">
+<complexContent>
 <attribute name="pFwSt" type="tns:PPFirmwareUpdateStatusType"/>
-</simpleType>
+</complexContent>
+</complexType>
 <!-- ===================== system related types ===================== -->
 <complexType name="SystemRestartType">
 <complexContent>

@@ -748,7 +748,7 @@ namespace mitelapi.Types
 
         /// <summary>
         /// Current software version on this RFP in the format:
-        /// <majorRelease>.<minorRelease>.{RC x | SP y | <bugfixVersion>}
+        /// &lt;majorRelease&gt;.&lt;minorRelease&gt;.{RC x | SP y | &lt;bugfixVersion&gt;}
         /// [Build z] [version description], 
         /// e. g. „2.1 RC4”, „2.1 SP1”, „2.1.5”, „2.1SP1 Build 2”,r
         /// „3.0 RC1 Build 1 - OpenMobility SIP 3.0RC1-Internal”.

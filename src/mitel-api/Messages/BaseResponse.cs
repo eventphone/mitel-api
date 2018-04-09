@@ -4,9 +4,11 @@ using System.Xml.Serialization;
 
 namespace mitelapi.Messages
 {
-
     public abstract class BaseResponse
     {
+        /// <summary>
+        /// Sequence number taken from the original request. Only filled in if the original request also had a sequence number.
+        /// </summary>
         [XmlIgnore]
         public int? Seq
         {
@@ -25,11 +27,16 @@ namespace mitelapi.Messages
         [EditorBrowsable(EditorBrowsableState.Never)]
         public bool XmlSeqSpecified { get; set; }
         
+        /// <summary>
+        /// Fixed string codes described in the documentation for the particular requests.
+        /// If this attribute is absent it implies that no error occurred.
+        /// </summary>
         [XmlAttribute("errCode")]
         public OmmError ErrorCode { get; set; }
         
         /// <summary>
-        /// This field may contain additional information about an error. It is free style text in English and used mainly to track errors.
+        /// This field may contain additional information about an error.
+        /// It is free style text in English and used mainly to track errors.
         /// </summary>
         [XmlAttribute("info")]
         public string Info { get; set; }

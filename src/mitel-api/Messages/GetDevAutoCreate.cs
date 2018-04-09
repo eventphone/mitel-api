@@ -17,7 +17,6 @@ namespace mitelapi.Messages
     /// The reply is an object called GetDevAutoCreateResp. It contains following fields in addition to the common
     /// attributes:
     /// </summary>
-    [XmlRoot("GetDevAutoCreateResp", Namespace = "")]
     public class GetDevAutoCreateResp : BaseResponse
     {
         /// <summary>

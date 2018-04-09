@@ -44,7 +44,7 @@ namespace mitel_api.test
             try
             {
                 await _client.LoginAsync("omm", "omm");
-                await _client.GetVersions(new CancellationToken(true));
+                await _client.GetVersionsAsync(new CancellationToken(true));
             }
             catch(OperationCanceledException){}
             await Task.Delay(TimeSpan.FromSeconds(1));
@@ -55,7 +55,7 @@ namespace mitel_api.test
         public async Task CanGetVersions()
         {
             await CanLogin();
-            await _client.GetVersions(CancellationToken.None);
+            await _client.GetVersionsAsync(CancellationToken.None);
         }
 
         [TestMethod]

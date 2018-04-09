@@ -19,7 +19,6 @@ namespace mitelapi.Messages
         int ConnectedCount { get; set; }
     }
 
-    [XmlRoot("GetRFPSummaryResp", Namespace = "")]
     public class GetRFPSummaryResp : BaseResponse, IRfpSummary
     {
         [XmlAttribute("nRFPs")]

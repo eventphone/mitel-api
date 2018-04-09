@@ -9,7 +9,6 @@ namespace mitelapi.Events
     /// To get this event the client has to subscribe to RFPSyncQuality.This is allowed if the client has at least one of
     /// the following permissions: Monitoring.
     /// </summary>
-    [XmlRoot("EventRFPSyncQuality", Namespace = "")]
     public class EventRFPSyncQuality : BaseEvent 
     {
         /// <summary>

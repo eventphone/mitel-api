@@ -26,7 +26,6 @@ namespace mitelapi.Messages
         public bool XmlUidSpecified { get; set; }
     }
 
-    [XmlRoot("DeletePPUserResp", Namespace = "")]
     public class DeletePPUserResp : BaseResponse
     {
     }

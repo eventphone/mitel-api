@@ -15,7 +15,6 @@ namespace mitelapi.Messages
         int SubscribedCount { get; set; }
     }
 
-    [XmlRoot("GetPPDevSummaryResp", Namespace = "")]
     public class GetPPDevSummaryResp : BaseResponse, IPPDevSummary
     {
         [XmlAttribute("nRecords")]

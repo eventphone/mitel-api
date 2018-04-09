@@ -3,7 +3,6 @@ using mitelapi.Messages;
 
 namespace mitelapi.Events
 {
-    [XmlRoot("EventRFPSummary", Namespace = "")]
     public class EventRFPSummary : BaseEvent,IRfpSummary
     {
         [XmlAttribute("nRFPs")]

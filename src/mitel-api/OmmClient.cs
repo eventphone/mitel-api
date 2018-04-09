@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Net.Security;
@@ -15,7 +14,7 @@ using mitelapi.Types;
 
 namespace mitelapi
 {
-    public class OmmClient:IDisposable
+    public partial class OmmClient:IDisposable
     {
         private readonly TcpClient _client;
         private int _port;
@@ -47,23 +46,6 @@ namespace mitelapi
         public int ReceiveQueueSize
         {
             get { return _receiveQueue.Count; }
-        }
-
-        public async Task LoginAsync(string username, string password, bool userDeviceSync = false,  CancellationToken cancellationToken = default(CancellationToken))
-        {
-            await _client.ConnectAsync(_hostname, _port).ConfigureAwait(false);
-            _ssl = new SslStream(_client.GetStream());
-            await _ssl.AuthenticateAsClientAsync(_hostname);
-            cancellationToken.ThrowIfCancellationRequested();
-            _reader = new Thread(Read) {IsBackground = true, Name = "OmmClientReader"};
-            MessageReceived += MessageRecievedHandler;
-            _reader.Start();
-            var open = new Open {Username = username, Password = password, UserDeviceSyncClient = userDeviceSync};
-            var response = await SendAsync<Open, OpenResp>(open, cancellationToken);
-            _pingTimer.Change(TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60));
-            _exponent = response.PublicKey.Exponent;
-            _modulus = response.PublicKey.Modulus;
-            await LoadUsersAsync(cancellationToken);
         }
 
         private async Task LoadUsersAsync(CancellationToken cancellationToken)
@@ -143,12 +125,6 @@ namespace mitelapi
             {
                 Rtt = TimeSpan.FromSeconds(ping.Timestamp - pong.TimeStamp.Value);
             }
-        }
-
-        public async Task GetVersions(CancellationToken cancellationToken)
-        {
-            var getversions = new GetVersions();
-            await SendAsync<GetVersions, GetVersionsResp>(getversions, cancellationToken);
         }
 
         public Task Subscribe(EventType type, CancellationToken cancellationToken)

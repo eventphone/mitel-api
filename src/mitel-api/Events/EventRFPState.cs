@@ -13,7 +13,6 @@ namespace mitelapi.Events
     /// be contained explicitly if their value has changed.
     /// This event is not sent upon deletion of an RFP.
     /// /// </summary>
-    [XmlRoot("EventRFPState", Namespace = "")]
     public class EventRFPState : BaseEvent 
     {
         /// <summary>

@@ -3,7 +3,6 @@ using mitelapi.Messages;
 
 namespace mitelapi.Events
 {
-    [XmlRoot("EventPPDevSummary", Namespace = "")]
     public class EventPPDevSummary : BaseEvent, IPPDevSummary
     {
         [XmlAttribute("nRecords")]

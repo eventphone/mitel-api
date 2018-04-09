@@ -10,7 +10,6 @@ namespace mitelapi.Messages
         public PPUserType User;
     }
 
-    [XmlRoot("CreatePPUserResp", Namespace = "")]
     public class CreatePPUserResp:BaseResponse
     {
         [XmlElement("user")]

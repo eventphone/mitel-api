@@ -13,7 +13,6 @@ namespace mitelapi.Events
     /// If a forward relation of one RFP changes, the client must imply a change of a backward relation of the other RFP.
     /// When an RFP state changes from Synced to any other state, the client must imply that all relations got lost in    /// both directions. For this reason the client should also evaluate EventRFPState (see 4.42.8).
     /// </summary>
-    [XmlRoot("EventRFPSyncRel", Namespace = "")]
     public class EventRFPSyncRel : BaseEvent 
     {
         /// <summary>

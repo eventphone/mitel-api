@@ -2,7 +2,6 @@
 
 namespace mitelapi.Events
 {
-    [XmlRoot("EventAlarmCallProgress", Namespace = "")]
     public class EventAlarmCallProgress:BaseEvent
     {
         [XmlAttribute("ppn")]

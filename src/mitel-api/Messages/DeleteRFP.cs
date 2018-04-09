@@ -19,7 +19,6 @@ namespace mitelapi.Messages
         public int Id;
     }
 
-    [XmlRoot("DeleteRFP", Namespace = "")]
     public class DeleteRFPResp : BaseResponse
     {
 
