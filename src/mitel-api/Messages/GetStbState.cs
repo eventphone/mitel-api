@@ -1,4 +1,5 @@
 ﻿using System.Xml.Serialization;
+using mitelapi.Interfaces;
 using mitelapi.Types;
 
 namespace mitelapi.Messages
@@ -15,17 +16,13 @@ namespace mitelapi.Messages
     /// <summary>
     /// Contains information about the OMM standby feature.
     /// </summary>
-    public class GetStbStateResp : BaseResponse
+    public class GetStbStateResp : BaseResponse, IStbState
     {
-        /// <summary>
-        /// State of the OMM standby feature.
-        /// </summary>
+        /// <inheritdoc />
         [XmlAttribute("ommStbState")]
         public OmmStbState StandbyState { get; set; }
-
-        /// <summary>
-        /// In case of OMM standby is active: IP address of the other OMM
-        /// </summary>
+        
+        /// <inheritdoc />
         [XmlAttribute("ommStbAddr")]
         public string StandbyAddress { get; set; }
     }
