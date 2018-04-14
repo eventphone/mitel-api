@@ -43,10 +43,10 @@ namespace mitelapi
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<GetVersionsResp> GetVersionsAsync(CancellationToken cancellationToken)
+        public Task<GetVersionsResp> GetVersionsAsync(CancellationToken cancellationToken)
         {
             var getversions = new GetVersions();
-            return await SendAsync<GetVersions, GetVersionsResp>(getversions, cancellationToken).ConfigureAwait(false);
+            return SendAsync<GetVersions, GetVersionsResp>(getversions, cancellationToken);
         }
 
         /// <summary>
@@ -54,9 +54,9 @@ namespace mitelapi
         /// </summary>
         /// <param name="cancellation"></param>
         /// <returns></returns>
-        public async Task<LimitsResp> LimitsAsync(CancellationToken cancellation)
+        public Task<LimitsResp> LimitsAsync(CancellationToken cancellation)
         {
-            return await SendAsync<Limits, LimitsResp>(new Limits(), cancellation).ConfigureAwait(false);
+            return SendAsync<Limits, LimitsResp>(new Limits(), cancellation);
         }
         
         /// <summary>
@@ -90,10 +90,10 @@ namespace mitelapi
         /// <param name="commands">Up to 20 event commands to be executed at once atomically.</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task SubscribeAsync(SubscribeCmdType[] commands, CancellationToken cancellationToken)
+        public Task SubscribeAsync(SubscribeCmdType[] commands, CancellationToken cancellationToken)
         {
             var subscribe = new Subscribe {Commands = commands};
-            await SendAsync<Subscribe, SubscribeResp>(subscribe, cancellationToken).ConfigureAwait(false);
+            return SendAsync<Subscribe, SubscribeResp>(subscribe, cancellationToken);
         }
 
         /// <summary>
@@ -117,9 +117,19 @@ namespace mitelapi
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<GetStbStateResp> GetStbStateAsync(CancellationToken cancellationToken)
+        public Task<GetStbStateResp> GetStbStateAsync(CancellationToken cancellationToken)
         {
-            return await SendAsync<GetStbState, GetStbStateResp>(new GetStbState(), cancellationToken).ConfigureAwait(false);
+            return SendAsync<GetStbState, GetStbStateResp>(new GetStbState(), cancellationToken);
+        }
+
+        /// <summary>
+        /// With this request the client can obtain the public RSA key to be used to encrypt certain attributes.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public Task<GetPublicKeyResp> GetPublicKeyAsync(CancellationToken cancellationToken)
+        {
+            return SendAsync<GetPublicKey, GetPublicKeyResp>(new GetPublicKey(), cancellationToken);
         }
     }
 }
