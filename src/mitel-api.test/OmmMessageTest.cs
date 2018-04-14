@@ -588,5 +588,16 @@ namespace mitel_api.test
             var xml = _serializer.Serialize(limits);
             Assert.AreEqual("<Limits />", xml);
         }
+
+        [TestMethod]
+        public void CanDeserializeEventPermissionChange()
+        {
+            var message = "<EventPermissionChange>" +
+                          "<permission>AllCnfRead</permission><permission>AllCnfWrite</permission><permission>Messaging</permission>" +
+                          "<permission>InfoMessaging</permission><permission>Alerting</permission><permission>LocatingAlert</permission>" +
+                          "<permission>Locating</permission><permission>Monitoring</permission></EventPermissionChange>";
+            var eventStgStateChange = _serializer.DeserializeEvent<EventPermissionChange>(message);
+            Assert.AreEqual(eventStgStateChange.Permissions.Length, 8);
+        }
     }
 }
