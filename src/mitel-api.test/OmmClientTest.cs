@@ -72,7 +72,7 @@ namespace mitel_api.test
                 Uid = 0x15,
                 RelType = PPRelTypeType.Unbound
             };
-            await _client.SetPP(pp,user,CancellationToken.None);
+            await _client.SetPPAsync(pp,user,CancellationToken.None);
         }
 
         [TestMethod]
@@ -90,14 +90,14 @@ namespace mitel_api.test
                 SipAuthId = "9901",
                 SipPw = "9901"
             };
-            await _client.CreatePPUser(user, CancellationToken.None);
+            await _client.CreatePPUserAsync(user, CancellationToken.None);
         }
 
         [TestMethod]
         public async Task CanGetUser()
         {
             await CanLoginAsMOM();
-            await _client.GetPP(3, 0, CancellationToken.None);
+            await _client.GetPPAsync(3, 0, CancellationToken.None);
         }
 
         [TestMethod]

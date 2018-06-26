@@ -61,16 +61,16 @@ namespace mitelapi
             }
         }
 
-        public async Task<string> Serialize<T>(T request, Stream stream)
+        public async Task<string> SerializeAsync<T>(T request, Stream stream, CancellationToken cancellationToken)
         {
             using (var sw = new StreamWriter(stream, new UTF8Encoding(false), 1024, true))
             {
-                await _writeLock.WaitAsync();
+                await _writeLock.WaitAsync(cancellationToken).ConfigureAwait(false);
                 try
                 {
                     var result = Serialize(request);
-                    await sw.WriteAsync(result);
-                    await sw.FlushAsync();
+                    await sw.WriteAsync(result).ConfigureAwait(false);
+                    await sw.FlushAsync().ConfigureAwait(false);
                     stream.WriteByte(0);
                     return result;
                 }

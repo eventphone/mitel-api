@@ -1,5 +1,4 @@
 ﻿using System;
-using System;
 using System.Net.Security;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,17 +25,17 @@ namespace mitelapi
         {
             await _client.ConnectAsync(_hostname, _port).ConfigureAwait(false);
             _ssl = new SslStream(_client.GetStream());
-            await _ssl.AuthenticateAsClientAsync(_hostname);
+            await _ssl.AuthenticateAsClientAsync(_hostname).ConfigureAwait(false);
             cancellationToken.ThrowIfCancellationRequested();
             _reader = new Thread(Read) {IsBackground = true, Name = "OmmClientReader"};
             MessageReceived += MessageRecievedHandler;
             _reader.Start();
             var open = new Open {Username = username, Password = password, UserDeviceSyncClient = userDeviceSync};
-            var response = await SendAsync<Open, OpenResp>(open, cancellationToken);
+            var response = await SendAsync<Open, OpenResp>(open, cancellationToken).ConfigureAwait(false);
             _pingTimer.Change(TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60));
             _exponent = response.PublicKey.Exponent;
             _modulus = response.PublicKey.Modulus;
-            await LoadUsersAsync(cancellationToken);
+            await LoadUsersAsync(cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -47,7 +46,7 @@ namespace mitelapi
         public async Task<GetVersionsResp> GetVersionsAsync(CancellationToken cancellationToken)
         {
             var getversions = new GetVersions();
-            return await SendAsync<GetVersions, GetVersionsResp>(getversions, cancellationToken);
+            return await SendAsync<GetVersions, GetVersionsResp>(getversions, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -57,7 +56,7 @@ namespace mitelapi
         /// <returns></returns>
         public async Task<LimitsResp> LimitsAsync(CancellationToken cancellation)
         {
-            return await SendAsync<Limits, LimitsResp>(new Limits(), cancellation);
+            return await SendAsync<Limits, LimitsResp>(new Limits(), cancellation).ConfigureAwait(false);
         }
         
         /// <summary>
@@ -94,7 +93,7 @@ namespace mitelapi
         public async Task SubscribeAsync(SubscribeCmdType[] commands, CancellationToken cancellationToken)
         {
             var subscribe = new Subscribe {Commands = commands};
-            await SendAsync<Subscribe, SubscribeResp>(subscribe, cancellationToken);
+            await SendAsync<Subscribe, SubscribeResp>(subscribe, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -106,7 +105,7 @@ namespace mitelapi
         public async Task PingAsync(CancellationToken cancellationToken)
         {
             var ping = new Ping();
-            var pong = await SendAsync<Ping, PingResp>(ping, cancellationToken);
+            var pong = await SendAsync<Ping, PingResp>(ping, cancellationToken).ConfigureAwait(false);
             if (pong.TimeStamp.HasValue)
             {
                 Rtt = TimeSpan.FromSeconds(ping.Timestamp - pong.TimeStamp.Value);
@@ -118,9 +117,9 @@ namespace mitelapi
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<GetStbStateResp> GetStbState(CancellationToken cancellationToken)
+        public async Task<GetStbStateResp> GetStbStateAsync(CancellationToken cancellationToken)
         {
-            return await SendAsync<GetStbState, GetStbStateResp>(new GetStbState(), cancellationToken);
+            return await SendAsync<GetStbState, GetStbStateResp>(new GetStbState(), cancellationToken).ConfigureAwait(false);
         }
     }
 }
