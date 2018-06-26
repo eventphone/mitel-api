@@ -55,13 +55,13 @@ namespace mitelapi
             {
                 try
                 {
-                    var users = await SendAsync<GetPPUser, GetPPUserResp>(new GetPPUser { Uid = uid, MaxRecords = 20 }, cancellationToken);
+                    var users = await SendAsync<GetPPUser, GetPPUserResp>(new GetPPUser { Uid = uid, MaxRecords = 20 }, cancellationToken).ConfigureAwait(false);
                     uid = users.Users.Max(x => x.Uid) + 1;
                     foreach(var user in users.Users)
                     {
                         if (user.Ppn == 0)
                         {
-                            await DeletePPUser(user.Uid, cancellationToken);
+                            await DeletePPUserAsync(user.Uid, cancellationToken).ConfigureAwait(false);
                         }
                         else
                         {
@@ -76,7 +76,7 @@ namespace mitelapi
             }
             this.PPUserCnf += UpdateUserCache;
             this.PPCnf += UpdateUserCache;
-            await SubscribeAsync(new SubscribeCmdType(EventType.PPUserCnf) { Uid = -1 }, cancellationToken);
+            await SubscribeAsync(new SubscribeCmdType(EventType.PPUserCnf) { Uid = -1 }, cancellationToken).ConfigureAwait(false);
         }
 
         private void UpdateUserCache(object sender, OmmEventArgs<EventPPCnf> e)
@@ -114,31 +114,31 @@ namespace mitelapi
 
         private async void SendPing(object state)
         {
-            await PingAsync(CancellationToken.None);
+            await PingAsync(CancellationToken.None).ConfigureAwait(false);
         }
 
-        public async Task<GetRFPSummaryResp> GetRFPSummary(CancellationToken cancellationToken)
+        public async Task<GetRFPSummaryResp> GetRFPSummaryAsync(CancellationToken cancellationToken)
         {
             var request = new GetRFPSummary();
-            var response = await SendAsync<GetRFPSummary, GetRFPSummaryResp>(request, cancellationToken);
+            var response = await SendAsync<GetRFPSummary, GetRFPSummaryResp>(request, cancellationToken).ConfigureAwait(false);
             return response;
         }
 
-        public async Task<GetPPDevSummaryResp> GetPPDevSummary(CancellationToken cancellationToken)
+        public async Task<GetPPDevSummaryResp> GetPPDevSummaryAsync(CancellationToken cancellationToken)
         {
             var request = new GetPPDevSummary();
-            var response = await SendAsync<GetPPDevSummary, GetPPDevSummaryResp>(request, cancellationToken);
+            var response = await SendAsync<GetPPDevSummary, GetPPDevSummaryResp>(request, cancellationToken).ConfigureAwait(false);
             return response;
         }
 
-        public async Task<GetPPUserSummaryResp> GetPPUserSummary(CancellationToken cancellationToken)
+        public async Task<GetPPUserSummaryResp> GetPPUserSummaryAsync(CancellationToken cancellationToken)
         {
             var request = new GetPPUserSummary();
-            var response = await SendAsync<GetPPUserSummary, GetPPUserSummaryResp>(request, cancellationToken);
+            var response = await SendAsync<GetPPUserSummary, GetPPUserSummaryResp>(request, cancellationToken).ConfigureAwait(false);
             return response;
         }
 
-        public async Task<CreatePPUserResp> CreatePPUser(PPUserType user, CancellationToken cancellationToken)
+        public async Task<CreatePPUserResp> CreatePPUserAsync(PPUserType user, CancellationToken cancellationToken)
         {
             var request = new CreatePPUser()
             {
@@ -148,38 +148,38 @@ namespace mitelapi
                 request.User.Pin = PPUserType.EncryptData(_modulus, _exponent, request.User.Pin);
             if (request.User.SipPw != null)
                 request.User.SipPw = PPUserType.EncryptData(_modulus, _exponent, request.User.SipPw);
-            var response = await SendAsync<CreatePPUser, CreatePPUserResp>(request, cancellationToken);
+            var response = await SendAsync<CreatePPUser, CreatePPUserResp>(request, cancellationToken).ConfigureAwait(false);
             return response;
         }
 
-        public async Task<SetPPResp> SetPP(PPDevType pp, PPUserType user, CancellationToken cancellationToken)
+        public async Task<SetPPResp> SetPPAsync(PPDevType pp, PPUserType user, CancellationToken cancellationToken)
         {
             var request = new SetPP() {
                 PortablePart = pp,
                 User = user 
             };
-            var response = await SendAsync<SetPP, SetPPResp>(request, cancellationToken);
+            var response = await SendAsync<SetPP, SetPPResp>(request, cancellationToken).ConfigureAwait(false);
             return response;
         }
 
-        public async Task<GetPPResp> GetPP(int ppn, int uid, CancellationToken cancellationToken)
+        public async Task<GetPPResp> GetPPAsync(int ppn, int uid, CancellationToken cancellationToken)
         {
             var request = new GetPP()
             {
                 uid = uid,
                 ppn = ppn
             };
-            var response = await SendAsync<GetPP, GetPPResp>(request, cancellationToken);
+            var response = await SendAsync<GetPP, GetPPResp>(request, cancellationToken).ConfigureAwait(false);
             return response;
         }
 
-        public async Task<PPUserType> GetPPUser(int uid, CancellationToken cancellationToken)
+        public async Task<PPUserType> GetPPUserAsync(int uid, CancellationToken cancellationToken)
         {
-            var response = await SendAsync<GetPPUser, GetPPUserResp>(new GetPPUser { Uid = uid }, cancellationToken);
+            var response = await SendAsync<GetPPUser, GetPPUserResp>(new GetPPUser { Uid = uid }, cancellationToken).ConfigureAwait(false);
             return response.Users[0];
         }
 
-        public async Task<List<PPUserType>> GetPPAllUser(CancellationToken cancellationToken)
+        public async Task<List<PPUserType>> GetPPAllUserAsync(CancellationToken cancellationToken)
         {
             var uid = 0;
             var result = new List<PPUserType>();
@@ -187,7 +187,7 @@ namespace mitelapi
             {
                 try
                 {
-                    var users = await SendAsync<GetPPUser, GetPPUserResp>(new GetPPUser { Uid = uid, MaxRecords = 20 }, cancellationToken);
+                    var users = await SendAsync<GetPPUser, GetPPUserResp>(new GetPPUser { Uid = uid, MaxRecords = 20 }, cancellationToken).ConfigureAwait(false);
                     uid = users.Users.Max(x => x.Uid) + 1;
                     foreach (var user in users.Users)
                     {
@@ -202,38 +202,38 @@ namespace mitelapi
             return result;
         }
 
-        public async Task DeletePPUser(int uid, CancellationToken cancellationToken)
+        public async Task DeletePPUserAsync(int uid, CancellationToken cancellationToken)
         {
-            await SendAsync<DeletePPUser, DeletePPUserResp>(new DeletePPUser { Uid = uid }, cancellationToken);
+            await SendAsync<DeletePPUser, DeletePPUserResp>(new DeletePPUser { Uid = uid }, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<PPDevType[]> GetPPDev(int ppn, int maxRecords, CancellationToken cancellationToken)
+        public async Task<PPDevType[]> GetPPDevAsync(int ppn, int maxRecords, CancellationToken cancellationToken)
         {
-            var response = await SendAsync<GetPPDev, GetPPDevResp>(new GetPPDev { Ppn = ppn, MaxRecords = maxRecords }, cancellationToken);
+            var response = await SendAsync<GetPPDev, GetPPDevResp>(new GetPPDev { Ppn = ppn, MaxRecords = maxRecords }, cancellationToken).ConfigureAwait(false);
             return response.Devices;
         }
 
-        public async Task<PPDevType> GetPPDev(int ppn, CancellationToken cancellationToken)
+        public async Task<PPDevType> GetPPDevAsync(int ppn, CancellationToken cancellationToken)
         {
-            var response = await SendAsync<GetPPDev, GetPPDevResp>(new GetPPDev { Ppn = ppn }, cancellationToken);
+            var response = await SendAsync<GetPPDev, GetPPDevResp>(new GetPPDev { Ppn = ppn }, cancellationToken).ConfigureAwait(false);
             return response.Devices[0];
         }
 
-        public async Task<PPDevType> SetPPDev(PPDevType pp, CancellationToken cancellationToken)
+        public async Task<PPDevType> SetPPDevAsync(PPDevType pp, CancellationToken cancellationToken)
         {
             var request = new SetPPDev {
                 PortablePart = pp,
             };
-            var response = await SendAsync<SetPPDev, SetPPDevResp>(request, cancellationToken);
+            var response = await SendAsync<SetPPDev, SetPPDevResp>(request, cancellationToken).ConfigureAwait(false);
             return response.PortablePart;
         }
 
-        public async Task DeletePPDev(int ppn, CancellationToken cancellationToken)
+        public async Task DeletePPDevAsync(int ppn, CancellationToken cancellationToken)
         {
-            await SendAsync<DeletePPDev, DeletePPDevResp>(new DeletePPDev {Ppn = ppn}, cancellationToken);
+            await SendAsync<DeletePPDev, DeletePPDevResp>(new DeletePPDev {Ppn = ppn}, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<List<PPDevType>> GetPPAllDev(CancellationToken cancellationToken)
+        public async Task<List<PPDevType>> GetPPAllDevAsync(CancellationToken cancellationToken)
         {
             var ppn = 0;
             var result = new List<PPDevType>();
@@ -241,7 +241,7 @@ namespace mitelapi
             {
                 try
                 {
-                    var devices = await SendAsync<GetPPDev, GetPPDevResp>(new GetPPDev { Ppn = ppn, MaxRecords = 20 }, cancellationToken);
+                    var devices = await SendAsync<GetPPDev, GetPPDevResp>(new GetPPDev { Ppn = ppn, MaxRecords = 20 }, cancellationToken).ConfigureAwait(false);
                     ppn = devices.Devices.Max(x => x.Ppn) + 1;
                     foreach (var device in devices.Devices)
                     {
@@ -256,86 +256,91 @@ namespace mitelapi
             return result;
         }
 
-        public async Task<bool> GetDevAutoCreate(CancellationToken cancellationToken)
+        public async Task<bool> GetDevAutoCreateAsync(CancellationToken cancellationToken)
         {
-            var resp = await SendAsync<GetDevAutoCreate, GetDevAutoCreateResp>(new GetDevAutoCreate(), cancellationToken);
+            var resp = await SendAsync<GetDevAutoCreate, GetDevAutoCreateResp>(new GetDevAutoCreate(), cancellationToken).ConfigureAwait(false);
             return resp.Enable;
         }
 
-        public async Task<SetDevAutoCreateResp> SetDevAutoCreate(bool enabled, CancellationToken cancellationToken)
+        public async Task<SetDevAutoCreateResp> SetDevAutoCreateAsync(bool enabled, CancellationToken cancellationToken)
         {
-            return await SendAsync<SetDevAutoCreate, SetDevAutoCreateResp>(new SetDevAutoCreate() { Enable = enabled}, cancellationToken);
+            return await SendAsync<SetDevAutoCreate, SetDevAutoCreateResp>(new SetDevAutoCreate() { Enable = enabled}, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<bool> GetRFPCapture(CancellationToken cancellationToken)
+        public async Task<bool> GetRFPCaptureAsync(CancellationToken cancellationToken)
         {
-            var resp = await SendAsync<GetRFPCapture, GetRFPCaptureResp>(new GetRFPCapture(), cancellationToken);
+            var resp = await SendAsync<GetRFPCapture, GetRFPCaptureResp>(new GetRFPCapture(), cancellationToken).ConfigureAwait(false);
             return resp.Enable;
         }
 
-        public async Task<DeleteRFPCaptureListElemResp> DeleteRFPCaptureListElem(string mac, CancellationToken cancellationToken)
+        public async Task<DeleteRFPCaptureListElemResp> DeleteRFPCaptureListElemAsync(string mac, CancellationToken cancellationToken)
         {
-            return await SendAsync<DeleteRFPCaptureListElem, DeleteRFPCaptureListElemResp>(new DeleteRFPCaptureListElem() {EthAddr = mac }, cancellationToken);
+            return await SendAsync<DeleteRFPCaptureListElem, DeleteRFPCaptureListElemResp>(new DeleteRFPCaptureListElem() {EthAddr = mac }, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<DeleteRFPCaptureListResp> DeleteRFPCaptureList(CancellationToken cancellationToken)
+        public async Task<DeleteRFPCaptureListResp> DeleteRFPCaptureListAsync(CancellationToken cancellationToken)
         {
-            return await SendAsync<DeleteRFPCaptureList, DeleteRFPCaptureListResp>(new DeleteRFPCaptureList(), cancellationToken);
+            return await SendAsync<DeleteRFPCaptureList, DeleteRFPCaptureListResp>(new DeleteRFPCaptureList(), cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<SetRFPCaptureResp> SetRFPCapture(bool enabled, CancellationToken cancellationToken)
+        public async Task<SetRFPCaptureResp> SetRFPCaptureAsync(bool enabled, CancellationToken cancellationToken)
         {
-            return await SendAsync<SetRFPCapture, SetRFPCaptureResp>(new SetRFPCapture() { Enable = enabled }, cancellationToken);
+            return await SendAsync<SetRFPCapture, SetRFPCaptureResp>(new SetRFPCapture() { Enable = enabled }, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<GetRFPCaptureListResp> GetRFPCaptureList(CancellationToken cancellationToken)
+        public async Task<GetRFPCaptureListResp> GetRFPCaptureListAsync(CancellationToken cancellationToken)
         {
-            return await SendAsync<GetRFPCaptureList, GetRFPCaptureListResp>(new GetRFPCaptureList(), cancellationToken);
+            return await SendAsync<GetRFPCaptureList, GetRFPCaptureListResp>(new GetRFPCaptureList(), cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<DECTSubscriptionModeType> GetDECTSubscriptionMode(CancellationToken cancellationToken)
+        public async Task<DECTSubscriptionModeType> GetDECTSubscriptionModeAsync(CancellationToken cancellationToken)
         {
-            var resp = await SendAsync<GetDECTSubscriptionMode, GetDECTSubscriptionModeResp>(new GetDECTSubscriptionMode(), cancellationToken);
+            var resp = await SendAsync<GetDECTSubscriptionMode, GetDECTSubscriptionModeResp>(new GetDECTSubscriptionMode(), cancellationToken).ConfigureAwait(false);
             return resp.Mode;
         }
 
-        public async Task<SetDECTSubscriptionModeResp> SetDECTSubscriptionMode(DECTSubscriptionModeType mode, CancellationToken cancellationToken, int timeout = 3)
+        public Task<SetDECTSubscriptionModeResp> SetDECTSubscriptionModeAsync(DECTSubscriptionModeType mode, CancellationToken cancellationToken)
         {
-            return await SendAsync<SetDECTSubscriptionMode, SetDECTSubscriptionModeResp>(new SetDECTSubscriptionMode() { Mode = mode, Timeout = timeout}, cancellationToken);
+            return SetDECTSubscriptionModeAsync(mode, 3, cancellationToken);
         }
 
-        public async Task<GetRFPSyncResp> GetRFPSync(int id, CancellationToken cancellationToken)
+        public async Task<SetDECTSubscriptionModeResp> SetDECTSubscriptionModeAsync(DECTSubscriptionModeType mode, int timeout, CancellationToken cancellationToken)
         {
-            return await SendAsync<GetRFPSync, GetRFPSyncResp>(new GetRFPSync { Id = id }, cancellationToken);
+            return await SendAsync<SetDECTSubscriptionMode, SetDECTSubscriptionModeResp>(new SetDECTSubscriptionMode() { Mode = mode, Timeout = timeout}, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<GetRFPSyncQualityResp> GetRFPSyncQuality(int id, int maxRecords, CancellationToken cancellationToken)
+        public async Task<GetRFPSyncResp> GetRFPSyncAsync(int id, CancellationToken cancellationToken)
         {
-            return await SendAsync<GetRFPSyncQuality, GetRFPSyncQualityResp>(new GetRFPSyncQuality { Id = id, MaxRecords = maxRecords }, cancellationToken);
+            return await SendAsync<GetRFPSync, GetRFPSyncResp>(new GetRFPSync { Id = id }, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<RFPType> GetRFP(int id, bool withDetails, bool withState, CancellationToken cancellationToken)
+        public async Task<GetRFPSyncQualityResp> GetRFPSyncQualityAsync(int id, int maxRecords, CancellationToken cancellationToken)
         {
-            var response = await SendAsync<GetRFP, GetRFPResp>(new GetRFP { Id = id, WithDetails=withDetails, WithState=withState, MaxRecords=1 }, cancellationToken);
+            return await SendAsync<GetRFPSyncQuality, GetRFPSyncQualityResp>(new GetRFPSyncQuality { Id = id, MaxRecords = maxRecords }, cancellationToken).ConfigureAwait(false);
+        }
+
+        public async Task<RFPType> GetRFPAsync(int id, bool withDetails, bool withState, CancellationToken cancellationToken)
+        {
+            var response = await SendAsync<GetRFP, GetRFPResp>(new GetRFP { Id = id, WithDetails=withDetails, WithState=withState, MaxRecords=1 }, cancellationToken).ConfigureAwait(false);
             return response.RFPs[0];
         }
 
-        public async Task SetRFP(RFPType rfp, CancellationToken cancellationToken)
+        public async Task SetRFPAsync(RFPType rfp, CancellationToken cancellationToken)
         {
-            await SendAsync<SetRFP, SetRFPResp>(new SetRFP { Rfp = rfp}, cancellationToken);
+            await SendAsync<SetRFP, SetRFPResp>(new SetRFP { Rfp = rfp}, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task DeleteRFP(int id, CancellationToken cancellationToken)
+        public async Task DeleteRFPAsync(int id, CancellationToken cancellationToken)
         {
-            await SendAsync<DeleteRFP, DeleteRFPResp>(new DeleteRFP { Id = id }, cancellationToken);
+            await SendAsync<DeleteRFP, DeleteRFPResp>(new DeleteRFP { Id = id }, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task CreateRFP(RFPType rfp, CancellationToken cancellationToken)
+        public async Task CreateRFPAsync(RFPType rfp, CancellationToken cancellationToken)
         {
-            await SendAsync<CreateRFP, CreateRFPResp>(new CreateRFP { Rfp = rfp }, cancellationToken);
+            await SendAsync<CreateRFP, CreateRFPResp>(new CreateRFP { Rfp = rfp }, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<List<RFPType>> GetRFPAll(bool withDetails, bool withState, CancellationToken cancellationToken)
+        public async Task<List<RFPType>> GetRFPAllAsync(bool withDetails, bool withState, CancellationToken cancellationToken)
         {
             var id = 0;
             var result = new List<RFPType>();
@@ -343,7 +348,7 @@ namespace mitelapi
             {
                 try
                 {
-                    var rfps = await SendAsync<GetRFP, GetRFPResp>(new GetRFP { Id = id, MaxRecords = 20, WithDetails=withDetails, WithState=withState }, cancellationToken);
+                    var rfps = await SendAsync<GetRFP, GetRFPResp>(new GetRFP { Id = id, MaxRecords = 20, WithDetails=withDetails, WithState=withState }, cancellationToken).ConfigureAwait(false);
                     id = rfps.RFPs.Max(x => x.Id.GetValueOrDefault()) + 1;
                     foreach (var rfp in rfps.RFPs)
                     {
@@ -358,12 +363,12 @@ namespace mitelapi
             return result;
         }
 
-        public async Task UploadFile(string filename, Stream file, CancellationToken cancellationToken)
+        public async Task UploadFileAsync(string filename, Stream file, CancellationToken cancellationToken)
         {
             var buffer = new byte[500];
             int read;
             int offset = 0;
-            while ((read = await file.ReadAsync(buffer, 0, buffer.Length, cancellationToken)) != -1)
+            while ((read = await file.ReadAsync(buffer, 0, buffer.Length, cancellationToken).ConfigureAwait(false)) != -1)
             {
                 var request = new PutFile
                 {
@@ -371,7 +376,7 @@ namespace mitelapi
                     Offset =  offset,
                     Data = Convert.ToBase64String(buffer, 0, read),
                 };
-                await SendAsync<PutFile, PutFileResp>(request, cancellationToken);
+                await SendAsync<PutFile, PutFileResp>(request, cancellationToken).ConfigureAwait(false);
                 offset += read;
             }
             var eof = new PutFile
@@ -380,12 +385,12 @@ namespace mitelapi
                 Offset = offset,
                 Eof = true
             };
-            await SendAsync<PutFile, PutFileResp>(eof, cancellationToken);
+            await SendAsync<PutFile, PutFileResp>(eof, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<GetRFPStatisticConfigResp> GetRFPStatisticConfig(CancellationToken cancellationToken)
+        public async Task<GetRFPStatisticConfigResp> GetRFPStatisticConfigAsync(CancellationToken cancellationToken)
         {
-            var response = await SendAsync<GetRFPStatisticConfig, GetRFPStatisticConfigResp>(new GetRFPStatisticConfig(), cancellationToken);
+            var response = await SendAsync<GetRFPStatisticConfig, GetRFPStatisticConfigResp>(new GetRFPStatisticConfig(), cancellationToken).ConfigureAwait(false);
             return response;
         }
 
@@ -399,15 +404,15 @@ namespace mitelapi
         /// Record 0 identifies the overall counter, 1 the current week, 2 the week before the current week and so on.</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public Task<GetRFPStatisticResp> GetRFPStatistic(int id, int maxRecord, int recordSet, CancellationToken cancellationToken)
+        public Task<GetRFPStatisticResp> GetRFPStatisticAsync(int id, int maxRecord, int recordSet, CancellationToken cancellationToken)
         {
             var request = new GetRFPStatistic {Id = id, MaxRecords = maxRecord, RecordSet = recordSet};
-            return GetRFPStatistic(request, cancellationToken);
+            return GetRFPStatisticAsync(request, cancellationToken);
         }
 
-        public async Task<GetRFPStatisticResp> GetRFPStatistic(GetRFPStatistic request, CancellationToken cancellationToken)
+        public async Task<GetRFPStatisticResp> GetRFPStatisticAsync(GetRFPStatistic request, CancellationToken cancellationToken)
         {
-            var response = await SendAsync<GetRFPStatistic, GetRFPStatisticResp>(request, cancellationToken);
+            var response = await SendAsync<GetRFPStatistic, GetRFPStatisticResp>(request, cancellationToken).ConfigureAwait(false);
             return response;
         }
 
@@ -418,9 +423,9 @@ namespace mitelapi
             using (var container = new ReceiveContainer(sequence))
             {
                 _receiveQueue.AddOrUpdate(sequence, container, (i, o) => container);
-                var message = await _serializer.Serialize(request, _ssl);
+                var message = await _serializer.SerializeAsync(request, _ssl, cancellationToken).ConfigureAwait(false);
                 OnMessageLog(message, MessageDirection.Out);
-                return (TResponse) await container.GetResponseAsync(cancellationToken);
+                return (TResponse) await container.GetResponseAsync(cancellationToken).ConfigureAwait(false);
             }
         }
 
