@@ -1,6 +1,6 @@
 # mitel-api
 
-.NET Library for the [SIP-DECT OM Application XML Interface](http://www.voipinfo.net/docs/mitel/aad-0384_OM_AXI_OM_Rel_6.1.pdf) used by Mitel OMM. This project was inspired by [python-mitel](https://github.com/thomasDOTde/python-mitel/).
+.NET Library for the [SIP-DECT OM Application XML Interface](https://mitel.de/sites/default/files/aad-0384_OM_AXI_OM_Rel_6.1_1.pdf) used by Mitel OMM. This project was inspired by [python-mitel](https://github.com/thomasDOTde/python-mitel/).
 
 ## status
 **very early and broken pre-alpha**
