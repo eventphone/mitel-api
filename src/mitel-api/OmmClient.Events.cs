@@ -21,6 +21,7 @@ namespace mitelapi
         public event EventHandler<OmmEventArgs<EventRFPSyncQuality>> RFPSyncQuality;
         public event EventHandler<OmmEventArgs<EventRFPSyncRel>> RFPSyncRel;
         public event EventHandler<OmmEventArgs<EventStbStateChange>> StbStateChange;
+        public event EventHandler<OmmEventArgs<EventLicenseCnf>> LicenseCnf;
 
         private void OnMessageReceived(BaseResponse message)
         {
@@ -84,6 +85,10 @@ namespace mitelapi
             else if (ommEvent is EventStbStateChange stbStateChange)
             {
                 StbStateChange?.Invoke(this, new OmmEventArgs<EventStbStateChange>(stbStateChange));
+            }
+            else if (ommEvent is EventLicenseCnf licenseCnf)
+            {
+                LicenseCnf?.Invoke(this, new OmmEventArgs<EventLicenseCnf>(licenseCnf));
             }
         }
     }

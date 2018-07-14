@@ -599,5 +599,20 @@ namespace mitel_api.test
             var eventStgStateChange = _serializer.DeserializeEvent<EventPermissionChange>(message);
             Assert.AreEqual(eventStgStateChange.Permissions.Length, 8);
         }
+
+        [TestMethod]
+        public void CanDeserializeGetLicenseResp()
+        {
+            var message = "<GetLicenseResp type=\"standard\" state=\"activeLicense\" latency=\"22458\" park=\"1F102AF12C\">" +
+                "<violation>noViolation</violation>" +
+                "<licenseRfp id=\"0\" ethAddr=\"00:30:42:12:3E:45\" connected=\"1\" />" +
+                "<sysLicense key=\"41TLW-RF9SJ-77UPA-N8JTP-MUH6C\" number=\"100\" systemLicenseVersion=\"7.1\" />" +
+                "<msgLicense key=\"XHBP6-S1U6A-L9BF1-QSFER-ZRR4D\" number=\"10000\" messagingLicenseRcvMsgs=\"1\" />" +
+                "<locLicense key=\"VRK87-5PAJK-BMVHM-AWG3A-2TJCN\" number=\"700\" locatingLicense=\"1\" /></GetLicenseResp>";
+            var getLicenseResp = _serializer.Deserialize<GetLicenseResp>(message);
+            Assert.AreEqual(LicenseViolationReason.NoViolation, getLicenseResp.Violation[0]);
+            Assert.AreEqual("1F102AF12C", getLicenseResp.Park);
+            Assert.AreEqual("7.1", getLicenseResp.SysLicense.SystemLicenseVersion);
+        }
     }
 }

@@ -416,6 +416,12 @@ namespace mitelapi
             return response;
         }
 
+        public async Task<GetLicenseResp> GetLicenseAsync(CancellationToken cancellationToken)
+        {
+            var response = await SendAsync<GetLicense, GetLicenseResp>(new GetLicense(), cancellationToken).ConfigureAwait(false);
+            return response;
+        }
+
         private async Task<TResponse> SendAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken) where TRequest:BaseRequest where TResponse:BaseResponse
         {
             var sequence = Interlocked.Increment(ref _seq);
