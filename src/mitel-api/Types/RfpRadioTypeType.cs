@@ -10,22 +10,22 @@ namespace mitelapi.Types
         /// <summary>
         /// No power limit for this RFP
         /// </summary>
-        [XmlEnum(Name = "None")]
+        [XmlEnum("None")]
         None,
         /// <summary>
         /// North American TX power limit
         /// </summary>
-        [XmlEnum(Name = "LowTX")]
+        [XmlEnum("LowTX")]
         LowTX,
         /// <summary>
         /// European TX power limit
         /// </summary>
-        [XmlEnum(Name = "NormalTX")]
+        [XmlEnum("NormalTX")]
         NormalTX,
         /// <summary>
         /// The power limit can be configured
         /// </summary>
-        [XmlEnum(Name = "ConfigurableTX")]
+        [XmlEnum("ConfigurableTX")]
         ConfigurableTX
     }
 }

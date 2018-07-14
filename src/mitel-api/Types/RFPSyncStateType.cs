@@ -10,22 +10,22 @@ namespace mitelapi.Types
         /// <summary>
         /// RFP not DECT active
         /// </summary>
-        [XmlEnum(Name = "Inactive")]
+        [XmlEnum("Inactive")]
         Inactive,
         /// <summary>
         /// RFP is not synchronized
         /// </summary>
-        [XmlEnum(Name = "NotSynced")]
+        [XmlEnum("NotSynced")]
         NotSynced,
         /// <summary>
         /// RFP searches for other synchronized RFPs
         /// </summary>
-        [XmlEnum(Name = "Searching")]
+        [XmlEnum("Searching")]
         Searching,
         /// <summary>
         /// RFP is synchronized
         /// </summary>
-        [XmlEnum(Name = "Synced")]
+        [XmlEnum("Synced")]
         Synced
     }
 }

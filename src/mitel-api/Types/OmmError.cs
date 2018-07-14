@@ -8,137 +8,137 @@ namespace mitelapi.Types
         /// <summary>
         /// Paging area is full
         /// </summary>
-        [XmlEnum(Name = "EAreaFull")]
+        [XmlEnum("EAreaFull")]
         EAreaFull,
         /// <summary>
         /// Authentication failed, e. g. user name or password may be wrong
         /// </summary>
-        [XmlEnum(Name = "EAuth")]
+        [XmlEnum("EAuth")]
         EAuth, 
         /// <summary>
         /// A DECT regulatory domain must be set before the request can be performed
         /// </summary>
-        [XmlEnum(Name = "EDectRegDomainInvalid")]
+        [XmlEnum("EDectRegDomainInvalid")]
         EDectRegDomainInvalid, 
         /// <summary>
         /// DECT encryption cannot be activated because of at least one RFP not supporting encryption is connected.
         /// </summary>
-        [XmlEnum(Name = "EEncryptNotAllowed")]
+        [XmlEnum("EEncryptNotAllowed")]
         EEncryptNotAllowed,
         /// <summary>
         /// A field describing a unique attribute does already exist
         /// </summary>
-        [XmlEnum(Name = "EExist")]
+        [XmlEnum("EExist")]
         EExist,
         /// <summary>
         /// Request could not be fulfilled
         /// </summary>
-        [XmlEnum(Name = "EFailed")]
+        [XmlEnum("EFailed")]
         EFailed, 
         /// <summary>
         /// This operation is not permitted with that instance
         /// </summary>
-        [XmlEnum(Name = "EForbidden")]
+        [XmlEnum("EForbidden")]
         EForbidden,
         /// <summary>
         /// Another transaction is in progress, this request cannot be fulfilled currently
         /// </summary>
-        [XmlEnum(Name = "EInProgress")]
+        [XmlEnum("EInProgress")]
         EInProgress,
         /// <summary>
         /// A field contains invalid data or exceeds a limit
         /// </summary>
-        [XmlEnum(Name = "EInval")]
+        [XmlEnum("EInval")]
         EInval,
         /// <summary>
         /// A string contains invalid characters.
         /// </summary>
-        [XmlEnum(Name = "EInvalidChars")]
+        [XmlEnum("EInvalidChars")]
         EInvalidChars,
         /// <summary>
         /// Operation cannot be fulfilled because of license restrictions
         /// </summary>
-        [XmlEnum(Name = "ELicense")]
+        [XmlEnum("ELicense")]
         ELicense,
         /// <summary>
         /// Operation cannot be fulfilled because of license file restrictions
         /// </summary>
-        [XmlEnum(Name = "ELicenseFile")]
+        [XmlEnum("ELicenseFile")]
         ELicenseFile,
         /// <summary>
         /// Operation cannot be fulfilled because of an invalid installation id in the license file
         /// </summary>
-        [XmlEnum(Name = "ELicenseWrongInstallId")]
+        [XmlEnum("ELicenseWrongInstallId")]
         ELicenseWrongInstallId,
         /// <summary>
         /// A field which is mandatory on this OMM version is missing
         /// </summary>
-        [XmlEnum(Name = "EMissing")]
+        [XmlEnum("EMissing")]
         EMissing, 
         /// <summary>
         /// No record found for given key or id
         /// </summary>
-        [XmlEnum(Name = "ENoEnt")]
+        [XmlEnum("ENoEnt")]
         ENoEnt, 
         /// <summary>
         /// No more data sets can be created
         /// </summary>
-        [XmlEnum(Name = "ENoMem")]
+        [XmlEnum("ENoMem")]
         ENoMem,
         /// <summary>
         /// No sufficient permissions for this request
         /// </summary>
-        [XmlEnum(Name = "EPerm")]
+        [XmlEnum("EPerm")]
         EPerm,
         /// <summary>
         /// A required password was not specified.
         /// </summary>
-        [XmlEnum(Name = "EPwEmpty")]
+        [XmlEnum("EPwEmpty")]
         EPwEmpty,
         /// <summary>
         /// A new given password is too similar to the host name.
         /// </summary>
-        [XmlEnum(Name = "EPwSimilarToHost")]
+        [XmlEnum("EPwSimilarToHost")]
         EPwSimilarToHost, 
         /// <summary>
         /// A new given password is too similar to the user name.
         /// </summary>
-        [XmlEnum(Name = "EPwSimilarToName")]
+        [XmlEnum("EPwSimilarToName")]
         EPwSimilarToName,
         /// <summary>
         /// A new given password too many similar characters.
         /// </summary>
-        [XmlEnum(Name = "EPwTooManySimilarChars")]
+        [XmlEnum("EPwTooManySimilarChars")]
         EPwTooManySimilarChars,
         /// <summary>
         /// A new given password is too short.
         /// </summary>
-        [XmlEnum(Name = "EPwTooShort")]
+        [XmlEnum("EPwTooShort")]
         EPwTooShort,
         /// <summary>
         /// A new given password is too similar to the previous one.
         /// </summary>
-        [XmlEnum(Name = "EPwTooSimilar")]
+        [XmlEnum("EPwTooSimilar")]
         EPwTooSimilar, 
         /// <summary>
         /// A new given password is too weak.
         /// </summary>
-        [XmlEnum(Name = "EPwTooWeak")]
+        [XmlEnum("EPwTooWeak")]
         EPwTooWeak, 
         /// <summary>
         /// A new given password does not differ to the old one.
         /// </summary>
-        [XmlEnum(Name = "EPwUnchanged")]
+        [XmlEnum("EPwUnchanged")]
         EPwUnchanged,
         /// <summary>
         /// A string is too long
         /// </summary>
-        [XmlEnum(Name = "ETooLong")]
+        [XmlEnum("ETooLong")]
         ETooLong,
         /// <summary>
         /// A DECT regulatory domain must be set before the request can be performed
         /// </summary>
-        [XmlEnum(Name = "EWlanRegDomainInvalid")]
+        [XmlEnum("EWlanRegDomainInvalid")]
         EWlanRegDomainInvalid,
     }
 }

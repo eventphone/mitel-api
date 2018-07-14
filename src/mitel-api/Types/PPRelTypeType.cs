@@ -8,17 +8,17 @@ namespace mitelapi.Types
         /// <summary>
         /// This  DECT phone device or  DECT phone user can be bound dynamically, currently it is unbound. 
         /// </summary>
-        [XmlEnum(Name = "Unbound")]
+        [XmlEnum("Unbound")]
         Unbound,
         /// <summary>
         /// This  DECT phone device or  DECT phone user can be bound dynamically, currently it is bound. 
         /// </summary>
-        [XmlEnum(Name = "Dynamic")]
+        [XmlEnum("Dynamic")]
         Dynamic,
         /// <summary>
         /// This  DECT phone device or  DECT phone user has a fixed relation. 
         /// </summary>
-        [XmlEnum(Name = "Fixed")]
+        [XmlEnum("Fixed")]
         Fixed
     }
 }

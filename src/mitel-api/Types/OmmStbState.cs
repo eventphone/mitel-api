@@ -11,22 +11,22 @@ namespace mitelapi.Types
         /// <summary>
         /// OMM standby running and active
         /// </summary>
-        [XmlEnum(Name = "OK")]
+        [XmlEnum("OK")]
         OK,
         /// <summary>
         /// OMM standby active but the standby OMM is not visible or the database is not synchronized
         /// </summary>
-        [XmlEnum(Name = "NotSynchronized")]
+        [XmlEnum("NotSynchronized")]
         NotSynchronized,
         /// <summary>
         /// OMM standby active, but OMMs do not fit together
         /// </summary>
-        [XmlEnum(Name = "DifferentOMMTypes")]
+        [XmlEnum("DifferentOMMTypes")]
         DifferentOMMTypes,
         /// <summary>
         /// OMM standby active, but OMMs do not fit together
         /// </summary>
-        [XmlEnum(Name = "DifferentOMMVersions")]
+        [XmlEnum("DifferentOMMVersions")]
         DifferentOMMVersions,
     }
 }
