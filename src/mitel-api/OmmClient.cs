@@ -59,14 +59,7 @@ namespace mitelapi
                     uid = users.Users.Max(x => x.Uid) + 1;
                     foreach(var user in users.Users)
                     {
-                        if (user.Ppn == 0)
-                        {
-                            await DeletePPUserAsync(user.Uid, cancellationToken).ConfigureAwait(false);
-                        }
-                        else
-                        {
-                            _uidMapping.TryAdd(user.Num, user.Uid);
-                        }
+                        _uidMapping.TryAdd(user.Num, user.Uid);
                     }
                 }
                 catch (OmmNoEntryException)
