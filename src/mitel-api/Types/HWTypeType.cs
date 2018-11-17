@@ -19,6 +19,8 @@ namespace mitelapi.Types
         Type_630d,
         [XmlEnum("612d")]
         Type_612d,
+        [XmlEnum("612v2")]
+        Type_612v2,
         [XmlEnum("622d")]
         Type_622d,
         [XmlEnum(Name = "622v2")]
