@@ -245,24 +245,8 @@ namespace mitelapi.Types
         /// <summary>
         /// Detected device type. One of “142d”, “610d”, “620d”, “630d”, “612d”, “622d”, “632d”, “650c”, “740cv”, “GAP”or “Unknown” (read only)
         /// </summary>
-        [XmlIgnore]
-        public HWTypeType? HwType
-        {
-            get { return XmlHwTypeSpecified ? (HWTypeType?)XmlHwType : null; }
-            set
-            {
-                XmlHwTypeSpecified = value.HasValue;
-                XmlHwType = value.GetValueOrDefault();
-            }
-        }
-
         [XmlAttribute("hwType")]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public HWTypeType XmlHwType { get; set; }
-
-        [XmlIgnore]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public bool XmlHwTypeSpecified { get; set; }
+        public string HwType { get; set; }
 
         /// <summary>
         /// Determines whether the DECT phone is able to load DECT phone configuration data. This element is read only.
