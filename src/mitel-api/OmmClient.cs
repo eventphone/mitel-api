@@ -427,6 +427,10 @@ namespace mitelapi
         public async Task<PPUserType> SetPPUserAsync(PPUserType user, CancellationToken cancellationToken)
         {
             var request = new SetPPUser {User = user};
+            if (request.User.Pin != null)
+                request.User.Pin = PPUserType.EncryptData(_modulus, _exponent, request.User.Pin);
+            if (request.User.SipPw != null)
+                request.User.SipPw = PPUserType.EncryptData(_modulus, _exponent, request.User.SipPw);
             var response = await SendAsync<SetPPUser, SetPPUserResp>(request, cancellationToken).ConfigureAwait(false);
             return response.User;
         }
