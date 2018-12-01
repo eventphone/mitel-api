@@ -614,5 +614,26 @@ namespace mitel_api.test
             Assert.AreEqual("1F102AF12C", getLicenseResp.Park);
             Assert.AreEqual("7.1", getLicenseResp.SysLicense.SystemLicenseVersion);
         }
+
+        [TestMethod]
+        public void CanSerializedGetPPState()
+        {
+            var getPPState = new GetPPState{Ppn = 600};
+            var xml = _serializer.Serialize(getPPState);
+            Assert.AreEqual("<GetPPState ppn=\"600\" />", xml);
+        }
+
+        [TestMethod]
+        public void CanDeserializeGetPPStateResp()
+        {
+            var message = "<GetPPStateResp ppn=\"600\" onHook=\"1\" registered=\"1\" silentCharging=\"0\" callState=\"idle\" " +
+                "swVersion=\"5.00.SP5\" bluetooth=\"0\" regServerType=\"Primary\" regServerAddr=\"172.20.23.2\" " +
+                "regServerPort=\"5060\" seq=\"600\" />";
+            var getPPStateResp = _serializer.Deserialize<GetPPStateResp>(message);
+            Assert.AreEqual("5.00.SP5", getPPStateResp.SwVersion);
+            Assert.AreEqual(5060, getPPStateResp.RegServerPort.Value);
+            Assert.IsTrue(getPPStateResp.OnHook);
+            Assert.IsFalse(getPPStateResp.Bluetooth.Value);
+        }
     }
 }

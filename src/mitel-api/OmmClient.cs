@@ -424,6 +424,13 @@ namespace mitelapi
             return response;
         }
 
+        public async Task<GetPPStateResp> GetPPStateAsync(int ppn, CancellationToken cancellationToken)
+        {
+            var request = new GetPPState{Ppn = ppn};
+            var response = await SendAsync<GetPPState, GetPPStateResp>(request, cancellationToken).ConfigureAwait(false);
+            return response;
+        }
+
         public async Task<PPUserType> SetPPUserAsync(PPUserType user, CancellationToken cancellationToken)
         {
             var request = new SetPPUser {User = user};
