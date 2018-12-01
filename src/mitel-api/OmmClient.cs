@@ -424,6 +424,13 @@ namespace mitelapi
             return response;
         }
 
+        public async Task<PPUserType> SetPPUserAsync(PPUserType user, CancellationToken cancellationToken)
+        {
+            var request = new SetPPUser {User = user};
+            var response = await SendAsync<SetPPUser, SetPPUserResp>(request, cancellationToken).ConfigureAwait(false);
+            return response.User;
+        }
+
         private async Task<TResponse> SendAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken) where TRequest:BaseRequest where TResponse:BaseResponse
         {
             var sequence = Interlocked.Increment(ref _seq);
