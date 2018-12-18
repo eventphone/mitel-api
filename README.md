@@ -13,7 +13,7 @@ Currently only the base types, events and functions are implemented (as needed).
 
 ``` csharp
 var client = new OmmClient("example.com");
-await _client.LoginAsync("omm", "god");
+await client.LoginAsync("omm", "god");
 ```
 
 ### Request / Reponse
