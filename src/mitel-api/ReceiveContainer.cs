@@ -34,7 +34,7 @@ namespace mitelapi
             }
         }
 
-        public async Task<BaseResponse> GetResponseAsync(CancellationToken cancellationToken)
+        public async Task<BaseResponse> GetResponseAsync(string message, CancellationToken cancellationToken)
         {
             await _resetEvent.WaitAsync(cancellationToken).ConfigureAwait(false);
             var result = Response;
@@ -45,7 +45,7 @@ namespace mitelapi
                 case OmmError.ENoEnt:
                     throw new OmmNoEntryException(result.Info);
                 default:
-                    throw new OmmException(result.ErrorCode, result.Info, result.ErrorBad, result.ErrorMaxLength);
+                    throw new OmmException(message, result.ErrorCode, result.Info, result.ErrorBad, result.ErrorMaxLength);
             }
         }
 

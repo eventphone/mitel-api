@@ -44,8 +44,18 @@ namespace mitelapi
             {OmmError.ETooLong, "A string is too long"},
             {OmmError.EWlanRegDomainInvalid, "A DECT regulatory domain must be set before the request can be performed"},
         };
+
         public OmmException(OmmError errorCode, string info, string errorBad, int? errorMaxLength)
             :base(_messages[errorCode])
+        {
+            ErrorCode = errorCode;
+            Info = info;
+            Bad = errorBad;
+            MaxLength = errorMaxLength;
+        }
+
+        public OmmException(string message, OmmError errorCode, string info, string errorBad, int? errorMaxLength)
+            :base($"{_messages[errorCode]}: '{message}'")
         {
             ErrorCode = errorCode;
             Info = info;

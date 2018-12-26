@@ -451,7 +451,7 @@ namespace mitelapi
                 _receiveQueue.AddOrUpdate(sequence, container, (i, o) => container);
                 var message = await _serializer.SerializeAsync(request, _ssl, cancellationToken).ConfigureAwait(false);
                 OnMessageLog(message, MessageDirection.Out);
-                return (TResponse) await container.GetResponseAsync(cancellationToken).ConfigureAwait(false);
+                return (TResponse) await container.GetResponseAsync(message, cancellationToken).ConfigureAwait(false);
             }
         }
         
