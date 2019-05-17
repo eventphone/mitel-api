@@ -17,6 +17,7 @@ namespace mitelapi
         public event EventHandler<OmmEventArgs<EventPPUserCnf>> PPUserCnf;
         public event EventHandler<OmmEventArgs<EventPPUserSummary>> PPUserSummary;
         public event EventHandler<OmmEventArgs<EventRFPState>> RFPState;
+        public event EventHandler<OmmEventArgs<EventRFPCnf>> RFPCnf;
         public event EventHandler<OmmEventArgs<EventRFPSummary>> RfpSummary;
         public event EventHandler<OmmEventArgs<EventRFPSyncQuality>> RFPSyncQuality;
         public event EventHandler<OmmEventArgs<EventRFPSyncRel>> RFPSyncRel;
@@ -73,6 +74,10 @@ namespace mitelapi
             else if (ommEvent is EventRFPState rfpState)
             {
                 RFPState?.Invoke(this, new OmmEventArgs<EventRFPState>(rfpState));
+            }
+            else if (ommEvent is EventRFPCnf rfpCnf)
+            {
+                RFPCnf?.Invoke(this, new OmmEventArgs<EventRFPCnf>(rfpCnf));
             }
             else if (ommEvent is EventRFPSyncRel rfpSyncRel)
             {
