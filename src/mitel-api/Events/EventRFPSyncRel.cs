@@ -18,7 +18,7 @@ namespace mitelapi.Events
         /// <summary>
         /// RFP-ID
         /// </summary>        
-        [XmlElement("id")]
+        [XmlAttribute("id")]
         public int Id { get; set;}
 
         /// <summary>
