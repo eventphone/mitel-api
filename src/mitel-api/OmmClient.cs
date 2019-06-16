@@ -172,6 +172,12 @@ namespace mitelapi
             return response.Users[0];
         }
 
+        public async Task<PPUserType> GetPPUserByNumber(string num, CancellationToken cancellationToken)
+        {
+            var response = await SendAsync<GetPPUserByNumber, GetPPUserByNumberResp>(new GetPPUserByNumber {Num = num}, cancellationToken).ConfigureAwait(false);
+            return response.User;
+        }
+
         public async Task<List<PPUserType>> GetPPAllUserAsync(CancellationToken cancellationToken)
         {
             var uid = 0;
@@ -210,6 +216,12 @@ namespace mitelapi
         {
             var response = await SendAsync<GetPPDev, GetPPDevResp>(new GetPPDev { Ppn = ppn }, cancellationToken).ConfigureAwait(false);
             return response.Devices[0];
+        }
+
+        public async Task<PPDevType> GetPPDevByIPEIAsync(string ipei, CancellationToken cancellationToken)
+        {
+            var response = await SendAsync<GetPPDevByIPEI, GetPPDevByIPEIResp>(new GetPPDevByIPEI { Ipei = ipei }, cancellationToken).ConfigureAwait(false);
+            return response.Device;
         }
 
         public async Task<PPDevType> CreatePPDevAsync(PPDevType pp, CancellationToken cancellationToken)
@@ -521,7 +533,7 @@ namespace mitelapi
                 if (_ssl != null)
                 {
                     _ssl.Dispose();
-                    _reader.Join();
+                    _reader?.Join();
                 }
                 else
                 {
