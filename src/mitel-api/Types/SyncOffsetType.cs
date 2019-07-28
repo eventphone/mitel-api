@@ -38,8 +38,8 @@ namespace mitelapi.Types
         [EditorBrowsable(EditorBrowsableState.Never)]
         public string LostSerialize
         {
-            get { return Lost ? "1" : "0"; }
-            set { Lost = value == "1"; }
+            get { return Lost ? "true" : "false"; }
+            set { Lost = value == "true"; }
         }
     }
 }

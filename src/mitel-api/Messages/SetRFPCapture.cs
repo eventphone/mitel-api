@@ -19,8 +19,8 @@ namespace mitelapi.Messages
         [EditorBrowsable(EditorBrowsableState.Never)]
         public string EnableSerialize
         {
-            get { return Enable ? "1" : "0"; }
-            set { Enable = value == "1"; }
+            get { return Enable ? "true" : "false"; }
+            set { Enable = value == "true"; }
         }
     }
 
@@ -41,8 +41,8 @@ namespace mitelapi.Messages
         [EditorBrowsable(EditorBrowsableState.Never)]
         public string EnableSerialize
         {
-            get { return Enable ? "1" : "0"; }
-            set { Enable = value == "1"; }
+            get { return Enable ? "true" : "false"; }
+            set { Enable = value == "true"; }
         }
     }
 }

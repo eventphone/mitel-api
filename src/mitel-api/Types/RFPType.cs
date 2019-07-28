@@ -49,11 +49,11 @@ namespace mitelapi.Types
         [XmlIgnore]
         public bool? DectOn
         {
-            get { return XmlDectOnSpecified ? (bool?)(XmlDectOn == "1"): null; }
+            get { return XmlDectOnSpecified ? (bool?)(XmlDectOn == "true"): null; }
             set
             {
                 XmlDectOnSpecified = value.HasValue;
-                XmlDectOn = value.GetValueOrDefault() ? "1" : "0";
+                XmlDectOn = value.GetValueOrDefault() ? "true" : "false";
             }
         }
 
@@ -71,11 +71,11 @@ namespace mitelapi.Types
         [XmlIgnore]
         public bool? WlanOn
         {
-            get { return XmlWlanOnSpecified ? (bool?)(XmlWlanOn == "1") : null; }
+            get { return XmlWlanOnSpecified ? (bool?)(XmlWlanOn == "true") : null; }
             set
             {
                 XmlWlanOnSpecified = value.HasValue;
-                XmlWlanOn = value.GetValueOrDefault() ? "1" : "0";
+                XmlWlanOn = value.GetValueOrDefault() ? "true" : "false";
             }
         }
 
@@ -93,11 +93,11 @@ namespace mitelapi.Types
         [XmlIgnore]
         public bool? LicenseRFP
         {
-            get { return XmlLicenseRFPSpecified ? (bool?)(XmlLicenseRFP == "1") : null; }
+            get { return XmlLicenseRFPSpecified ? (bool?)(XmlLicenseRFP == "true") : null; }
             set
             {
                 XmlLicenseRFPSpecified = value.HasValue;
-                XmlLicenseRFP = value.GetValueOrDefault() ? "1" : "0";
+                XmlLicenseRFP = value.GetValueOrDefault() ? "true" : "false";
             }
         }
 
@@ -211,11 +211,11 @@ namespace mitelapi.Types
         [XmlIgnore]
         public bool? PreferredSync
         {
-            get { return XmlPreferredSyncSpecified ? (bool?)(XmlPreferredSync == "1") : null; }
+            get { return XmlPreferredSyncSpecified ? (bool?)(XmlPreferredSync == "true") : null; }
             set
             {
                 XmlPreferredSyncSpecified = value.HasValue;
-                XmlPreferredSync = value.GetValueOrDefault() ? "1" : "0";
+                XmlPreferredSync = value.GetValueOrDefault() ? "true" : "false";
             }
         }
 
@@ -233,11 +233,11 @@ namespace mitelapi.Types
         [XmlIgnore]
         public bool? ReflectiveEnv
         {
-            get { return XmlReflectiveEnvSpecified ? (bool?)(XmlReflectiveEnv == "1") : null; }
+            get { return XmlReflectiveEnvSpecified ? (bool?)(XmlReflectiveEnv == "true") : null; }
             set
             {
                 XmlReflectiveEnvSpecified = value.HasValue;
-                XmlReflectiveEnv = value.GetValueOrDefault() ? "1" : "0";
+                XmlReflectiveEnv = value.GetValueOrDefault() ? "true" : "false";
             }
         }
 
@@ -344,11 +344,11 @@ namespace mitelapi.Types
         [XmlIgnore]
         public bool? HwTypeLocked
         {
-            get { return XmlHwTypeLockedSpecified ? (bool?)(XmlHwTypeLocked == "1") : null; }
+            get { return XmlHwTypeLockedSpecified ? (bool?)(XmlHwTypeLocked == "true") : null; }
             set
             {
                 XmlHwTypeLockedSpecified = value.HasValue;
-                XmlHwTypeLocked = value.GetValueOrDefault() ? "1" : "0";
+                XmlHwTypeLocked = value.GetValueOrDefault() ? "true" : "false";
             }
         }
 
@@ -388,11 +388,11 @@ namespace mitelapi.Types
         [XmlIgnore]
         public bool? WlanAntennaDiv
         {
-            get { return XmlWlanAntennaDivSpecified ? (bool?)(XmlWlanAntennaDiv == "1") : null; }
+            get { return XmlWlanAntennaDivSpecified ? (bool?)(XmlWlanAntennaDiv == "true") : null; }
             set
             {
                 XmlWlanAntennaDivSpecified = value.HasValue;
-                XmlWlanAntennaDiv = value.GetValueOrDefault() ? "1" : "0";
+                XmlWlanAntennaDiv = value.GetValueOrDefault() ? "true" : "false";
             }
         }
 
@@ -455,11 +455,11 @@ namespace mitelapi.Types
         [XmlIgnore]
         public bool? WlanHighThroughput
         {
-            get { return XmlWlanHighThroughputSpecified ? (bool?)(XmlWlanHighThroughput == "1") : null; }
+            get { return XmlWlanHighThroughputSpecified ? (bool?)(XmlWlanHighThroughput == "true") : null; }
             set
             {
                 XmlWlanHighThroughputSpecified = value.HasValue;
-                XmlWlanHighThroughput = value.GetValueOrDefault() ? "1" : "0";
+                XmlWlanHighThroughput = value.GetValueOrDefault() ? "true" : "false";
             }
         }
 
@@ -499,11 +499,11 @@ namespace mitelapi.Types
         [XmlIgnore]
         public bool? ConferenceChannels
         {
-            get { return XmlConferenceChannelsSpecified ? (bool?)(XmlConferenceChannels == "1") : null; }
+            get { return XmlConferenceChannelsSpecified ? (bool?)(XmlConferenceChannels == "true") : null; }
             set
             {
                 XmlConferenceChannelsSpecified = value.HasValue;
-                XmlConferenceChannels = value.GetValueOrDefault() ? "1" : "0";
+                XmlConferenceChannels = value.GetValueOrDefault() ? "true" : "false";
             }
         }
 
@@ -523,11 +523,11 @@ namespace mitelapi.Types
         [XmlIgnore]
         public bool? Connected
         {
-            get { return XmlConnectedSpecified ? (bool?)(XmlConnected == "1") : null; }
+            get { return XmlConnectedSpecified ? (bool?)(XmlConnected == "true") : null; }
             set
             {
                 XmlConnectedSpecified = value.HasValue;
-                XmlConnected = value.GetValueOrDefault() ? "1" : "0";
+                XmlConnected = value.GetValueOrDefault() ? "true" : "false";
             }
         }
 
@@ -552,11 +552,11 @@ namespace mitelapi.Types
         [XmlIgnore]
         public bool? NewSoftwareRequest
         {
-            get { return XmlNewSoftwareRequestSpecified ? (bool?)(XmlNewSoftwareRequest == "1") : null; }
+            get { return XmlNewSoftwareRequestSpecified ? (bool?)(XmlNewSoftwareRequest == "true") : null; }
             set
             {
                 XmlNewSoftwareRequestSpecified = value.HasValue;
-                XmlNewSoftwareRequest = value.GetValueOrDefault() ? "1" : "0";
+                XmlNewSoftwareRequest = value.GetValueOrDefault() ? "true" : "false";
             }
         }
 
@@ -574,11 +574,11 @@ namespace mitelapi.Types
         [XmlIgnore]
         public bool? DectRunning
         {
-            get { return XmlDectRunningSpecified ? (bool?)(XmlDectRunning == "1") : null; }
+            get { return XmlDectRunningSpecified ? (bool?)(XmlDectRunning == "true") : null; }
             set
             {
                 XmlDectRunningSpecified = value.HasValue;
-                XmlDectRunning = value.GetValueOrDefault() ? "1" : "0";
+                XmlDectRunning = value.GetValueOrDefault() ? "true" : "false";
             }
         }
 
@@ -596,11 +596,11 @@ namespace mitelapi.Types
         [XmlIgnore]
         public bool? WlanRunning
         {
-            get { return XmlWlanRunningSpecified ? (bool?)(XmlWlanRunning == "1") : null; }
+            get { return XmlWlanRunningSpecified ? (bool?)(XmlWlanRunning == "true") : null; }
             set
             {
                 XmlWlanRunningSpecified = value.HasValue;
-                XmlWlanRunning = value.GetValueOrDefault() ? "1" : "0";
+                XmlWlanRunning = value.GetValueOrDefault() ? "true" : "false";
             }
         }
 
@@ -618,11 +618,11 @@ namespace mitelapi.Types
         [XmlIgnore]
         public bool? OmmRunning
         {
-            get { return XmlOmmRunningSpecified ? (bool?)(XmlOmmRunning == "1") : null; }
+            get { return XmlOmmRunningSpecified ? (bool?)(XmlOmmRunning == "true") : null; }
             set
             {
                 XmlOmmRunningSpecified = value.HasValue;
-                XmlOmmRunning = value.GetValueOrDefault() ? "1" : "0";
+                XmlOmmRunning = value.GetValueOrDefault() ? "true" : "false";
             }
         }
 
@@ -640,11 +640,11 @@ namespace mitelapi.Types
         [XmlIgnore]
         public bool? OmmStbRunning
         {
-            get { return XmlOmmStbRunningSpecified ? (bool?)(XmlOmmStbRunning == "1") : null; }
+            get { return XmlOmmStbRunningSpecified ? (bool?)(XmlOmmStbRunning == "true") : null; }
             set
             {
                 XmlOmmStbRunningSpecified = value.HasValue;
-                XmlOmmStbRunning = value.GetValueOrDefault() ? "1" : "0";
+                XmlOmmStbRunning = value.GetValueOrDefault() ? "true" : "false";
             }
         }
 
@@ -662,11 +662,11 @@ namespace mitelapi.Types
         [XmlIgnore]
         public bool? HasWlan
         {
-            get { return XmlHasWlanSpecified ? (bool?)(XmlHasWlan == "1") : null; }
+            get { return XmlHasWlanSpecified ? (bool?)(XmlHasWlan == "true") : null; }
             set
             {
                 XmlHasWlanSpecified = value.HasValue;
-                XmlHasWlan = value.GetValueOrDefault() ? "1" : "0";
+                XmlHasWlan = value.GetValueOrDefault() ? "true" : "false";
             }
         }
 
@@ -685,11 +685,11 @@ namespace mitelapi.Types
         [XmlIgnore]
         public bool? HasEncryption
         {
-            get { return XmlHasEncryptionSpecified ? (bool?)(XmlHasEncryption == "1") : null; }
+            get { return XmlHasEncryptionSpecified ? (bool?)(XmlHasEncryption == "true") : null; }
             set
             {
                 XmlHasEncryptionSpecified = value.HasValue;
-                XmlHasEncryption = value.GetValueOrDefault() ? "1" : "0";
+                XmlHasEncryption = value.GetValueOrDefault() ? "true" : "false";
             }
         }
 
@@ -710,11 +710,11 @@ namespace mitelapi.Types
         [XmlIgnore]
         public bool? HasAdvancedFeatures
         {
-            get { return XmlHasAdvancedFeaturesSpecified ? (bool?)(XmlHasAdvancedFeatures == "1") : null; }
+            get { return XmlHasAdvancedFeaturesSpecified ? (bool?)(XmlHasAdvancedFeatures == "true") : null; }
             set
             {
                 XmlHasAdvancedFeaturesSpecified = value.HasValue;
-                XmlHasAdvancedFeatures = value.GetValueOrDefault() ? "1" : "0";
+                XmlHasAdvancedFeatures = value.GetValueOrDefault() ? "true" : "false";
             }
         }
 
@@ -766,11 +766,11 @@ namespace mitelapi.Types
         [XmlIgnore]
         public bool? BrandingMismatch
         {
-            get { return XmlBrandingMismatchSpecified ? (bool?)(XmlBrandingMismatch == "1") : null; }
+            get { return XmlBrandingMismatchSpecified ? (bool?)(XmlBrandingMismatch == "true") : null; }
             set
             {
                 XmlBrandingMismatchSpecified = value.HasValue;
-                XmlBrandingMismatch = value.GetValueOrDefault() ? "1" : "0";
+                XmlBrandingMismatch = value.GetValueOrDefault() ? "true" : "false";
             }
         }
 
@@ -789,11 +789,11 @@ namespace mitelapi.Types
         [XmlIgnore]
         public bool? VersionMismatch
         {
-            get { return XmlVersionMismatchSpecified ? (bool?)(XmlVersionMismatch == "1") : null; }
+            get { return XmlVersionMismatchSpecified ? (bool?)(XmlVersionMismatch == "true") : null; }
             set
             {
                 XmlVersionMismatchSpecified = value.HasValue;
-                XmlVersionMismatch = value.GetValueOrDefault() ? "1" : "0";
+                XmlVersionMismatch = value.GetValueOrDefault() ? "true" : "false";
             }
         }
 
@@ -812,11 +812,11 @@ namespace mitelapi.Types
         [XmlIgnore]
         public bool? StbMismatch
         {
-            get { return XmlStbMismatchSpecified ? (bool?)(XmlStbMismatch == "1") : null; }
+            get { return XmlStbMismatchSpecified ? (bool?)(XmlStbMismatch == "true") : null; }
             set
             {
                 XmlStbMismatchSpecified = value.HasValue;
-                XmlStbMismatch = value.GetValueOrDefault() ? "1" : "0";
+                XmlStbMismatch = value.GetValueOrDefault() ? "true" : "false";
             }
         }
 
@@ -835,11 +835,11 @@ namespace mitelapi.Types
         [XmlIgnore]
         public bool? WlanLinkNok
         {
-            get { return XmlWlanLinkNokSpecified ? (bool?)(XmlWlanLinkNok == "1") : null; }
+            get { return XmlWlanLinkNokSpecified ? (bool?)(XmlWlanLinkNok == "true") : null; }
             set
             {
                 XmlWlanLinkNokSpecified = value.HasValue;
-                XmlWlanLinkNok = value.GetValueOrDefault() ? "1" : "0";
+                XmlWlanLinkNok = value.GetValueOrDefault() ? "true" : "false";
             }
         }
 
@@ -953,11 +953,11 @@ namespace mitelapi.Types
         [XmlIgnore]
         public bool? OutdoorType
         {
-            get { return XmlOutdoorTypeSpecified ? (bool?)(XmlOutdoorType == "1") : null; }
+            get { return XmlOutdoorTypeSpecified ? (bool?)(XmlOutdoorType == "true") : null; }
             set
             {
                 XmlOutdoorTypeSpecified = value.HasValue;
-                XmlOutdoorType = value.GetValueOrDefault() ? "1" : "0";
+                XmlOutdoorType = value.GetValueOrDefault() ? "true" : "false";
             }
         }
 
@@ -985,11 +985,11 @@ namespace mitelapi.Types
         [XmlIgnore]
         public bool? HasFreqShift
         {
-            get { return XmlHasFreqShiftSpecified ? (bool?)(XmlHasFreqShift == "1") : null; }
+            get { return XmlHasFreqShiftSpecified ? (bool?)(XmlHasFreqShift == "true") : null; }
             set
             {
                 XmlHasFreqShiftSpecified = value.HasValue;
-                XmlHasFreqShift = value.GetValueOrDefault() ? "1" : "0";
+                XmlHasFreqShift = value.GetValueOrDefault() ? "true" : "false";
             }
         }
 
