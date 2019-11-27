@@ -59,22 +59,22 @@ namespace mitelapi.Types
         [XmlEnum("RFP 34 US")]
         RFP34US,
         /// <summary>
-        /// Non WLAN indoor NG RFP
+        /// Non WLAN indoor 3G RFP
         /// </summary>
         [XmlEnum("RFP 35")]
         RFP35,
         /// <summary>
-        /// Non WLAN outdoor NG RFP
+        /// Non WLAN outdoor 3G RFP
         /// </summary>
         [XmlEnum("RFP 36")]
         RFP36,
         /// <summary>
-        /// Non WLAN outdoor NG RFP with outside DECT antennas
+        /// Non WLAN outdoor 3G RFP with outside DECT antennas
         /// </summary>
         [XmlEnum("RFP 37")]
         RFP37,
         /// <summary>
-        /// WLAN indoor NG RFP
+        /// WLAN indoor 3G RFP
         /// </summary>
         [XmlEnum("RFP 43")]
         RFP43,
@@ -154,9 +154,29 @@ namespace mitelapi.Types
         [XmlEnum("RFP SL43")]
         RFPSL43,
         /// <summary>
+        /// Non WLAN indoor 4G-RFP only with 4 DECT channels (“'entry level')
+        /// </summary>
+        [XmlEnum("RFP 44")]
+        RFP44,
+        /// <summary>
+        /// Non WLAN indoor 4G-RFP (“professional”)
+        /// </summary>
+        [XmlEnum("RFP 45")]
+        RFP45,
+        /// <summary>
+        /// Non WLAN indoor 4G-RFP with outside DECT antennas (“directional”)
+        /// </summary>
+        [XmlEnum("RFP 47")]
+        RFP47,
+        /// <summary>
+        /// WLAN indoor 4G-RFP (“dual mode”)
+        /// </summary>
+        [XmlEnum("RFP 48")]
+        RFP48,
+        /// <summary>
         /// External (linux PC) conference mixer that is handled as an RFP in the OMM
         /// </summary>
         [XmlEnum("PC ECM")]
-        PCECM
+        PCECM,
     }
 }
