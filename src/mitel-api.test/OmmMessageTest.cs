@@ -287,6 +287,18 @@ namespace mitel_api.test
         }
 
         [TestMethod]
+        public void CanDeserializeEventMessageSend()
+        {
+            var message = "<EventMessageSend alwaysIndirect=\"true\"><msg sendTime=\"1574881564\" id=\"67134080\" ppn=\"6201\" fromAddr=\"tel:4502\" toAddr=\"Tel:8378\" fromName=\"PoC zivillian\" priority=\"Normal\" folder=\"Inbox\" content=\"Void\"/></EventMessageSend>";
+            var send = _serializer.DeserializeEvent<EventMessageSend>(message);
+            Assert.IsNotNull(send);
+            var msg = send.Msg;
+            Assert.IsNotNull(msg);
+            Assert.AreEqual(1574881564u, msg.SendTime);
+            Assert.AreEqual("Void", msg.Content);
+        }
+
+        [TestMethod]
         public void CanDeserializeEventAlarmCallProgress()
         {
             var message = "<EventAlarmCallProgress ppn=\"5\" trigger=\"asdf\" id=\"99\" destAddr=\"tel:5555\" state=\"ringing\" />";

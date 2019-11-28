@@ -23,6 +23,10 @@ namespace mitelapi
         public event EventHandler<OmmEventArgs<EventRFPSyncRel>> RFPSyncRel;
         public event EventHandler<OmmEventArgs<EventStbStateChange>> StbStateChange;
         public event EventHandler<OmmEventArgs<EventLicenseCnf>> LicenseCnf;
+        public event EventHandler<OmmEventArgs<EventMessageProgress>> MessageProgress;
+        public event EventHandler<OmmEventArgs<EventMessageConfirmation>> MessageConfirmation;
+        public event EventHandler<OmmEventArgs<EventMessageQueueEmpty>> MessageQueueEmpty;
+        public event EventHandler<OmmEventArgs<EventMessageSend>> MessageSend;
 
         private void OnMessageReceived(BaseResponse message)
         {
@@ -94,6 +98,22 @@ namespace mitelapi
             else if (ommEvent is EventLicenseCnf licenseCnf)
             {
                 LicenseCnf?.Invoke(this, new OmmEventArgs<EventLicenseCnf>(licenseCnf));
+            }
+            else if (ommEvent is EventMessageProgress messageProgress)
+            {
+                MessageProgress?.Invoke(this, new OmmEventArgs<EventMessageProgress>(messageProgress));
+            }
+            else if (ommEvent is EventMessageConfirmation messageConfirmation)
+            {
+                MessageConfirmation?.Invoke(this, new OmmEventArgs<EventMessageConfirmation>(messageConfirmation));
+            }
+            else if (ommEvent is EventMessageQueueEmpty messageQueueEmpty)
+            {
+                MessageQueueEmpty?.Invoke(this, new OmmEventArgs<EventMessageQueueEmpty>(messageQueueEmpty));
+            }
+            else if (ommEvent is EventMessageSend messageSend)
+            {
+                MessageSend?.Invoke(this, new OmmEventArgs<EventMessageSend>(messageSend));
             }
         }
     }
