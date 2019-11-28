@@ -3,7 +3,6 @@
 .NET Library for the [SIP-DECT OM Application XML Interface](https://www.mitel.com/-/media/aad0384omaxiomrel611-1.pdf) used by Mitel OMM. This project was inspired by [python-mitel](https://github.com/thomasDOTde/python-mitel/).
 
 ## status
-**very early and broken pre-alpha**
 
 Currently only the base types, events and functions are implemented (as needed). The library is fully async and also supports events sent from OMM. All functionality is based on the publicly available api documentation (v6.1) from mitel, wireshark traces captured from OMP to OMM and MOM to OMM and contains some *undocumented* features like `ppnOld` on `PPUserType` or `SetPP`.
 

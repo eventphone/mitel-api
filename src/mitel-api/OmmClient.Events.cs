@@ -27,6 +27,10 @@ namespace mitelapi
         public event EventHandler<OmmEventArgs<EventMessageConfirmation>> MessageConfirmation;
         public event EventHandler<OmmEventArgs<EventMessageQueueEmpty>> MessageQueueEmpty;
         public event EventHandler<OmmEventArgs<EventMessageSend>> MessageSend;
+        public event EventHandler<OmmEventArgs<EventPositionHistory>> PositionHistory;
+        public event EventHandler<OmmEventArgs<EventPositionInfo>> PositionInfo;
+        public event EventHandler<OmmEventArgs<EventPositionTrack>> PositionTrack;
+        public event EventHandler<OmmEventArgs<EventPositionRequest>> PositionRequest;
 
         private void OnMessageReceived(BaseResponse message)
         {
@@ -114,6 +118,22 @@ namespace mitelapi
             else if (ommEvent is EventMessageSend messageSend)
             {
                 MessageSend?.Invoke(this, new OmmEventArgs<EventMessageSend>(messageSend));
+            }
+            else if (ommEvent is EventPositionHistory positionHistory)
+            {
+                PositionHistory?.Invoke(this, new OmmEventArgs<EventPositionHistory>(positionHistory));
+            }
+            else if (ommEvent is EventPositionInfo positionInfo)
+            {
+                PositionInfo?.Invoke(this, new OmmEventArgs<EventPositionInfo>(positionInfo));
+            }
+            else if (ommEvent is EventPositionTrack positionTrack)
+            {
+                PositionTrack?.Invoke(this, new OmmEventArgs<EventPositionTrack>(positionTrack));
+            }
+            else if (ommEvent is EventPositionRequest positionRequest)
+            {
+                PositionRequest?.Invoke(this, new OmmEventArgs<EventPositionRequest>(positionRequest));
             }
         }
     }
