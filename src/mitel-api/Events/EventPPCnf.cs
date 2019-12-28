@@ -27,5 +27,11 @@ namespace mitelapi.Events
 
         [XmlElement("pp")]
         public PPDevType Device { get; set; }
+
+        /// <summary>
+        /// boolean, default false  „1” or “true”, if this data set has been deleted 
+        /// </summary>
+        [XmlAttribute("deletedDev")]
+        public bool DeletedDevice { get; set; }
     }
 }

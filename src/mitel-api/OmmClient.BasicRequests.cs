@@ -36,6 +36,7 @@ namespace mitelapi
             _exponent = response.PublicKey.Exponent;
             _modulus = response.PublicKey.Modulus;
             await LoadUsersAsync(cancellationToken).ConfigureAwait(false);
+            await LoadDevicesAsync(cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>

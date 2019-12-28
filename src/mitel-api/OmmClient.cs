@@ -29,6 +29,7 @@ namespace mitelapi
         private string _modulus;
         private string _exponent;
         private ConcurrentDictionary<string, int> _uidMapping = new ConcurrentDictionary<string, int>();
+        private ConcurrentDictionary<string, int> _ipeiMapping = new ConcurrentDictionary<string, int>();
 
         public OmmClient(string hostname, int port = 12622)
         {
@@ -72,15 +73,50 @@ namespace mitelapi
             await SubscribeAsync(new SubscribeCmdType(EventType.PPUserCnf) { Uid = -1 }, cancellationToken).ConfigureAwait(false);
         }
 
+        private async Task LoadDevicesAsync(CancellationToken cancellationToken)
+        {
+            var ppn = 0;
+            while (true)
+            {
+                try
+                {
+                    var pps = await SendAsync<GetPPDev, GetPPDevResp>(new GetPPDev { Ppn = ppn, MaxRecords = 20 }, cancellationToken).ConfigureAwait(false);
+                    ppn = pps.Devices.Max(x => x.Ppn) + 1;
+                    foreach(var device in pps.Devices)
+                    {
+                        _ipeiMapping.TryAdd(device.Ipei, device.Ppn);
+                    }
+                }
+                catch (OmmNoEntryException)
+                {
+                    break;
+                }
+            }
+            this.PPDevCnf += UpdateDeviceCache;
+            this.PPCnf += UpdateDeviceCache;
+            await SubscribeAsync(new SubscribeCmdType(EventType.PPDevCnf) { Ppn = -1 }, cancellationToken).ConfigureAwait(false);
+        }
+
         private void UpdateUserCache(object sender, OmmEventArgs<EventPPCnf> e)
         {
             if (e.Event.User != null)
                 UpdateUserCache(e.Event.DeletedUser, e.Event.User.Uid, e.Event.User.Num);
         }
 
+        private void UpdateDeviceCache(object sender, OmmEventArgs<EventPPCnf> e)
+        {
+            if (e.Event.Device != null)
+                UpdateDeviceCache(e.Event.DeletedDevice, e.Event.Device.Ppn, e.Event.Device.Ipei);
+        }
+
         private void UpdateUserCache(object sender, OmmEventArgs<EventPPUserCnf> e)
         {
             UpdateUserCache(e.Event.Deleted, e.Event.User.Uid, e.Event.User.Num);
+        }
+
+        private void UpdateDeviceCache(object sender, OmmEventArgs<EventPPDevCnf> e)
+        {
+            UpdateDeviceCache(e.Event.Deleted, e.Event.PP.Ppn, e.Event.PP.Ipei);
         }
 
         private void UpdateUserCache(bool deleted, int uid, string num)
@@ -100,9 +136,35 @@ namespace mitelapi
             }
         }
 
+        private void UpdateDeviceCache(bool deleted, int ppn, string ipei)
+        {
+            if (deleted)
+            {
+                var oldIpei = _ipeiMapping.Where(x => x.Value == ppn).Select(x => x.Key).FirstOrDefault();
+                _ipeiMapping.TryRemove(oldIpei, out int unused);
+            }
+            else
+            {
+                if (String.IsNullOrEmpty(ipei)) return;
+                var oldNum = _ipeiMapping.Where(x => x.Value == ppn).Select(x => x.Key).FirstOrDefault();
+                if (oldNum != null)
+                    _ipeiMapping.TryRemove(oldNum, out int unused);
+                _ipeiMapping.TryAdd(ipei, ppn);
+            }
+        }
+
         public bool TryLookupExtension(string extension, out int uid)
         {
             return _uidMapping.TryGetValue(extension, out uid);
+        }
+
+        public async Task<int> TryLookupIpeiAsync(string ipei, CancellationToken cancellationToken)
+        {
+            if (!_ipeiMapping.TryGetValue(ipei, out var ppn)){
+                var devs = await GetPPAllDevAsync(cancellationToken);
+                return devs.Where(x=>x.Ipei == ipei).Select(x=>x.Ppn).DefaultIfEmpty(-1).FirstOrDefault();
+            }
+            return ppn;
         }
 
         private async void SendPing(object state)
