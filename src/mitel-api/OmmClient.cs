@@ -193,7 +193,7 @@ namespace mitelapi
             return response;
         }
 
-        public async Task<CreatePPUserResp> CreatePPUserAsync(PPUserType user, CancellationToken cancellationToken)
+        public async Task<PPUserType> CreatePPUserAsync(PPUserType user, CancellationToken cancellationToken)
         {
             var request = new CreatePPUser()
             {
@@ -204,7 +204,7 @@ namespace mitelapi
             if (request.User.SipPw != null)
                 request.User.SipPw = PPUserType.EncryptData(_modulus, _exponent, request.User.SipPw);
             var response = await SendAsync<CreatePPUser, CreatePPUserResp>(request, cancellationToken).ConfigureAwait(false);
-            return response;
+            return response.User;
         }
 
         public async Task<SetPPResp> SetPPAsync(PPDevType pp, PPUserType user, CancellationToken cancellationToken)
