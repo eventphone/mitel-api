@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Security;
 using System.Net.Sockets;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -47,6 +48,11 @@ namespace mitelapi
         public int ReceiveQueueSize
         {
             get { return _receiveQueue.Count; }
+        }
+
+        protected virtual bool CertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        {
+            return sslPolicyErrors == SslPolicyErrors.None;
         }
 
         private async Task LoadUsersAsync(CancellationToken cancellationToken)

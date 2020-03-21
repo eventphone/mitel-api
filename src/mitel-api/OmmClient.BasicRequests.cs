@@ -24,7 +24,7 @@ namespace mitelapi
         public async Task LoginAsync(string username, string password, bool userDeviceSync = false,  CancellationToken cancellationToken = default(CancellationToken))
         {
             await _client.ConnectAsync(_hostname, _port).ConfigureAwait(false);
-            _ssl = new SslStream(_client.GetStream());
+            _ssl = new SslStream(_client.GetStream(), false, CertificateValidationCallback);
             await _ssl.AuthenticateAsClientAsync(_hostname).ConfigureAwait(false);
             cancellationToken.ThrowIfCancellationRequested();
             _reader = new Thread(Read) {IsBackground = true, Name = "OmmClientReader"};
