@@ -647,5 +647,21 @@ namespace mitel_api.test
             Assert.IsTrue(getPPStateResp.OnHook);
             Assert.IsFalse(getPPStateResp.Bluetooth.Value);
         }
+
+        [TestMethod]
+        public void CanDeserializeEventDECTAuthCodeCnf()
+        {
+            var message = "<EventDECTAuthCodeCnf ac=\"0000\"/>";
+            var eventDectAuthCodeCnf = _serializer.DeserializeEvent<EventDECTAuthCodeCnf>(message);
+            Assert.AreEqual("0000", eventDectAuthCodeCnf.Ac);
+        }
+
+        [TestMethod]
+        public void CanDeserializeEventPPState()
+        {
+            var message = "<EventPPState ppn=\"12\" swVersion=\"7.2\"/>";
+            var eventPPState = _serializer.DeserializeEvent<EventPPState>(message);
+            Assert.AreEqual("7.2", eventPPState.SwVersion);
+        }
     }
 }

@@ -10,10 +10,12 @@ namespace mitelapi
         private event EventHandler<MessageReceivedEventArgs> MessageReceived;
         
         public event EventHandler<OmmEventArgs<EventAlarmCallProgress>> AlarmCallProgress;
+        public event EventHandler<OmmEventArgs<EventDECTAuthCodeCnf>> DECTAuthCodeCnf;
         public event EventHandler<OmmEventArgs<EventDECTSubscriptionMode>> DECTSubscriptionModeChanged;
         public event EventHandler<OmmEventArgs<EventPPCnf>> PPCnf;
         public event EventHandler<OmmEventArgs<EventPPDevCnf>> PPDevCnf;
         public event EventHandler<OmmEventArgs<EventPPDevSummary>> PPDevSummary;
+        public event EventHandler<OmmEventArgs<EventPPState>> PPState;
         public event EventHandler<OmmEventArgs<EventPPUserCnf>> PPUserCnf;
         public event EventHandler<OmmEventArgs<EventPPUserSummary>> PPUserSummary;
         public event EventHandler<OmmEventArgs<EventRFPState>> RFPState;
@@ -134,6 +136,14 @@ namespace mitelapi
             else if (ommEvent is EventPositionRequest positionRequest)
             {
                 PositionRequest?.Invoke(this, new OmmEventArgs<EventPositionRequest>(positionRequest));
+            }
+            else if (ommEvent is EventPPState ppState)
+            {
+                PPState?.Invoke(this, new OmmEventArgs<EventPPState>(ppState));
+            }
+            else if (ommEvent is EventDECTAuthCodeCnf dectAuthCodeCnf)
+            {
+                DECTAuthCodeCnf?.Invoke(this, new OmmEventArgs<EventDECTAuthCodeCnf>(dectAuthCodeCnf));
             }
         }
     }
