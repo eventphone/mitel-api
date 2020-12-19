@@ -6,9 +6,23 @@ using mitelapi.Events;
 using mitelapi.Messages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using mitelapi.Types;
+using System.Security.Cryptography.X509Certificates;
+using System.Net.Security;
+using System.Runtime.InteropServices;
 
 namespace mitel_api.test
 {
+    public class TestClient : OmmClient
+    {
+        public TestClient(string hostname, int port = 12622) : base(hostname, port)
+        {
+        }
+
+        protected override bool CertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        {
+            return true;
+        }
+    }
     [TestClass]
     public class OmmClientTest
     {
@@ -17,7 +31,8 @@ namespace mitel_api.test
         [TestInitialize]
         public void Setup()
         {
-            _client = new OmmClient("localhost");
+            _client = new TestClient("localhost");
+            _client.MessageLog += (s, e) => Console.WriteLine(e.Message);
         }
 
         [TestCleanup]
@@ -183,6 +198,20 @@ namespace mitel_api.test
             };
             resetEvent.Wait(TimeSpan.FromSeconds(5));
             Assert.IsTrue(resetEvent.IsSet);
+        }
+
+        [TestMethod]
+        public async Task CanRequestReEnrollment()
+        {
+            await CanLogin();
+            await _client.RequestRFPEnrollmentAsync(23, CancellationToken.None);
+        }
+
+        [TestMethod]
+        public async Task CanGetRFP()
+        {
+            await CanLogin();
+            var rfp = await _client.GetRFPAsync(23, true, true, CancellationToken.None);
         }
     }
 }

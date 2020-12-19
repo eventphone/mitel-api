@@ -428,7 +428,8 @@ namespace mitelapi.Types
 
         /// <summary>
         /// Configured WLAN channel, one of 1 to 14, 36, 40, 44, 48, 52, 56,
-        /// 60, 64, 100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140, 147,        /// 151, 155, 159, 163, 167, 171
+        /// 60, 64, 100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140, 147,
+        /// 151, 155, 159, 163, 167, 171
         /// </summary>
         [XmlIgnore]
         public int? WlanChannel
@@ -1000,5 +1001,28 @@ namespace mitelapi.Types
         [XmlAttribute("hasFreqShift")]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public string XmlHasFreqShift { get; set; }
+
+        /// <summary>
+        /// Flag indicating if the connection to the RFP is encrypted.
+        /// </summary>
+        [XmlIgnore]
+        public bool? EncryptionActive
+        {
+            get { return XmlEncryptionActiveSpecified ? (bool?)XmlEncryptionActive : null; }
+            set
+            {
+                XmlEncryptionActiveSpecified = value.HasValue;
+                XmlEncryptionActive = value.GetValueOrDefault();
+            }
+        }
+
+        [XmlAttribute("encryptionActive")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlEncryptionActive { get; set; }
+
+        [XmlIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool XmlEncryptionActiveSpecified { get; set; }
+
     }
 }
