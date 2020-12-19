@@ -124,5 +124,12 @@ namespace mitelapi
             var response = await SendAsync<GetRFPSummary, GetRFPSummaryResp>(request, cancellationToken).ConfigureAwait(false);
             return response;
         }
+
+        public async Task<RequestRFPEnrollmentResp> RequestRFPEnrollmentAsync(uint rfpId, CancellationToken cancellationToken)
+        {
+            var request = new RequestRFPEnrollment {RfpId = rfpId};
+            var response = await SendAsync<RequestRFPEnrollment, RequestRFPEnrollmentResp>(request, cancellationToken).ConfigureAwait(false);
+            return response;
+        }
     }
 }
