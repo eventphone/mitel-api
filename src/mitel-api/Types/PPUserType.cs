@@ -116,7 +116,7 @@ namespace mitelapi.Types
         public string SipAuthId { get; set; }
         
         /// <summary>
-        /// SIP authentication password, encrypted with public ke
+        /// SIP authentication password, encrypted with public key
         /// </summary>
         [XmlAttribute("sipPw")]
         public string SipPw { get; set; }
