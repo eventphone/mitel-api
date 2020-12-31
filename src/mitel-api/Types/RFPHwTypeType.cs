@@ -178,5 +178,10 @@ namespace mitelapi.Types
         /// </summary>
         [XmlEnum("PC ECM")]
         PCECM,
+        /// <summary>
+        /// undocumented
+        /// </summary>
+        [XmlEnum("PC")]
+        PC,
     }
 }
