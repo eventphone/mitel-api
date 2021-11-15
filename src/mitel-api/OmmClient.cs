@@ -22,7 +22,7 @@ namespace mitelapi
         private string _hostname;
         private SslStream _ssl;
         private bool _closed = false;
-        private Thread _reader;
+        private Task _reader;
         private int _seq;
         private readonly OmmSerializer _serializer;
         private ConcurrentDictionary<int, ReceiveContainer> _receiveQueue = new ConcurrentDictionary<int, ReceiveContainer>();
@@ -313,7 +313,7 @@ namespace mitelapi
             }
         }
 
-        private void Read()
+        private async Task ReadAsync(CancellationToken cancellationToken)
         {
             byte[] buffer = new byte[1024];
             int offset = 0;
@@ -321,7 +321,7 @@ namespace mitelapi
             {
                 try
                 {
-                    var read = _ssl.Read(buffer, offset, buffer.Length - offset);
+                    var read = await _ssl.ReadAsync(buffer, offset, buffer.Length - offset, cancellationToken);
                     if (read != 0)
                     {
                         offset += read;
@@ -366,7 +366,7 @@ namespace mitelapi
                 if (_ssl != null)
                 {
                     _ssl.Dispose();
-                    _reader?.Join();
+                    _reader?.Dispose();
                 }
                 else
                 {

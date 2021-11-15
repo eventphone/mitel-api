@@ -27,9 +27,8 @@ namespace mitelapi
             _ssl = new SslStream(_client.GetStream(), false, CertificateValidationCallback);
             await _ssl.AuthenticateAsClientAsync(_hostname).ConfigureAwait(false);
             cancellationToken.ThrowIfCancellationRequested();
-            _reader = new Thread(Read) {IsBackground = true, Name = "OmmClientReader"};
             MessageReceived += MessageRecievedHandler;
-            _reader.Start();
+            _reader = ReadAsync(cancellationToken);
             var open = new Open {Username = username, Password = password, UserDeviceSyncClient = userDeviceSync};
             var response = await SendAsync<Open, OpenResp>(open, cancellationToken).ConfigureAwait(false);
             _pingTimer.Change(TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60));
