@@ -366,7 +366,6 @@ namespace mitelapi
                 if (_ssl != null)
                 {
                     _ssl.Dispose();
-                    _reader?.Dispose();
                 }
                 else
                 {
