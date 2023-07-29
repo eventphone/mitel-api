@@ -607,7 +607,7 @@ namespace mitelapi.Types
         public string ConferenceServerURI { get; set; }   
         
         /// <summary>
-        /// User monitoring state one of “Off”, “Passive” or Aktive”
+        /// User monitoring state one of “Off”, “Passive” or Active”
         /// </summary>
         [XmlAttribute("monitoringMode")]
         public string MonitoringMode { get; set; }      
