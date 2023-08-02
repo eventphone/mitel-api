@@ -327,7 +327,7 @@ namespace mitelapi
                         offset += read;
                     }
                     var nullIndex = buffer.AsSpan().Slice(0, offset).IndexOf((byte)0);
-                    if (nullIndex >= 0)
+                    while (nullIndex >= 0)
                     {
                         if (nullIndex > 0)
                         {
@@ -340,6 +340,7 @@ namespace mitelapi
                         }
                         Buffer.BlockCopy(buffer, nullIndex + 1, buffer, 0, offset - (nullIndex +1));
                         offset -= (nullIndex + 1);
+                        nullIndex = buffer.AsSpan().Slice(0, offset).IndexOf((byte)0);
                     }
                     if (read != 0)
                     {
