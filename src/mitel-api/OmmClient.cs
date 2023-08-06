@@ -113,7 +113,7 @@ namespace mitelapi
             return response.Users[0];
         }
 
-        public async Task<PPUserType> GetPPUserByNumber(string num, CancellationToken cancellationToken)
+        public async Task<PPUserType> GetPPUserByNumberAsync(string num, CancellationToken cancellationToken)
         {
             var response = await SendAsync<GetPPUserByNumber, GetPPUserByNumberResp>(new GetPPUserByNumber {Num = num}, cancellationToken).ConfigureAwait(false);
             return response.User;
