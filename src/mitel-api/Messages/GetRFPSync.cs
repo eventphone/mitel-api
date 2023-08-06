@@ -25,13 +25,13 @@ namespace mitelapi.Messages
         /// <summary>
         /// RFP id
         /// </summary>
-        [XmlElement("id")]
+        [XmlAttribute("id")]
         public int Id { get; set; }
 
         /// <summary>
         /// State info
         /// </summary>
-        [XmlElement("syncState")]
+        [XmlAttribute("syncState")]
         public RFPSyncStateType SyncState { get; set; }
 
         /// <summary>

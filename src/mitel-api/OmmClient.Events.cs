@@ -10,12 +10,14 @@ namespace mitelapi
         private event EventHandler<MessageReceivedEventArgs> MessageReceived;
         
         public event EventHandler<OmmEventArgs<EventAlarmCallProgress>> AlarmCallProgress;
+        public event EventHandler<OmmEventArgs<EventAlarmTrigger>> AlarmTrigger;
         public event EventHandler<OmmEventArgs<EventDECTAuthCodeCnf>> DECTAuthCodeCnf;
         public event EventHandler<OmmEventArgs<EventDECTSubscriptionMode>> DECTSubscriptionModeChanged;
         public event EventHandler<OmmEventArgs<EventPPCnf>> PPCnf;
         public event EventHandler<OmmEventArgs<EventPPDevCnf>> PPDevCnf;
         public event EventHandler<OmmEventArgs<EventPPDevSummary>> PPDevSummary;
         public event EventHandler<OmmEventArgs<EventPPState>> PPState;
+        public event EventHandler<OmmEventArgs<EventPPTransaction>> PPTransaction;
         public event EventHandler<OmmEventArgs<EventPPUserCnf>> PPUserCnf;
         public event EventHandler<OmmEventArgs<EventPPUserSummary>> PPUserSummary;
         public event EventHandler<OmmEventArgs<EventRFPState>> RFPState;
@@ -56,6 +58,10 @@ namespace mitelapi
             else if (ommEvent is EventAlarmCallProgress alarmCallProgress)
             {
                 AlarmCallProgress?.Invoke(this, new OmmEventArgs<EventAlarmCallProgress>(alarmCallProgress));
+            }
+            else if (ommEvent is EventAlarmTrigger alarmTrigger)
+            {
+                AlarmTrigger?.Invoke(this, new OmmEventArgs<EventAlarmTrigger>(alarmTrigger));
             }
             else if (ommEvent is EventRFPSummary rfpSummary)
             {
@@ -140,6 +146,10 @@ namespace mitelapi
             else if (ommEvent is EventPPState ppState)
             {
                 PPState?.Invoke(this, new OmmEventArgs<EventPPState>(ppState));
+            }
+            else if (ommEvent is EventPPTransaction ppTransaction)
+            {
+                PPTransaction?.Invoke(this, new OmmEventArgs<EventPPTransaction>(ppTransaction));
             }
             else if (ommEvent is EventDECTAuthCodeCnf dectAuthCodeCnf)
             {
