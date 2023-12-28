@@ -17,6 +17,8 @@ namespace mitelapi
         private readonly ConcurrentDictionary<Type, XmlSerializer> _serializers = new ConcurrentDictionary<Type, XmlSerializer>();
         private readonly SemaphoreSlim _writeLock = new SemaphoreSlim(1, 1);
 
+        private readonly byte[] _nullByte = new byte[]{0};
+
         private readonly XmlWriterSettings _writerSettings = new XmlWriterSettings
         {
             Indent = false,
@@ -71,7 +73,8 @@ namespace mitelapi
                     var result = Serialize(request);
                     await sw.WriteAsync(result).ConfigureAwait(false);
                     await sw.FlushAsync().ConfigureAwait(false);
-                    stream.WriteByte(0);
+                    await stream.WriteAsync(_nullByte, 0, 1, cancellationToken).ConfigureAwait(false);
+                    await stream.FlushAsync(cancellationToken).ConfigureAwait(false);
                     return result;
                 }
                 finally
