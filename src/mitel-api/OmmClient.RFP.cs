@@ -62,9 +62,10 @@ namespace mitelapi
             await SendAsync<DeleteRFP, DeleteRFPResp>(new DeleteRFP { Id = id }, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task CreateRFPAsync(RFPType rfp, CancellationToken cancellationToken)
+        public async Task<RFPType> CreateRFPAsync(RFPType rfp, CancellationToken cancellationToken)
         {
-            await SendAsync<CreateRFP, CreateRFPResp>(new CreateRFP { Rfp = rfp }, cancellationToken).ConfigureAwait(false);
+            var response = await SendAsync<CreateRFP, CreateRFPResp>(new CreateRFP { Rfp = rfp }, cancellationToken).ConfigureAwait(false);
+            return response.Rfp;
         }
 
         public async Task<List<RFPType>> GetRFPAllAsync(bool withDetails, bool withState, CancellationToken cancellationToken)
