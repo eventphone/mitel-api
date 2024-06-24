@@ -9,7 +9,6 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using mitelapi.Events;
 using mitelapi.Messages;
 using mitelapi.Types;
 
@@ -18,15 +17,15 @@ namespace mitelapi
     public partial class OmmClient:IDisposable
     {
         private readonly TcpClient _client;
-        private int _port;
-        private string _hostname;
+        private readonly int _port;
+        private readonly string _hostname;
         private SslStream _ssl;
         private bool _closed = false;
         private Task _reader;
         private int _seq;
         private readonly OmmSerializer _serializer;
-        private ConcurrentDictionary<int, ReceiveContainer> _receiveQueue = new ConcurrentDictionary<int, ReceiveContainer>();
-        private Timer _pingTimer;
+        private readonly ConcurrentDictionary<int, ReceiveContainer> _receiveQueue = new ConcurrentDictionary<int, ReceiveContainer>();
+        private readonly Timer _pingTimer;
         private string _modulus;
         private string _exponent;
 
@@ -43,10 +42,7 @@ namespace mitelapi
 
         public TimeSpan Rtt { get; private set; }
 
-        public int ReceiveQueueSize
-        {
-            get { return _receiveQueue.Count; }
-        }
+        public int ReceiveQueueSize => _receiveQueue.Count;
 
         protected virtual bool CertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
@@ -300,7 +296,7 @@ namespace mitelapi
             }
         }
         
-        private void MessageRecievedHandler(object sender, MessageReceivedEventArgs e)
+        private void MessageReceivedHandler(object sender, MessageReceivedEventArgs e)
         {
             if (e.IsHandled) return;
             if (e.Message.Seq.HasValue)
@@ -352,8 +348,8 @@ namespace mitelapi
                 }
                 catch (IOException ex)
                 {
-                    var socketExept = ex.InnerException as SocketException;
-                    if (socketExept == null || socketExept.ErrorCode != 10004)
+                    var socketException = ex.InnerException as SocketException;
+                    if (socketException == null || socketException.ErrorCode != 10004)
                         throw;
                 }
             }
@@ -372,6 +368,8 @@ namespace mitelapi
                 {
                     _client?.Dispose();
                 }
+                _reader?.Dispose();
+                _pingTimer.Dispose();
             }
         }
 
