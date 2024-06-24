@@ -368,6 +368,8 @@ namespace mitelapi
                 {
                     _client?.Dispose();
                 }
+                _reader?.Dispose();
+                _pingTimer.Dispose();
             }
         }
 
