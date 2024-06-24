@@ -27,7 +27,7 @@ namespace mitelapi
             _ssl = new SslStream(_client.GetStream(), false, CertificateValidationCallback);
             await _ssl.AuthenticateAsClientAsync(_hostname).ConfigureAwait(false);
             cancellationToken.ThrowIfCancellationRequested();
-            MessageReceived += MessageRecievedHandler;
+            MessageReceived += MessageReceivedHandler;
             _reader = ReadAsync(cancellationToken);
             var open = new Open {Username = username, Password = password, UserDeviceSyncClient = userDeviceSync};
             var response = await SendAsync<Open, OpenResp>(open, cancellationToken).ConfigureAwait(false);
