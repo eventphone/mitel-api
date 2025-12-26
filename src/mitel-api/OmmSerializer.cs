@@ -23,7 +23,8 @@ namespace mitelapi
         {
             Indent = false,
             OmitXmlDeclaration = true,
-            CloseOutput = false
+            CloseOutput = false,
+            CheckCharacters = false
         };
         
         private readonly XmlSerializerNamespaces _emptyNamepsaces = new XmlSerializerNamespaces(new[] { XmlQualifiedName.Empty });
