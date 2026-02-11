@@ -29,13 +29,16 @@ namespace mitelapi
         private string _modulus;
         private string _exponent;
 
-        public OmmClient(string hostname, int port = 12622)
+        private bool _ignoreSSLErrors;
+
+        public OmmClient(string hostname, int port = 12622, bool ignoreSSLErrors = false)
         {
             _hostname = hostname;
             _port = port;
             _client = new TcpClient(AddressFamily.InterNetworkV6) {Client = {DualMode = true}};
             _serializer = new OmmSerializer();
             _pingTimer = new Timer(SendPing);
+            _ignoreSSLErrors = ignoreSSLErrors;
         }
         
         public DateTime LastMessage { get; private set; }
@@ -46,7 +49,12 @@ namespace mitelapi
 
         protected virtual bool CertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
-            return sslPolicyErrors == SslPolicyErrors.None;
+            if (_ignoreSSLErrors) {
+                return true;
+            } else
+            {
+                return sslPolicyErrors == SslPolicyErrors.None;
+            }
         }
 
         private async void SendPing(object state)
